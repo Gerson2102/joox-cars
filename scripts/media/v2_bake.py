@@ -16,7 +16,8 @@ overlaps the letters; those alphas are cached in .media-src/_cache/v2 so re-runs
 skip the model. A single frame's cutout flickers and is soft (glass, the gap
 under the car, the antenna), which reads as the letter turning see-through
 around the car. The matte actually used is steadied: the median of the
-neighbouring frames' cutouts, aligned on the tracked licence plate, made solid.
+neighbouring frames' cutouts, aligned on the tracked licence plate (its track
+smoothed), made solid, edge included.
 
 Pace: the clip plays at SPEED using every source frame (the output frame rate
 is raised instead of dropping frames). The loop runs from START to the end of
@@ -253,6 +254,23 @@ def track_plate(src: str, vf: str, first: int, last: int) -> dict[int, tuple[flo
     return found
 
 
+def smooth_track(found: dict[int, tuple[float, float, float]], r: int = 6) -> dict[int, tuple[float, float, float]]:
+    """The matcher steps the scale 1.5% at a time, so the tracked scale hops from
+    frame to frame while the car recedes smoothly; carried 200 px up to the roof,
+    that hop shakes the aligned cutouts by several pixels. Each frame takes the
+    value of a quadratic fitted to its neighbours within r frames."""
+    idx = sorted(found)
+    t = np.array(idx, np.float64)
+    v = np.array([found[i] for i in idx], np.float64)
+    out = {}
+    for k, i in enumerate(idx):
+        lo, hi = max(0, k - r), min(len(idx), k + r + 1)
+        deg = min(2, hi - lo - 1)
+        coef = np.polyfit(t[lo:hi] - i, v[lo:hi], deg)
+        out[i] = tuple(float(c) for c in coef[-1])
+    return out
+
+
 def blur_plate(frame: np.ndarray, where: tuple[float, float, float]) -> np.ndarray:
     """Soft-edged blur over the plate recess: no hard rectangle, nothing readable."""
     cx, cy, sc = where
@@ -341,8 +359,10 @@ def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndar
     rigid; the per-frame segmentation is not), made solid: no see-through glass
     or haze, no antenna or specks, no holes, and the gap under the car between
     the wheels closed, so the letter never blinks through it. That solid shape
-    decides the inside (opaque) and the outside (clear); only the few pixels of
-    the edge come from this frame's own cutout, for a natural edge.
+    decides the inside (opaque) and the outside (clear); the few pixels of the
+    edge keep the median's soft values, for a natural edge. (This frame's own
+    cutout at the edge brought back its one-frame mistakes: an antenna stub, grey
+    patches on the roof rack.)
     """
     stack = [
         cached_alpha(j, tuple(info[j]["bbox"])) if j == i
@@ -369,19 +389,23 @@ def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndar
     cv2.floodFill(pad, reach, (0, 0), 1)
     b = b | (reach[2:-2, 2:-2] == 0).astype(np.uint8)
     # Under the car: close horizontal gaps in the lower part (between the wheels).
+    # Padded with background first: erosion counts pixels beyond the border as set,
+    # so an unpadded close filled whole rows out to the mirrors' width and cut
+    # notches in the letters beside the bumper.
     rows = np.nonzero(b.any(axis=1))[0]
     cols = np.nonzero(b.any(axis=0))[0]
     if len(rows) and len(cols):
         low = int(rows.min() + 0.6 * (rows.max() - rows.min()))
         width = int(cols.max() - cols.min()) + 1
-        b[low:] = cv2.morphologyEx(b[low:], cv2.MORPH_CLOSE, np.ones((1, width), np.uint8))
+        lowp = cv2.copyMakeBorder(b[low:], 0, 0, width, width, cv2.BORDER_CONSTANT, value=0)
+        b[low:] = cv2.morphologyEx(lowp, cv2.MORPH_CLOSE, np.ones((1, width), np.uint8))[:, width:-width]
     disc = lambda r: cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1,) * 2)
     # Filled-in parts (holes, the gap under the car) are opaque to their edge.
     # The aligned shape can drift a pixel or two far from the plate (the roof), so
     # the edge band is wide enough to hold the true edge.
     inside = (cv2.erode(b, disc(3)) > 0) | ((b > 0) & (cut == 0))
     near = cv2.dilate(b, disc(5)) > 0
-    edge = np.clip((cached_alpha(i, tuple(info[i]["bbox"]))[y0:y1, x0:x1] - 0.1) / 0.8, 0, 1)
+    edge = np.clip((med[y0:y1, x0:x1] - 0.1) / 0.8, 0, 1)
     out[y0:y1, x0:x1] = np.where(inside, 1.0, np.where(near, edge, 0.0))
     return out
 
@@ -467,7 +491,7 @@ def main() -> None:
             comp = (fr * (1 - wm) + BONE * wm)[:, cx0:cx0 + cw]
             save_webp(np.clip(comp, 0, 255).astype(np.uint8), os.path.join(SRC, "_debug", f"v2-curtain-{name}.webp"))
         return
-    plates = track_plate(src, vf, entered, n_src - 1)
+    plates = smooth_track(track_plate(src, vf, entered, n_src - 1))
     print("plate tracked in", len(plates), "frames:", min(plates), "to", max(plates))
 
     # Cutouts for every frame that needs a matte and its neighbours (the median's window).
