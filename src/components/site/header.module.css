@@ -1,0 +1,356 @@
+/* Over the film: a transparent full-width bar with white type. Past the film:
+   a floating white capsule, inset from the edges, with a soft shadow below it. */
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  padding: 0 var(--gutter);
+  pointer-events: none;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  height: var(--nav-h);
+  padding: 0 10px 0 22px;
+  border: 1px solid rgb(19 19 19 / 0.08);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.9);
+  box-shadow: 0 18px 40px -22px rgb(19 19 19 / 0.45);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  pointer-events: auto;
+  transform: translateY(10px);
+  transition:
+    transform 0.5s var(--ease-out),
+    background-color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+}
+
+.bar[data-over-film] {
+  padding: 0;
+}
+
+.bar[data-over-film] .inner {
+  transform: none;
+  padding: 0 var(--gutter);
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: #fff;
+}
+
+.bar[data-over-film] :focus-visible {
+  outline-color: #fff;
+}
+
+.onFilm,
+.bar[data-over-film] .onPaper {
+  display: none;
+}
+
+.bar[data-over-film] .onFilm {
+  display: block;
+}
+
+.logo {
+  display: block;
+  width: 88px;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+}
+
+.links {
+  justify-self: center;
+}
+
+.links ul {
+  position: relative;
+  display: flex;
+  gap: 4px;
+}
+
+/* The yellow pill under the section being read. */
+.pill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 38px;
+  margin-top: -19px;
+  border-radius: 999px;
+  background: var(--yellow);
+  opacity: 0;
+  transition: transform 0.55s var(--ease-out), opacity 0.3s var(--ease-out);
+}
+
+.pill[data-on] {
+  opacity: 1;
+}
+
+.links a {
+  position: relative;
+  display: block;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Labels roll up to a copy of themselves on hover. */
+.roll {
+  display: block;
+  height: 1.35em;
+  overflow: hidden;
+  line-height: 1.35;
+}
+
+.roll > span {
+  display: block;
+  transition: transform 0.5s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .links a:hover .roll > span {
+    transform: translateY(-100%);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  height: 44px;
+  font-stretch: 75%;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 999px;
+  transition: background-color 0.25s var(--ease-out);
+}
+
+.lang:hover {
+  background: rgb(19 19 19 / 0.06);
+}
+
+.bar[data-over-film] .lang:hover {
+  background: rgb(255 255 255 / 0.14);
+}
+
+.menuButton,
+.sheetClose {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgb(19 19 19 / 0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+.menuButton:hover {
+  background: rgb(19 19 19 / 0.06);
+}
+
+.sheetClose {
+  display: grid;
+}
+
+.bar[data-over-film] .menuButton {
+  border-color: rgb(255 255 255 / 0.6);
+  background: rgb(19 19 19 / 0.2);
+}
+
+.menuIcon {
+  width: 22px;
+  height: 22px;
+}
+
+/* ---------- The phone menu: a black sheet, links sliding in one after another ---------- */
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 28px;
+  padding: calc(var(--nav-h) + 34px) var(--gutter) max(36px, env(safe-area-inset-bottom));
+  background: var(--ink);
+  color: #fff;
+  animation: sheet-in 0.45s var(--ease-out);
+}
+
+@keyframes sheet-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+.sheet[hidden] {
+  display: none;
+}
+
+.sheet :focus-visible {
+  outline-color: var(--yellow);
+}
+
+.sheetBar {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--nav-h) + 10px);
+  padding: 10px var(--gutter) 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.sheet .sheetClose {
+  border-color: rgb(255 255 255 / 0.5);
+  color: #fff;
+}
+
+/* The upper field: the brand's line (ETERNAL in yellow, as in the lockup), then where you are. */
+.sheetIntro {
+  display: grid;
+  gap: 12px;
+  margin-bottom: auto;
+}
+
+.sheetTagline {
+  max-width: 12ch;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.75rem, 7.6vw, 2.5rem);
+  line-height: 1.02;
+}
+
+.sheetEternal {
+  color: var(--yellow);
+}
+
+.sheetPlace {
+  font-stretch: 75%;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.62);
+}
+
+.sheet nav li {
+  animation: link-in 0.6s var(--ease-out) both;
+  animation-delay: calc(0.12s + var(--i, 0) * 0.05s);
+}
+
+@keyframes link-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.sheet nav li + li {
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.sheet nav a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.625rem, 6.6vw, 2.25rem);
+  line-height: 1.05;
+  text-decoration: none;
+}
+
+/* The logo's triangle marks each destination. */
+.sheet nav a::before {
+  content: "";
+  flex: none;
+  width: 12px;
+  height: 14px;
+  background: var(--yellow);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.sheetLang {
+  font-weight: 600;
+  text-decoration-thickness: 1.5px;
+}
+
+@media (max-width: 1100px) {
+  .links a {
+    padding: 9px 10px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .inner {
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 0 8px 0 18px;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .actions {
+    justify-self: end;
+  }
+
+  .menuButton {
+    display: grid;
+  }
+}
+
+@media (max-width: 420px) {
+  .lang {
+    display: none;
+  }
+
+  .inner {
+    padding-left: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .sheet nav li {
+    animation: none;
+  }
+
+  .pill,
+  .roll > span {
+    transition: none;
+  }
+}

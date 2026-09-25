@@ -1,0 +1,350 @@
+{
+  "meta": {
+    "title": "JOOX CARS · Renta, importación, repuestos y venta de vehículos",
+    "description": "Rente un carro que nosotros mismos importamos. JOOX CARS renta, importa desde EE. UU. y vende vehículos y repuestos desde Guápiles, Limón, con el costo completo claro desde el primer día."
+  },
+  "nav": {
+    "home": "JOOX CARS, inicio",
+    "label": "Principal",
+    "links": {
+      "rental": "Renta",
+      "import": "Importación",
+      "parts": "Repuestos",
+      "sales": "Venta",
+      "about": "Nosotros",
+      "contact": "Contacto"
+    },
+    "language": "EN",
+    "languageLabel": "View in English",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Escríbanos por WhatsApp",
+    "menuOpen": "Abrir menú",
+    "menuClose": "Cerrar menú",
+    "menu": "Menú",
+    "place": "JOOX CARS · Guápiles, Costa Rica"
+  },
+  "hero": {
+    "title": "Rente un carro que nosotros mismos importamos.",
+    "sub": "En JOOX CARS rentamos, importamos desde EE. UU. y vendemos vehículos y repuestos, con el costo completo claro desde el primer día.",
+    "primary": "Rentar un carro",
+    "secondary": "Cotizar una importación"
+  },
+  "services": {
+    "title": "Rentamos, importamos, vendemos.",
+    "items": {
+      "rental": {
+        "name": "Renta de vehículos",
+        "line": "Carros de nuestra propia flota, cada uno importado por nosotros."
+      },
+      "import": {
+        "name": "Importación desde EE. UU.",
+        "line": "Le traemos su vehículo desde subastas en EE. UU."
+      },
+      "parts": {
+        "name": "Venta de repuestos",
+        "line": "Repuestos para su vehículo. Consulte por WhatsApp."
+      },
+      "sales": {
+        "name": "Venta de vehículos",
+        "line": "Vehículos que importamos y preparamos nosotros."
+      }
+    }
+  },
+  "carousel": {
+    "prev": "Carro anterior",
+    "next": "Siguiente carro",
+    "of": "de",
+    "photo": "Foto",
+    "model": "Foto del modelo",
+    "show": "Ver",
+    "photos": "Ver fotos",
+    "adjusted": "color ajustado",
+    "pd": "dominio público",
+    "modelNote": "Foto de referencia del modelo. Las fotos del carro, en «Ver fotos»."
+  },
+  "viewer": {
+    "close": "Cerrar",
+    "prev": "Foto anterior",
+    "next": "Foto siguiente",
+    "of": "de",
+    "choose": "Elegir foto"
+  },
+  "rental": {
+    "title": "Renta de vehículos",
+    "lead": "Cada carro de la flota llegó de una subasta en EE. UU. y lo importamos nosotros. Usted ve el precio por día y lo que incluye el seguro antes de reservar.",
+    "list": "Flota de renta",
+    "specs": {
+      "year": "Año",
+      "engine": "Motor",
+      "gearbox": "Transmisión",
+      "seats": "Asientos",
+      "color": "Color"
+    },
+    "price": "[PRECIO]",
+    "perDay": "por día",
+    "reserve": "Reservar por WhatsApp",
+    "cars": [
+      {
+        "slug": "mitsubishi-outlander-sport-2020",
+        "brand": "Mitsubishi",
+        "model": "Outlander Sport",
+        "year": "2020",
+        "body": "SUV",
+        "color": "Naranja",
+        "engine": "2000 cc",
+        "gearbox": "Automática",
+        "seats": "5",
+        "ref": "Mitsubishi Outlander Sport 2020 naranja"
+      },
+      {
+        "slug": "kia-sportage-2020",
+        "brand": "Kia",
+        "model": "Sportage",
+        "year": "2020",
+        "body": "SUV",
+        "color": "Negro",
+        "engine": "2400 cc",
+        "gearbox": "Automática",
+        "seats": "5",
+        "ref": "Kia Sportage 2020 negro"
+      },
+      {
+        "slug": "mitsubishi-outlander-sport-2015",
+        "brand": "Mitsubishi",
+        "model": "Outlander Sport",
+        "year": "2015",
+        "body": "SUV",
+        "color": "Negro",
+        "engine": "2000 cc",
+        "gearbox": "Automática",
+        "seats": "5",
+        "ref": "Mitsubishi Outlander Sport 2015 negro"
+      }
+    ],
+    "whatsapp": "Hola, quiero rentar el {car}.",
+    "together": "La flota completa, en Guápiles, Pococí."
+  },
+  "import": {
+    "title": "Importación desde EE. UU.",
+    "lead": "Usted elige el vehículo y nosotros hacemos el resto, con el costo completo claro desde el primer día.",
+    "steps": [
+      {
+        "title": "Elija el vehículo",
+        "body": "Usted nos dice qué busca, o nos manda el enlace de la subasta."
+      },
+      {
+        "title": "Costo completo",
+        "body": "Le damos el costo total estimado: vehículo, envío, impuestos y trámites."
+      },
+      {
+        "title": "Compra en subasta",
+        "body": "Compramos el vehículo en la subasta en EE. UU."
+      },
+      {
+        "title": "Envío",
+        "body": "Lo enviamos a Costa Rica."
+      },
+      {
+        "title": "Aduana e inscripción",
+        "body": "Hacemos los trámites de aduana e inscripción."
+      },
+      {
+        "title": "Entrega",
+        "body": "Le entregamos su vehículo."
+      }
+    ],
+    "time": "Tiempo aproximado",
+    "timeValue": "[X semanas]",
+    "quote": "Cotizar una importación",
+    "whatsapp": "Hola, quiero cotizar la importación de un vehículo.",
+    "open": "Ver los 6 pasos",
+    "proof": {
+      "title": "Van 20 carros importados.",
+      "body": "Fotos de nuestras propias importaciones.",
+      "list": "Fotos de nuestras importaciones",
+      "prev": "Fotos anteriores",
+      "next": "Más fotos",
+      "of": "de"
+    }
+  },
+  "parts": {
+    "title": "Venta de repuestos",
+    "lead": "Díganos qué necesita y le confirmamos disponibilidad y precio por WhatsApp.",
+    "form": {
+      "make": "Marca",
+      "model": "Modelo",
+      "year": "Año",
+      "part": "Repuesto que necesita",
+      "partHint": "Por ejemplo: pastillas de freno delanteras",
+      "send": "Consultar por WhatsApp",
+      "message": "Hola, busco un repuesto."
+    },
+    "catalog": "Placeholder: el catálogo de repuestos llega pronto.",
+    "open": "Pedir un repuesto"
+  },
+  "sales": {
+    "title": "Venta de vehículos",
+    "lead": "Los importamos nosotros, los reparamos si hace falta y los preparamos para la venta. Van 12 vendidos.",
+    "list": "Vehículos en venta",
+    "ask": "Preguntar por este vehículo",
+    "more": {
+      "title": "¿No ve el que busca?",
+      "body": "Díganos qué vehículo quiere y le cotizamos la importación desde EE. UU.",
+      "link": "Cotizar una importación"
+    },
+    "specs": {
+      "year": "Año",
+      "km": "Kilometraje",
+      "gearbox": "Transmisión",
+      "drive": "Tracción",
+      "seats": "Asientos",
+      "color": "Color"
+    },
+    "price": "[PRECIO]",
+    "km": "[KM] km",
+    "cars": [
+      {
+        "slug": "jeep-wrangler-unlimited",
+        "brand": "Jeep",
+        "model": "Wrangler Unlimited",
+        "year": "[AÑO]",
+        "body": "SUV de 4 puertas",
+        "color": "Negro",
+        "gearbox": "Automática",
+        "drive": "4x4",
+        "seats": "5",
+        "ref": "Jeep Wrangler Unlimited negro"
+      }
+    ],
+    "whatsapp": "Hola, me interesa el {car}."
+  },
+  "about": {
+    "label": "Nosotros",
+    "tagline": [
+      "Driven by",
+      "eternal",
+      "purpose"
+    ],
+    "lead": "JOOX nació de una idea familiar.",
+    "story": [
+      "En 2021, después de la pandemia, mi hermano Harry Mata nos propuso iniciar un negocio de renta de vehículos. Con esfuerzo, un préstamo y muchas ganas de salir adelante, formalizamos nuestra empresa y comenzamos a trabajar en Puntarenas y Cóbano.",
+      "Con los años aprendimos que la distancia también podía limitar nuestro crecimiento y la toma de decisiones. Así nació la idea de construir nuestro propio proyecto en Guápiles, Pococí, Limón.",
+      "Al mismo tiempo descubrimos un mundo nuevo: la importación de vehículos. Y buscando soluciones para nuestros propios vehículos, comenzamos también a importar repuestos desde diferentes plataformas internacionales.",
+      "Así, poco a poco, fueron uniéndose tres caminos:"
+    ],
+    "paths": [
+      "Renta de vehículos",
+      "Importación de vehículos",
+      "Repuestos"
+    ],
+    "after": [
+      "En 2026 decidimos unir todo bajo un solo nombre: JOOX Cars.",
+      "Pero JOOX es más que carros. Es una historia de familia, aprendizaje, trabajo y visión de futuro.",
+      "Y esa visión también se vive en casa. Nuestros hijos, Joslyn y Josh, participan ayudando con el lavado de vehículos y aprendiendo desde pequeños el valor del trabajo y de administrar lo que ganan.",
+      "Porque para nosotros, emprender no solo significa construir un negocio."
+    ],
+    "close": "Significa construir un futuro juntos."
+  },
+  "reviews": {
+    "title": "Lo que dicen nuestros clientes",
+    "items": [
+      {
+        "quote": "[Reseña de un cliente de renta]",
+        "who": "[Nombre] · Renta"
+      },
+      {
+        "quote": "[Reseña de un cliente de importación]",
+        "who": "[Nombre] · Importación"
+      },
+      {
+        "quote": "[Reseña de un cliente de repuestos]",
+        "who": "[Nombre] · Repuestos"
+      }
+    ],
+    "placeholder": "Placeholder: las reseñas reales de clientes reemplazan estos ejemplos."
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "items": [
+      {
+        "q": "¿Qué necesito para rentar un carro?",
+        "a": "[Requisitos: licencia de conducir, edad mínima y depósito.]"
+      },
+      {
+        "q": "¿Qué incluye el seguro?",
+        "a": "[Detalle del seguro: coberturas, deducible y depósito.]"
+      },
+      {
+        "q": "¿Cuánto tarda una importación?",
+        "a": "Aproximadamente [X semanas], desde la compra en la subasta hasta la entrega."
+      },
+      {
+        "q": "¿Qué incluye el costo de una importación?",
+        "a": "Le damos el costo total estimado antes de comprar: vehículo, envío, impuestos y trámites."
+      },
+      {
+        "q": "¿Consiguen repuestos para mi vehículo?",
+        "a": "Díganos la marca, el modelo, el año y el repuesto, y le confirmamos disponibilidad y precio por WhatsApp."
+      },
+      {
+        "q": "¿Los vehículos en venta tienen garantía?",
+        "a": "[Detalle de la garantía de los vehículos en venta.]"
+      }
+    ],
+    "more": "¿No encuentra su respuesta?",
+    "ask": "Escribir por WhatsApp",
+    "lead": "Lo que más nos preguntan sobre renta, importación, repuestos y venta.",
+    "moreBody": "Escríbanos y le respondemos por WhatsApp."
+  },
+  "contact": {
+    "title": "Contacto",
+    "lead": "La forma más rápida de hablar con nosotros es WhatsApp.",
+    "whatsapp": "Escribir por WhatsApp",
+    "phone": "Teléfono",
+    "email": "Correo",
+    "address": "Dirección",
+    "addressValue": "Guápiles, Pococí, Limón",
+    "hours": "Horario",
+    "hoursValue": "[HORARIO]",
+    "social": "Redes",
+    "map": "Ubicación",
+    "mapPlace": "Guápiles",
+    "mapArea": "Pococí, Limón · Costa Rica",
+    "mapLink": "Ver en Google Maps"
+  },
+  "footer": {
+    "tagline": "Driven by eternal purpose",
+    "rights": "© 2026 JOOX CARS",
+    "media": "El video de portada es de muestra hasta tener la toma propia."
+  },
+  "photos": {
+    "fleet-grass": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles",
+    "fleet-row": "Los tres carros de renta, de frente",
+    "fleet-doors": "Los tres carros de renta, con las puertas abiertas",
+    "outlander-sport-2020": "Mitsubishi Outlander Sport 2020 naranja",
+    "outlander-sport-2015": "Mitsubishi Outlander Sport 2015 negro",
+    "sportage-2020": "Kia Sportage 2020 negro",
+    "wrangler-front": "De frente",
+    "wrangler-rear": "Desde atrás",
+    "wrangler-back": "Revisando por dentro",
+    "wrangler-cabin": "La cabina",
+    "wrangler-key": "Con la llave en la mano",
+    "import-lot": "Ford Raptor y F-150",
+    "import-rubicon": "Jeep Wrangler Rubicon",
+    "import-tow": "En grúa, Houston (Texas)",
+    "import-container": "En el contenedor",
+    "import-x6": "BMW X6",
+    "import-papers": "Los trámites",
+    "import-4runner": "Toyota 4Runner",
+    "import-containers": "Contenedores",
+    "import-rebel": "Pickup RAM",
+    "import-keys": "Las llaves"
+  },
+  "whatsapp": {
+    "general": "Hola, tengo una consulta.",
+    "rental": "Hola, quiero rentar un carro."
+  },
+  "fold": {
+    "close": "Ocultar"
+  }
+}

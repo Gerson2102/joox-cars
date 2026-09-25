@@ -1,0 +1,473 @@
+/* The showroom carousel. Each car sits at --off steps from the centre (0 is
+   the car on show); moving the index moves every car one step at once, so the
+   cars drive through the stage. The cars are side-profile cutouts on one canvas width (1600 px of car on
+   1760), so each is fitted to the same width, like a configurator. A step
+   takes a neighbour most of the way to the page edge: only its nearer end
+   shows, smaller and out of focus, so one car holds the eye at a time. */
+
+.carousel {
+  --car-w: min(860px, 58vw);
+  --car-h: calc(var(--car-w) * 0.42); /* the tallest canvas (the Jeep) */
+  --step: calc(50vw + var(--car-w) * 0.14);
+  --side-scale: 0.86;
+  --floor: 40px;
+  --drive: cubic-bezier(0.65, 0, 0.2, 1);
+  display: grid;
+  gap: clamp(20px, 3vw, 36px);
+  min-width: 0;
+}
+
+/* The stage bleeds to the page edges, so the neighbours are cut by the viewport. */
+.stage {
+  position: relative;
+  height: calc(var(--car-h) + var(--floor) + clamp(56px, 7vw, 120px));
+  margin-inline: calc(50% - 50vw);
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='2' cy='2' r='1.2' fill='%23131313' fill-opacity='.16'/%3E%3C/svg%3E");
+  background-size: 22px 22px;
+}
+
+/* The model's name, huge and outlined, behind the car on show. */
+.ghost {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 62%;
+  pointer-events: none;
+}
+
+.ghostWord {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(4rem, 13vw, 13rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(19 19 19 / 0.26);
+  opacity: 0;
+  transform: translate(-50%, -50%) translateX(calc(var(--rel) * -18%));
+  transition: opacity 0.5s var(--ease-out), transform 1.1s var(--drive);
+}
+
+.ghostWord[data-active] {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition-delay: 0.15s;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+}
+
+/* The car on show: full size, sharp. Its neighbours: smaller, softened and a
+   little lighter, their focus pulling in as they drive to the centre. */
+.slide {
+  --scale: 1;
+  --focus: 0px;
+  position: absolute;
+  left: 50%;
+  bottom: var(--floor);
+  width: var(--car-w);
+  transform: translateX(-50%) translateX(calc(var(--off) * var(--step))) scale(var(--scale));
+  transform-origin: 50% 100%;
+  filter: blur(var(--focus)) saturate(calc(1 - var(--focus) / 24px)) brightness(calc(1 + var(--focus) / 60px));
+  transition:
+    transform 1.1s var(--drive),
+    filter 1.1s var(--drive),
+    opacity 0.7s var(--ease-out);
+  z-index: 1;
+}
+
+.slide[data-pos="center"] {
+  z-index: 2;
+}
+
+.slide[data-pos="side"] {
+  --scale: var(--side-scale);
+  --focus: 7px;
+  cursor: pointer;
+}
+
+.slide[data-pos="away"] {
+  --scale: var(--side-scale);
+  --focus: 7px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .slide[data-pos="side"]:hover {
+    --focus: 4px;
+  }
+}
+
+.car {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* First arrival: the cars wait behind the edge they come from, then drive in.
+   Under reduced motion they are simply there. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) .carousel:not([data-arrived]) .slide {
+    transform: translateX(-50%) translateX(calc((var(--off) - 1.4) * var(--step))) scale(var(--scale));
+    opacity: 0;
+  }
+
+  :global(.js) .carousel[data-travel="left"]:not([data-arrived]) .slide {
+    transform: translateX(-50%) translateX(calc((var(--off) + 1.4) * var(--step))) scale(var(--scale));
+  }
+}
+
+.carousel[data-arrived] .slide {
+  transition:
+    transform 1.25s var(--drive),
+    filter 1.25s var(--drive),
+    opacity 0.9s var(--ease-out);
+}
+
+/* ◂ ▸ controls: ink discs with the logo's triangles, in the gaps between the car on show and its neighbours. */
+.arrow {
+  position: absolute;
+  z-index: 3;
+  bottom: calc(var(--floor) + var(--car-h) * 0.3);
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--yellow);
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-out), background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.arrow[data-side="left"] {
+  left: calc(50% - var(--car-w) / 2 - 76px);
+}
+
+.arrow[data-side="right"] {
+  right: calc(50% - var(--car-w) / 2 - 76px);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.arrow:active {
+  transform: scale(0.92);
+}
+
+.triLeft,
+.triRight {
+  display: block;
+  width: 12px;
+  height: 14px;
+  background: currentColor;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.triRight {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translateX(1px);
+}
+
+.triLeft {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  transform: translateX(-1px);
+}
+
+@media (hover: hover) {
+  .arrow:hover {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .arrow[data-side="right"]:hover .triRight {
+    transform: translateX(4px);
+  }
+
+  .arrow[data-side="left"]:hover .triLeft {
+    transform: translateX(-4px);
+  }
+}
+
+/* "Model photo": marks a car shown by a photo of its model, not the client's own. */
+.tag {
+  position: absolute;
+  left: var(--gutter);
+  top: 20px;
+  padding: 4px 10px;
+  border: 1px solid rgb(19 19 19 / 0.3);
+  border-radius: 999px;
+}
+
+/* ---------- The car on show ---------- */
+
+.info {
+  display: grid;
+  gap: 24px;
+}
+
+.info > * {
+  animation: info-in 0.7s var(--ease-out) both;
+}
+
+.info > :nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.info > :nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+@keyframes info-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.name {
+  display: grid;
+  gap: 6px;
+}
+
+/* "Kia Sportage": the make in plain weight, the model in the display voice. */
+.brand {
+  font-stretch: 100%;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.model {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.875rem, 1.1rem + 2.4vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.body {
+  color: rgb(19 19 19 / 0.8);
+}
+
+.photos {
+  margin-top: 8px;
+}
+
+.count {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.countNow {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+  line-height: 1;
+}
+
+.countOf {
+  font-weight: 600;
+  color: rgb(19 19 19 / 0.8);
+}
+
+/* Specs as the reference sets them: a label over a value, a hairline above each. */
+.specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 20px 28px;
+}
+
+.specs div {
+  display: grid;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1.5px solid rgb(19 19 19 / 0.28);
+}
+
+.specs dt {
+  font-size: var(--text-sm);
+  color: rgb(19 19 19 / 0.8);
+}
+
+.specs dd {
+  font-stretch: 125%;
+  font-weight: 700;
+  font-size: 1.1875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 24px;
+}
+
+.price {
+  font-size: var(--text-lead);
+}
+
+.price strong {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2rem);
+}
+
+.credit {
+  font-size: 0.75rem;
+  color: rgb(19 19 19 / 0.78);
+}
+
+.credit a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+/* Progress: one bar per car, the one on show long and ink; the count beside it. */
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 44px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* Each bar grows from its left end (a transform, not a width change). */
+.dot::before {
+  content: "";
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(19 19 19 / 0.28);
+  transform: scaleX(0.45);
+  transform-origin: 0 50%;
+  transition: transform 0.5s var(--ease-out), background-color 0.3s var(--ease-out);
+}
+
+.dot[data-active]::before {
+  background: var(--ink);
+  transform: none;
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Phones: the car nearly fills the width, the neighbours are slivers at the
+   edges, and the arrows sit together under the car. */
+@media (max-width: 700px) {
+  .carousel {
+    --car-w: 86vw;
+    --step: calc(50vw + var(--car-w) * 0.3);
+    --side-scale: 0.8;
+    --floor: 76px;
+  }
+
+  .carousel[data-single] {
+    --floor: 28px;
+  }
+
+  .stage {
+    height: calc(var(--car-h) + var(--floor) + 56px);
+  }
+
+  .slide[data-pos="side"],
+  .slide[data-pos="away"] {
+    --focus: 4px;
+  }
+
+  .arrow {
+    bottom: 12px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .arrow[data-side="left"] {
+    left: calc(50% - 56px);
+  }
+
+  .arrow[data-side="right"] {
+    right: calc(50% - 56px);
+  }
+
+  .tag {
+    top: 12px;
+  }
+
+  .specs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+
+  .specs div {
+    padding-top: 10px;
+  }
+
+  .specs dd {
+    font-size: 1rem;
+  }
+
+  .titleRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .buy {
+    justify-content: space-between;
+  }
+
+  .buy > a {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .ghostWord {
+    transition: opacity 0.3s linear;
+  }
+
+  .info > * {
+    animation: none;
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T23:59:00Z",
+  "title": "Design System: JOOX CARS",
+  "extensions": {
+    "colorMeta": {
+      "yellow": {
+        "role": "primary",
+        "displayName": "JOOX Yellow",
+        "canonical": "oklch(86.5% 0.177 92)",
+        "tonalRamp": ["oklch(25% 0.060 92)", "oklch(37% 0.090 92)", "oklch(49% 0.115 92)", "oklch(61% 0.140 92)", "oklch(73% 0.160 92)", "oklch(86.5% 0.177 92)", "oklch(91% 0.120 92)", "oklch(96% 0.050 92)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(18.7% 0 0)",
+        "tonalRamp": ["oklch(18.7% 0 0)", "oklch(28% 0 0)", "oklch(39% 0 0)", "oklch(50% 0 0)", "oklch(62% 0 0)", "oklch(74% 0 0)", "oklch(86% 0 0)", "oklch(95% 0 0)"]
+      },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(100% 0 0)" },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Neutral Grey",
+        "canonical": "oklch(44.6% 0 0)",
+        "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(44.6% 0 0)", "oklch(58% 0 0)", "oklch(70% 0 0)", "oklch(82% 0 0)", "oklch(94% 0 0)"]
+      },
+      "rule": { "role": "neutral", "displayName": "Rule Grey" },
+      "rule-strong": { "role": "neutral", "displayName": "Scroll Grey" },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink (on white)" },
+      "ink-soft-on-yellow": { "role": "neutral", "displayName": "Soft Ink (on yellow)" },
+      "white-soft": { "role": "neutral", "displayName": "Soft White" },
+      "white-label": { "role": "neutral", "displayName": "White Label" },
+      "line-on-white": { "role": "neutral", "displayName": "Band Line (white)" },
+      "line-on-yellow": { "role": "neutral", "displayName": "Band Line (yellow)" },
+      "line-on-black": { "role": "neutral", "displayName": "Band Line (black)" },
+      "error": { "role": "neutral", "displayName": "Error" },
+      "error-on-black": { "role": "neutral", "displayName": "Error on Black" }
+    },
+    "typographyMeta": {
+      "hero-display": { "displayName": "Hero display", "purpose": "The H1 over the film, three lines in both languages." },
+      "band-title": { "displayName": "Band title", "purpose": "Each band's H2, led by the logo triangle in the band's accent." },
+      "ghost-name": { "displayName": "Ghost name", "purpose": "The model's name, outlined in ink at 0.26, behind the car on show." },
+      "model-name": { "displayName": "Model name", "purpose": "The car on show; the make before it at normal width, 500." },
+      "display-3": { "displayName": "Display 3", "purpose": "Service names, the FAQ panel title, the import time value." },
+      "lead": { "displayName": "Lead", "purpose": "Band leads, FAQ answers, the price line; max 58ch." },
+      "body": { "displayName": "Body", "purpose": "Default text." },
+      "small": { "displayName": "Small", "purpose": "Step bodies, field labels, spec labels, italic notes." },
+      "button": { "displayName": "Button", "purpose": "The one button's label; 0.9375rem at sm, 1.125rem at lg." },
+      "nav-link": { "displayName": "Nav link", "purpose": "Header links over the scroll-spy pill." },
+      "label": { "displayName": "Label", "purpose": "Short tracked caps (uppercase) keying a value or tagging an object; never a kicker." },
+      "spec-value": { "displayName": "Spec value", "purpose": "Values in the showroom spec row, tabular figures." }
+    },
+    "shadows": [
+      { "name": "header-capsule", "value": "0 18px 40px -22px rgb(19 19 19 / 0.45)", "purpose": "The floating header capsule past the film, with backdrop-filter: saturate(1.4) blur(14px)." },
+      { "name": "car-ground", "value": "baked into the cutout WebP (scripts/media/fleet.py)", "purpose": "Each car's own ground shadow; never a CSS shadow." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Every state change and reveal." },
+      { "name": "drive", "value": "cubic-bezier(0.65, 0, 0.2, 1)", "purpose": "The showroom cars driving: 1s per move, 1.25s once arrived; the ghost name 1.1s." },
+      { "name": "drive-in", "value": "from 2.2 steps behind the edge the cars come from, at 35% in view", "purpose": "The showroom's first arrival; rental from the left, sales from the right." },
+      { "name": "curtain", "value": "clip-path inset(0 18% 0 18% round 56px) to inset(0), animation-timeline: view(), range cover 0% to cover 55vh", "purpose": "Coloured bands open from the centre as they arrive." },
+      { "name": "road-fill", "value": "scaleX(0) to 1, timeline --journey, cover 22% to cover 58%", "purpose": "The import road fills; numbers light at cover 21% + i*7%. Vertical (scaleY) on phones." },
+      { "name": "title-unmask", "value": "clip-path inset(0 0 100% 0) + translateY(0.45em), 1.1s", "purpose": "Band titles reveal upward." },
+      { "name": "rise", "value": "translateY(28px) + opacity, 0.9-1s", "purpose": "Leads and blocks." },
+      { "name": "stagger", "value": "90ms per item", "purpose": "Services and reviews lists." },
+      { "name": "loop", "value": "draw 1.6s, then a mark travels it every 9s", "purpose": "The About loop." },
+      { "name": "button-flood", "value": "clip-path circle from the capsule, 0.6s; label roll 0.55s; icon 3px 0.45s; press scale 0.97 in 0.08s", "purpose": "The one button's feedback." },
+      { "name": "nav", "value": "capsule 0.5s; scroll-spy pill 0.55s; label roll 0.5s; menu sheet clip 0.45s, links 50ms apart", "purpose": "Header feedback." },
+      { "name": "reduced-motion", "value": "prefers-reduced-motion: reduce", "purpose": "Curtain and road finished, reveals shown at once, cars cross-fade in 0.3s with no drive-in, loop drawn and still, button flood and roll instant, sheet and pill without animation, smooth scroll off." }
+    ],
+    "breakpoints": [
+      { "name": "xs", "value": "420px" },
+      { "name": "phone", "value": "700px" },
+      { "name": "hero-phone", "value": "719px" },
+      { "name": "menu", "value": "960px" },
+      { "name": "tablet", "value": "1100px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button, yellow",
+      "kind": "button",
+      "refersTo": "button-yellow",
+      "description": "The primary action on white, black and the film: a pill whose ink capsule floods it on hover while the label rolls.",
+      "html": "<a class=\"ds-btn ds-btn-yellow\" href=\"#\"><span class=\"ds-btn-label\"><span class=\"ds-btn-roll\"><span>Rent a car</span><span aria-hidden=\"true\">Rent a car</span></span></span><span class=\"ds-btn-cap\"><svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a>",
+      "css": ".ds-btn { --h: 56px; --cap: 44px; --bg: var(--yellow, #fdcd03); --fg: var(--ink, #131313); --cap-bg: var(--ink, #131313); --cap-fg: var(--yellow, #fdcd03); --border: transparent; --ring: var(--ink, #131313); position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 16px; min-height: var(--h); padding: 6px 6px 6px 26px; overflow: hidden; border: 1.5px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--fg); font-family: Archivo, 'Segoe UI', sans-serif; font-weight: 600; line-height: 1.3; text-decoration: none; white-space: nowrap; cursor: pointer; transition: color .45s cubic-bezier(.16,1,.3,1), border-color .45s cubic-bezier(.16,1,.3,1), transform .25s cubic-bezier(.16,1,.3,1); } .ds-btn::before { content: ''; position: absolute; inset: -2px; z-index: -1; background: var(--cap-bg); clip-path: circle(calc(var(--cap) / 2) at calc(100% - var(--h) / 2) 50%); transition: clip-path .6s cubic-bezier(.16,1,.3,1); } .ds-btn:hover::before { clip-path: circle(150% at calc(100% - var(--h) / 2) 50%); } .ds-btn:hover { color: var(--cap-fg); border-color: var(--cap-bg); } .ds-btn:active { transform: scale(.97); transition-duration: .08s; } .ds-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; } .ds-btn-label { display: block; height: 1.3em; overflow: hidden; } .ds-btn-roll { display: flex; flex-direction: column; transition: transform .55s cubic-bezier(.16,1,.3,1); } .ds-btn:hover .ds-btn-roll { transform: translateY(-50%); } .ds-btn-cap { display: grid; place-items: center; flex: none; width: var(--cap); height: var(--cap); border-radius: 50%; color: var(--cap-fg); } .ds-btn-icon { width: 20px; height: 20px; transition: transform .45s cubic-bezier(.16,1,.3,1); } .ds-btn:hover .ds-btn-icon { transform: translateX(3px); } .ds-btn-yellow { --bg: var(--yellow, #fdcd03); --fg: var(--ink, #131313); --cap-bg: var(--ink, #131313); --cap-fg: var(--yellow, #fdcd03); }"
+    },
+    {
+      "name": "Button, ink",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "The action on a yellow band (reserve) and the secondary action on white (import quote); the yellow capsule floods it on hover.",
+      "html": "<a class=\"ds-btn ds-btn-ink\" href=\"#\"><span class=\"ds-btn-label\"><span class=\"ds-btn-roll\"><span>Reserve on WhatsApp</span><span aria-hidden=\"true\">Reserve on WhatsApp</span></span></span><span class=\"ds-btn-cap\"><svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a>",
+      "css": ".ds-btn { --h: 56px; --cap: 44px; --border: transparent; --ring: var(--ink, #131313); position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 16px; min-height: var(--h); padding: 6px 6px 6px 26px; overflow: hidden; border: 1.5px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--fg); font-family: Archivo, 'Segoe UI', sans-serif; font-weight: 600; line-height: 1.3; text-decoration: none; white-space: nowrap; cursor: pointer; transition: color .45s cubic-bezier(.16,1,.3,1), transform .25s cubic-bezier(.16,1,.3,1); } .ds-btn::before { content: ''; position: absolute; inset: -2px; z-index: -1; background: var(--cap-bg); clip-path: circle(calc(var(--cap) / 2) at calc(100% - var(--h) / 2) 50%); transition: clip-path .6s cubic-bezier(.16,1,.3,1); } .ds-btn:hover::before { clip-path: circle(150% at calc(100% - var(--h) / 2) 50%); } .ds-btn:hover { color: var(--cap-fg); } .ds-btn:active { transform: scale(.97); transition-duration: .08s; } .ds-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; } .ds-btn-label { display: block; height: 1.3em; overflow: hidden; } .ds-btn-roll { display: flex; flex-direction: column; transition: transform .55s cubic-bezier(.16,1,.3,1); } .ds-btn:hover .ds-btn-roll { transform: translateY(-50%); } .ds-btn-cap { display: grid; place-items: center; width: var(--cap); height: var(--cap); border-radius: 50%; color: var(--cap-fg); } .ds-btn-icon { width: 20px; height: 20px; transition: transform .45s cubic-bezier(.16,1,.3,1); } .ds-btn:hover .ds-btn-icon { transform: translateX(3px); } .ds-btn-ink { --bg: var(--ink, #131313); --fg: #fff; --cap-bg: var(--yellow, #fdcd03); --cap-fg: var(--ink, #131313); }"
+    },
+    {
+      "name": "Button, ghost dark",
+      "kind": "button",
+      "refersTo": "button-ghost-dark",
+      "description": "Secondary outline action on white and yellow bands; floods ink on hover.",
+      "html": "<a class=\"ds-btn ds-btn-ghost-dark\" href=\"#\"><span class=\"ds-btn-label\"><span class=\"ds-btn-roll\"><span>Import one</span><span aria-hidden=\"true\">Import one</span></span></span><span class=\"ds-btn-cap\"><svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a>",
+      "css": ".ds-btn { --h: 56px; --cap: 44px; position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 16px; min-height: var(--h); padding: 6px 6px 6px 26px; overflow: hidden; border: 1.5px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--fg); font-family: Archivo, 'Segoe UI', sans-serif; font-weight: 600; line-height: 1.3; text-decoration: none; white-space: nowrap; cursor: pointer; transition: color .45s cubic-bezier(.16,1,.3,1), transform .25s cubic-bezier(.16,1,.3,1); } .ds-btn::before { content: ''; position: absolute; inset: -2px; z-index: -1; background: var(--cap-bg); clip-path: circle(calc(var(--cap) / 2) at calc(100% - var(--h) / 2) 50%); transition: clip-path .6s cubic-bezier(.16,1,.3,1); } .ds-btn:hover::before { clip-path: circle(150% at calc(100% - var(--h) / 2) 50%); } .ds-btn:hover { color: var(--cap-fg); } .ds-btn:active { transform: scale(.97); transition-duration: .08s; } .ds-btn:focus-visible { outline: 2px solid var(--ink, #131313); outline-offset: 3px; } .ds-btn-label { display: block; height: 1.3em; overflow: hidden; } .ds-btn-roll { display: flex; flex-direction: column; transition: transform .55s cubic-bezier(.16,1,.3,1); } .ds-btn:hover .ds-btn-roll { transform: translateY(-50%); } .ds-btn-cap { display: grid; place-items: center; width: var(--cap); height: var(--cap); border-radius: 50%; color: var(--cap-fg); } .ds-btn-icon { width: 20px; height: 20px; } .ds-btn-ghost-dark { --bg: transparent; --fg: var(--ink, #131313); --cap-bg: var(--ink, #131313); --cap-fg: #fff; --border: var(--ink, #131313); }"
+    },
+    {
+      "name": "Header capsule",
+      "kind": "nav",
+      "refersTo": "header-capsule",
+      "description": "The floating header past the film: white capsule, blur and soft shadow, a yellow pill under the section being read, labels that roll on hover.",
+      "html": "<nav class=\"ds-nav\"><strong class=\"ds-nav-logo\">JOOX</strong><ul class=\"ds-nav-links\"><li><a href=\"#\" class=\"ds-nav-on\"><span class=\"ds-nav-roll\"><span>Rental</span><span aria-hidden=\"true\">Rental</span></span></a></li><li><a href=\"#\"><span class=\"ds-nav-roll\"><span>Import</span><span aria-hidden=\"true\">Import</span></span></a></li><li><a href=\"#\"><span class=\"ds-nav-roll\"><span>Parts</span><span aria-hidden=\"true\">Parts</span></span></a></li></ul><span class=\"ds-nav-lang\">EN</span></nav>",
+      "css": ".ds-nav { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; height: 68px; padding: 0 10px 0 22px; border: 1px solid rgb(19 19 19 / .08); border-radius: 999px; background: rgb(255 255 255 / .9); box-shadow: 0 18px 40px -22px rgb(19 19 19 / .45); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); color: var(--ink, #131313); font-family: Archivo, 'Segoe UI', sans-serif; } .ds-nav-logo { font-stretch: 125%; font-weight: 800; } .ds-nav-links { justify-self: center; display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; } .ds-nav-links a { display: block; padding: 9px 14px; border-radius: 999px; font-size: .9375rem; font-weight: 600; color: inherit; text-decoration: none; transition: background-color .55s cubic-bezier(.16,1,.3,1); } .ds-nav-links a.ds-nav-on { background: var(--yellow, #fdcd03); } .ds-nav-links a:focus-visible { outline: 2px solid var(--ink, #131313); outline-offset: 3px; } .ds-nav-roll { display: block; height: 1.35em; overflow: hidden; line-height: 1.35; } .ds-nav-roll > span { display: block; transition: transform .5s cubic-bezier(.16,1,.3,1); } .ds-nav-links a:hover .ds-nav-roll > span { transform: translateY(-100%); } .ds-nav-lang { display: grid; place-items: center; min-width: 44px; height: 44px; border-radius: 999px; font-stretch: 75%; font-weight: 700; font-size: .875rem; letter-spacing: .08em; }"
+    },
+    {
+      "name": "Carousel arrow",
+      "kind": "custom",
+      "refersTo": "carousel-arrow",
+      "description": "The showroom's ◂ ▸ controls: ink discs with the logo's triangle, white on hover with the triangle nudging outward.",
+      "html": "<div class=\"ds-arrows\"><button class=\"ds-arrow ds-arrow-left\" aria-label=\"Previous\"><span class=\"ds-tri-left\"></span></button><button class=\"ds-arrow ds-arrow-right\" aria-label=\"Next\"><span class=\"ds-tri-right\"></span></button></div>",
+      "css": ".ds-arrows { display: flex; gap: 16px; padding: 24px; background: var(--yellow, #fdcd03); } .ds-arrow { display: grid; place-items: center; width: 56px; height: 56px; padding: 0; border: 0; border-radius: 50%; background: var(--ink, #131313); color: var(--yellow, #fdcd03); cursor: pointer; transition: transform .3s cubic-bezier(.16,1,.3,1), background-color .3s cubic-bezier(.16,1,.3,1), color .3s cubic-bezier(.16,1,.3,1); } .ds-arrow:hover { background: #fff; color: var(--ink, #131313); } .ds-arrow:active { transform: scale(.92); } .ds-arrow:focus-visible { outline: 2px solid var(--ink, #131313); outline-offset: 3px; } .ds-tri-left, .ds-tri-right { display: block; width: 12px; height: 14px; background: currentColor; transition: transform .35s cubic-bezier(.16,1,.3,1); } .ds-tri-right { clip-path: polygon(0 0, 100% 50%, 0 100%); } .ds-tri-left { clip-path: polygon(100% 0, 0 50%, 100% 100%); } .ds-arrow-right:hover .ds-tri-right { transform: translateX(4px); } .ds-arrow-left:hover .ds-tri-left { transform: translateX(-4px); }"
+    },
+    {
+      "name": "Band title",
+      "kind": "custom",
+      "refersTo": "band-title",
+      "description": "A band's H2 in expanded ExtraBold, led by the logo triangle in the band's accent (yellow on white and black, ink on yellow).",
+      "html": "<div class=\"ds-band\"><h2 class=\"ds-band-title\">Rent a car</h2><p class=\"ds-band-lead\">Cars JOOX imported itself, one tap to book on WhatsApp.</p></div>",
+      "css": ".ds-band { --accent: var(--ink, #131313); display: grid; gap: 18px; padding: 48px 32px; background: var(--yellow, #fdcd03); color: var(--ink, #131313); font-family: Archivo, 'Segoe UI', sans-serif; } .ds-band-title { display: flex; align-items: baseline; gap: .32em; margin: 0; font-size: clamp(2.25rem, 1.3rem + 3.4vw, 4.25rem); font-stretch: 125%; font-weight: 800; letter-spacing: -.02em; line-height: .98; } .ds-band-title::before { content: ''; flex: none; width: .34em; height: .42em; background: var(--accent); clip-path: polygon(0 0, 100% 50%, 0 100%); transform: translateY(-.04em); } .ds-band-lead { max-width: 58ch; margin: 0; font-size: clamp(1.0625rem, 1rem + .3vw, 1.25rem); line-height: 1.55; color: rgb(19 19 19 / .8); }"
+    },
+    {
+      "name": "Import step number",
+      "kind": "custom",
+      "refersTo": "step-number",
+      "description": "A step on the import road: a paper square with an ink ring that lights to ink with a yellow numeral as the road fills.",
+      "html": "<div class=\"ds-steps\"><span class=\"ds-step\">1</span><span class=\"ds-step ds-step-lit\">2</span></div>",
+      "css": ".ds-steps { display: flex; gap: 24px; padding: 24px; background: #fff; } .ds-step { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; background: #fff; color: var(--ink, #131313); box-shadow: inset 0 0 0 2px var(--ink, #131313); font-family: Archivo, 'Segoe UI', sans-serif; font-stretch: 125%; font-weight: 800; font-size: 1.125rem; font-variant-numeric: tabular-nums; transition: background-color .4s cubic-bezier(.16,1,.3,1), color .4s cubic-bezier(.16,1,.3,1); } .ds-step-lit, .ds-step:hover { background: var(--ink, #131313); color: var(--yellow, #fdcd03); }"
+    },
+    {
+      "name": "Dark text field",
+      "kind": "input",
+      "refersTo": "text-field-dark",
+      "description": "The parts request field on the black band: a dark well whose hairline turns yellow on focus.",
+      "html": "<label class=\"ds-field\">Make and model<input placeholder=\"Toyota Hilux 2016\"></label>",
+      "css": ".ds-field { display: grid; gap: 10px; padding: 24px; background: var(--ink, #131313); color: rgb(255 255 255 / .74); font-family: Archivo, 'Segoe UI', sans-serif; font-size: .875rem; font-weight: 600; } .ds-field input { height: 58px; padding: 0 18px; border: 1.5px solid rgb(255 255 255 / .18); border-radius: 14px; background: rgb(255 255 255 / .06); color: #fff; font: inherit; font-size: 1rem; font-weight: 400; caret-color: var(--yellow, #fdcd03); transition: border-color .25s cubic-bezier(.16,1,.3,1), background-color .25s cubic-bezier(.16,1,.3,1); } .ds-field input::placeholder { color: rgb(255 255 255 / .56); } .ds-field input:hover { border-color: rgb(255 255 255 / .36); } .ds-field input:focus-visible { outline: none; border-color: var(--yellow, #fdcd03); background: rgb(255 255 255 / .09); box-shadow: 0 0 0 3px rgb(253 205 3 / .28); }"
+    },
+    {
+      "name": "Question",
+      "kind": "custom",
+      "refersTo": "faq-panel",
+      "description": "A question row: a plus in a ring that fills yellow on hover and turns to a yellow cross when open.",
+      "html": "<div class=\"ds-faq\"><button class=\"ds-faq-q\" aria-expanded=\"false\">Do I need a credit card to rent?<span class=\"ds-faq-ring\"></span></button></div>",
+      "css": ".ds-faq { border-top: 3px solid var(--ink, #131313); border-bottom: 1px solid rgb(19 19 19 / .14); background: #fff; font-family: Archivo, 'Segoe UI', sans-serif; } .ds-faq-q { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; min-height: 72px; padding: 16px 0 12px; border: 0; background: none; color: var(--ink, #131313); font: inherit; font-weight: 600; font-size: clamp(1.0625rem, 1rem + .35vw, 1.3125rem); line-height: 1.3; text-align: left; cursor: pointer; } .ds-faq-q:focus-visible { outline: 2px solid var(--ink, #131313); outline-offset: 4px; } .ds-faq-ring { position: relative; flex: none; width: 44px; height: 44px; border: 1.5px solid var(--ink, #131313); border-radius: 50%; transition: background-color .35s cubic-bezier(.16,1,.3,1), border-color .35s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1); } .ds-faq-ring::before, .ds-faq-ring::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px; border-radius: 1px; background: var(--ink, #131313); } .ds-faq-ring::after { transform: rotate(90deg); } .ds-faq-q:hover .ds-faq-ring { background: var(--yellow, #fdcd03); border-color: var(--yellow, #fdcd03); } .ds-faq-q[aria-expanded='true'] .ds-faq-ring { background: var(--yellow, #fdcd03); border-color: var(--yellow, #fdcd03); transform: rotate(45deg); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Brand in Bands",
+    "overview": "Below the hero film, the homepage is the JOOX logo laid out flat: full-width bands of paper white, JOOX yellow and ink, each carrying one service, in a fixed rhythm (white, yellow, white, black, yellow, black, white, white, black, then a white footer). A band is the unit of the page; it sets its own ink, secondary ink and hairline, and everything inside reads them, so the same component is right on any ground. Rental leads, and the cars stand in a showroom on yellow, one at a time and side-on, like a manufacturer's configurator: a cutout on a dotted studio floor, the model's name huge and outlined behind it, the neighbours cut by the page edges.\n\nAir, not noise: every band has one job and generous padding, the yellow is spent in whole grounds rather than sprinkled, and the logo's own devices (the ◂ ▸ triangles that flank CARS and the OO infinity loop) are the only ornaments. Motion carries the premium feel: the cars drive in the direction they face, coloured bands open from the centre like the curtain in the hero film, the import road fills as you read it, and the one button floods from its icon capsule.\n\nArchivo carries the whole page on its width axis: expanded ExtraBold for display, normal width for reading, semi-condensed tracked caps for short labels. The system refuses the dealership grid of price-stickered thumbnails, a yellow-everything page, cards-with-icons, and gradients outside the hero film's scrims.",
+    "keyCharacteristics": [
+      "Three grounds only, as whole bands; never two yellows or two blacks in a row.",
+      "Ink on white and yellow, white on black; secondary text is the same ink or white at reduced alpha.",
+      "The showroom carousel is the focal moment: side-profile cars that drive the way they face.",
+      "One button everywhere: a pill whose icon capsule floods the button on hover while the label rolls.",
+      "Logo devices, drawn in CSS and SVG: ◂ ▸ triangles and the OO loop.",
+      "Depth twice only: the floating header capsule and each car's own ground shadow.",
+      "Bilingual ES/EN from the same components; placeholders stay bracketed."
+    ],
+    "rules": [
+      { "name": "The Three Grounds Rule", "body": "White, yellow and ink are grounds used as whole bands in the fixed rhythm; there are never two yellows or two blacks in a row. White may follow white once (reviews, then questions), parted by a hairline.", "section": "colors" },
+      { "name": "The No Grey on Yellow Rule", "body": "Secondary text is the band's own ink or white at reduced alpha. Grey (`ink-2`) appears only on white; on a yellow band short labels are overridden to ink at 0.8.", "section": "colors" },
+      { "name": "The Action Follows the Ground Rule", "body": "On white, black or the film the primary action is yellow; on a yellow band it is ink. A secondary action is ink on white (the import quote), an ink outline on light grounds, a white outline on dark ones.", "section": "colors" },
+      { "name": "The Three Widths Rule", "body": "125% for display and values that should read as the brand's voice, 100% for reading and pressing, 75% only for short tracked labels.", "section": "typography" },
+      { "name": "The Short Labels Rule", "body": "Tracked caps are for a few words that key a value or tag an object. They never sit above a heading as a kicker; the band title's only lead-in is the logo triangle.", "section": "typography" },
+      { "name": "The Two Depths Rule", "body": "No other surface casts a shadow. The dark field's focus glow (`0 0 0 3px` yellow at 0.28) and the import numbers' 2px inset ring are rings, not elevation.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** build every section as a full-width band on one ground, keeping the rhythm with no two yellows or two blacks in a row.",
+      "**Do** read the band's own ink, secondary ink and hairline inside a band, so a component works on any ground.",
+      "**Do** make the action yellow on white, black and the film, and ink on a yellow band.",
+      "**Do** lead band titles with the logo triangle in the band's accent, and use ◂ ▸ for direction and controls.",
+      "**Do** use the one button (pill, icon capsule, flood, label roll) for every action, choosing the variant by ground.",
+      "**Do** show cars as side-profile cutouts on the dotted floor, driving the way they face, with price and mileage bracketed until the client supplies them.",
+      "**Do** keep depth to the header capsule and the cars' baked ground shadows.",
+      "**Do** give every motion a finished state for reduced motion and for browsers without scroll timelines."
+    ],
+    "donts": [
+      "**Don't** set grey text on yellow; secondary text on yellow is ink at 0.8.",
+      "**Don't** put two yellow or two black bands next to each other, or tint a band with any fourth colour.",
+      "**Don't** use gradients outside the hero film's scrims, or shadows beyond the two depths.",
+      "**Don't** build cards-with-icons or a price-stickered thumbnail grid; cars stand one at a time in the showroom.",
+      "**Don't** put a tracked label above a heading as a kicker.",
+      "**Don't** invent numbers, prices, reviews or counts; leave the bracketed placeholder."
+    ]
+  }
+}

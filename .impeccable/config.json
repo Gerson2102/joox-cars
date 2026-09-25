@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/variants/V2Forest.tsx"
+        ],
+        "createdAt": "2026-09-24T20:21:56.997Z",
+        "reason": "Claude: src and srcSet come from next/image getImageProps spread inside <picture> (Next 16 art-direction pattern); the image renders"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/site/HeroStage.tsx"
+        ],
+        "createdAt": "2026-09-24T23:51:23.018Z",
+        "reason": "Claude: src and srcSet come from next/image getImageProps spread inside <picture> (Next 16 art-direction pattern); the image renders"
+      }
+    ]
+  }
+}

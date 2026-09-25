@@ -1,0 +1,176 @@
+/* The site's button: a pill with an icon capsule at its end. On hover the
+   capsule's colour flows out from the icon across the whole button (a circular
+   clip growing from the capsule), the label rolls up to a copy of itself in
+   the capsule's ink, and the icon nudges forward. Press squeezes it. */
+
+.btn {
+  --h: 56px;
+  --cap: 44px;
+  --bg: var(--yellow);
+  --fg: var(--ink);
+  --cap-bg: var(--ink);
+  --cap-fg: var(--yellow);
+  --ring: var(--ink);
+  --border: transparent;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  justify-self: start;
+  min-height: var(--h);
+  padding: calc((var(--h) - var(--cap)) / 2);
+  padding-left: 26px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.45s var(--ease-out), border-color 0.45s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+/* The flood: the capsule's colour, clipped to the capsule at rest. */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  background: var(--cap-bg);
+  clip-path: circle(calc(var(--cap) / 2) at calc(100% - var(--h) / 2) 50%);
+  transition: clip-path 0.6s var(--ease-out);
+}
+
+.btn:hover::before {
+  clip-path: circle(150% at calc(100% - var(--h) / 2) 50%);
+}
+
+.btn:hover {
+  color: var(--cap-fg);
+  border-color: var(--cap-bg);
+}
+
+.btn:active {
+  transform: scale(0.97);
+  transition-duration: 0.08s;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+.label {
+  display: block;
+  height: 1.3em;
+  overflow: hidden;
+}
+
+.roll {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.55s var(--ease-out);
+}
+
+.btn:hover .roll {
+  transform: translateY(-50%);
+}
+
+.cap {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--cap);
+  height: var(--cap);
+  border-radius: 50%;
+  color: var(--cap-fg);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.btn:hover .icon {
+  transform: translateX(3px);
+}
+
+/* ---------- Variants: one per ground ----------
+   The capsule's colour is the colour the button floods on hover, so it must
+   stand out from the ground: a ground can set --yellow-flood or --ink-flood
+   (bands.module.css). On black the yellow button floods white, not ink; on
+   yellow the ink button floods white, not yellow. Elsewhere both keep their own. */
+
+.yellow {
+  --bg: var(--yellow);
+  --fg: var(--ink);
+  --cap-bg: var(--yellow-flood, var(--ink));
+  --cap-fg: var(--yellow-flood-fg, var(--yellow));
+}
+
+.ink {
+  --bg: var(--ink);
+  --fg: #fff;
+  --cap-bg: var(--ink-flood, var(--yellow));
+  --cap-fg: var(--ink);
+}
+
+.white {
+  --bg: #fff;
+  --fg: var(--ink);
+  --cap-bg: var(--yellow);
+  --cap-fg: var(--ink);
+  --ring: #fff;
+}
+
+/* Outline on dark grounds (the film, black bands). */
+.ghostLight {
+  --bg: rgb(19 19 19 / 0.18);
+  --fg: #fff;
+  --cap-bg: #fff;
+  --cap-fg: var(--ink);
+  --border: rgb(255 255 255 / 0.62);
+  --ring: #fff;
+}
+
+/* ---------- Sizes ---------- */
+
+.sm {
+  --h: 44px;
+  --cap: 34px;
+  gap: 10px;
+  padding-left: 18px;
+  font-size: 0.9375rem;
+}
+
+.sm .icon {
+  width: 17px;
+  height: 17px;
+}
+
+.lg {
+  --h: 64px;
+  --cap: 50px;
+  padding-left: 30px;
+  font-size: 1.125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::before,
+  .roll,
+  .icon {
+    transition: none;
+  }
+
+  .btn:hover .roll,
+  .btn:hover .icon {
+    transform: none;
+  }
+}

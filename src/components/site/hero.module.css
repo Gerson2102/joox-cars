@@ -1,0 +1,213 @@
+/* The hero stage: the JOOX film full-bleed under the floating header. The copy
+   takes the dark canopy top-left; the lower half is the stage for the car and
+   the word. Brand: Archivo display in white, the yellow primary action. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  height: 100svh;
+  min-height: 600px;
+  overflow: hidden;
+  background: var(--ink);
+  color: #fff;
+}
+
+.back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* A filter no eye can see, so the browser always draws the film itself. Without it Chrome on
+     Windows hands a still page's film to the graphics card's video overlay, which re-grades it
+     (some GPUs "enhance" video there), and takes it back while the page scrolls: the film
+     blinked between two brightnesses as scrolling began. */
+  filter: brightness(1.0001);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+video.media {
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+video.media[data-status="playing"],
+video.media[data-status="paused"] {
+  opacity: 1;
+}
+
+/* Scrims, not boxes, and only where type sits: under the header and the canopy
+   behind the copy. The rest of the film is left as it was shot. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgb(12 16 14 / 0.55) 0%, rgb(12 16 14 / 0) 16%),
+    radial-gradient(ellipse 78% 84% at 0% 0%, rgb(12 16 14 / 0.84) 0%, rgb(12 16 14 / 0.5) 45%, rgb(12 16 14 / 0) 100%);
+}
+
+/* ---------- Copy ---------- */
+
+.copy {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--nav-h) + clamp(28px, 7svh, 84px));
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Three lines in both languages ("Rente un carro que" is 11.4em). */
+.title {
+  max-width: 11.5em;
+  font-size: var(--display-1);
+  color: #fff;
+}
+
+.sub {
+  max-width: 38ch;
+  margin-top: clamp(14px, 2svh, 22px);
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.86);
+  text-wrap: pretty;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(20px, 3.2svh, 32px);
+}
+
+/* ---------- Entrance: the copy rises in once, then stays still ---------- */
+
+.copy > * {
+  animation: rise 1s var(--ease-out) both;
+}
+
+.copy > :nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.copy > :nth-child(3) {
+  animation-delay: 0.22s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* ---------- Short desktops ---------- */
+
+@media (min-width: 720px) and (max-height: 800px) {
+  .copy {
+    top: calc(var(--nav-h) + clamp(20px, 4svh, 40px));
+  }
+
+  .title {
+    font-size: clamp(2rem, 6.6svh, 3.25rem);
+  }
+
+  .sub {
+    margin-top: 12px;
+  }
+
+  .ctas {
+    margin-top: 20px;
+  }
+}
+
+/* ---------- Phones: the film is a band over the top, the copy sits on ink ---------- */
+
+@media (max-width: 719px), (max-aspect-ratio: 4/5) {
+  .media {
+    object-position: 50% 72%;
+  }
+}
+
+@media (max-width: 719px) {
+  .back {
+    bottom: 44%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent);
+    mask-image: linear-gradient(to bottom, #000 80%, transparent);
+  }
+
+  .scrim {
+    background: linear-gradient(to bottom, rgb(12 16 14 / 0.5) 0%, rgb(12 16 14 / 0) 18%);
+  }
+
+  .copy {
+    top: auto;
+    bottom: calc(max(16px, env(safe-area-inset-bottom)) + 28px);
+  }
+
+  .title {
+    font-size: clamp(1.75rem, 7.4vw, 2.5rem);
+  }
+
+  .sub {
+    max-width: 34ch;
+    font-size: 1rem;
+  }
+
+  .ctas {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ctas .cta {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 719px) and (max-height: 740px) {
+  /* A shorter band, so the word keeps clear air above the headline. */
+  .back {
+    bottom: 50%;
+  }
+
+  .copy {
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + 24px);
+  }
+
+  .title {
+    font-size: clamp(1.625rem, 6.8vw, 2rem);
+  }
+
+  .sub {
+    margin-top: 10px;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .ctas {
+    margin-top: 16px;
+    gap: 8px;
+  }
+
+  .ctas .cta {
+    --h: 50px;
+    --cap: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy > * {
+    animation: none;
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "title": "Choose the visual world for the JOOX CARS light site",
+  "question": "The roll assigned Road Atlas. Keep it, take an alternate, or re-roll. Every option keeps the JOOX film hero and the logo's yellow and black on a light page.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Road Atlas",
+      "kicker": "THE ROLL",
+      "lineage": "Costa Rican road atlases: numbered routes, contour tints, map legends",
+      "thesis": "The homepage is an atlas page: each service is a stop, and one yellow route line carries you from US auction to Costa Rican road.",
+      "palette": [
+        "#FFFFFF",
+        "#131313",
+        "#FDCD03",
+        "#DDE6D8",
+        "#5F6A63"
+      ],
+      "materials": [
+        "route line and contour tints",
+        "the JOOX film as a map plate"
+      ],
+      "viewport": "The JOOX film full-width as the atlas plate with route-number captions; below it the yellow line leaves the frame and threads rental, import, parts and sales as map stops, rental first.",
+      "risk": "Maps can drift into illustration; the line must stay a route and a data graphic, never drawn scenery.",
+      "raised": [
+        {
+          "from": "challenger-civic-prospectus",
+          "raise": "All the yellow is spent on one continuous route line and the primary button; everything else is white, ink and map tint."
+        },
+        {
+          "from": "challenger-rebel-menu",
+          "raise": "The four service stops are big thumb-first tap targets held on a strict hidden grid."
+        },
+        {
+          "from": "challenger-akari",
+          "raise": "Each stop stays folded flat until opened, then unfolds its prices, steps and WhatsApp action."
+        },
+        {
+          "from": "challenger-teletext",
+          "raise": "One graticule grid rules every section; phones scale it, never break it."
+        },
+        {
+          "from": "challenger-crt-arcade",
+          "raise": "Palette law: each colour has one job, and yellow only ever means route or action."
+        }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Road Signage",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Costa Rican MOPT road signs: yellow warning diamonds, black chevrons, white route shields",
+      "thesis": "JOOX's yellow and black are the colours of the road itself, so the site speaks in sign panels.",
+      "palette": [
+        "#FFFFFF",
+        "#131313",
+        "#FDCD03",
+        "#E8E9E5"
+      ],
+      "materials": [
+        "retroreflective sign panels",
+        "chevron curve markers"
+      ],
+      "viewport": "A white page with the JOOX film framed like a road-side board; the four services as sign panels with plain instructions, rental first.",
+      "risk": "The most familiar route for a yellow-and-black car brand, and it can tip into construction-zone kitsch."
+    },
+    {
+      "id": "challenger-provenance",
+      "label": "Provenance Ribbon",
+      "verdict": "competitive",
+      "lineage": "museum provenance records: one object's custody traced through time",
+      "thesis": "Each car's life as one continuous line: US auction lot, shipping, customs, the JOOX road.",
+      "palette": [
+        "#FFFFFF",
+        "#131313",
+        "#FDCD03",
+        "#A9A49B"
+      ],
+      "materials": [
+        "custody line",
+        "dated stamps"
+      ],
+      "viewport": "The film, then one car's documented journey as a ribbon of dated stops, known steps solid and pending ones in hairline.",
+      "case": "Fuses cleanly with import transparency and the fleet as proof, but loses on a rental-first lead, where tourists want a car, not a dossier.",
+      "risk": "Reads like paperwork if the ribbon stops feeling alive.",
+      "hero": "https://impeccable.style/worlds/cards/exhibition-museum-curation-provenance-ribbon-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/exhibition-museum-curation-provenance-ribbon.webp"
+    },
+    {
+      "id": "challenger-civic-prospectus",
+      "label": "Civic Prospectus",
+      "verdict": "declined",
+      "lineage": "late-modern corporate prospectuses",
+      "thesis": "One rendered ribbon carries all the colour across a white prospectus.",
+      "palette": [
+        "#F7F7FA",
+        "#1B1547",
+        "#6B5CE7",
+        "#7FD8D0"
+      ],
+      "materials": [
+        "rendered silk ribbon",
+        "hairline rules"
+      ],
+      "viewport": "Headline left, ribbon bleeding right, a row of partner seals below.",
+      "case": "Fuses into the stiff corporate look you ruled out.",
+      "kept": "Total commitment of colour to one continuous element.",
+      "risk": "Corporate by construction.",
+      "hero": "https://impeccable.style/worlds/cards/civic-bureau-prospectus-late-modern-hero.webp"
+    },
+    {
+      "id": "challenger-rebel-menu",
+      "label": "Rebel Menu",
+      "verdict": "declined",
+      "lineage": "stylised game menus in torn paper",
+      "thesis": "Every choice is a torn shard slammed on a red wall.",
+      "palette": [
+        "#D8161B",
+        "#111111",
+        "#FFFFFF"
+      ],
+      "materials": [
+        "torn paper",
+        "halftone"
+      ],
+      "viewport": "A full-frame red splash with the four services as tilted cutouts.",
+      "case": "Fuses into the cheap or loud look you ruled out.",
+      "kept": "Thumb-first choices on a hidden grid.",
+      "risk": "Loud by design.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-rebel-menu-interface-hero.webp"
+    },
+    {
+      "id": "challenger-akari",
+      "label": "Akari Workshop",
+      "verdict": "declined",
+      "lineage": "paper lantern workshops",
+      "thesis": "Services as paper lanterns that light up when opened.",
+      "palette": [
+        "#F3ECDD",
+        "#B8925A",
+        "#2B2B2B",
+        "#D6452B"
+      ],
+      "materials": [
+        "washi paper",
+        "bamboo ribs"
+      ],
+      "viewport": "Glowing folded volumes in a dim room.",
+      "case": "Fuses weakly: nothing in a car brand's world is paper and lamplight.",
+      "kept": "Details stay folded flat until you open them.",
+      "risk": "Warm and soft where JOOX is bold.",
+      "hero": "https://impeccable.style/worlds/cards/paper-folds-pleats-deployable-akari-light-sculpture-hero.webp"
+    },
+    {
+      "id": "challenger-teletext",
+      "label": "Teletext Service",
+      "verdict": "declined",
+      "lineage": "broadcast teletext magazines",
+      "thesis": "The site as numbered teletext pages.",
+      "palette": [
+        "#000000",
+        "#FFFF00",
+        "#00FFFF",
+        "#FFFFFF"
+      ],
+      "materials": [
+        "block mosaic",
+        "bitmap type"
+      ],
+      "viewport": "An index page with each service on its own numbered page.",
+      "case": "Fuses as retro novelty on black, against a light brief.",
+      "kept": "One sacred grid that scales, never breaks.",
+      "risk": "Dark and retro.",
+      "hero": "https://impeccable.style/worlds/cards/broadcast-programming-teletext-service-hero.webp"
+    },
+    {
+      "id": "challenger-crt-arcade",
+      "label": "Arcade Cabinet",
+      "verdict": "declined",
+      "lineage": "pixel-art arcade screens",
+      "thesis": "A 240-line arcade stage with real glow.",
+      "palette": [
+        "#000000",
+        "#FFD700",
+        "#FF3B3B",
+        "#3BA7FF"
+      ],
+      "materials": [
+        "pixels",
+        "scanlines"
+      ],
+      "viewport": "A pixel car drives across a scanline screen.",
+      "case": "Fuses into a game, not a rental you trust.",
+      "kept": "Palette law: each colour has one job.",
+      "risk": "Toy-like.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow-hero.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": false
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A clean, light car-rental site, executed with full craft.",
+    "palette": [
+      "#FFFFFF",
+      "#131313",
+      "#FDCD03",
+      "#F2F2F2"
+    ],
+    "materials": [
+      "product photography",
+      "booking bar"
+    ],
+    "viewport": "A hero photo with a pickup/return date bar, then a grid of fleet cards with daily prices and a services row.",
+    "risk": "Looks like every rental site, closest to the dealership feel you want to avoid."
+  },
+  "steer": true,
+  "roll": {
+    "key": "e1392950",
+    "mode": "persuade",
+    "scope": "direction",
+    "source": "api",
+    "approvedPool": "c3b204a1eed6",
+    "note": "First run came back degraded; rerun from the same key with --candidate-count 7 returned source: api. The user chose option 'assigned' (Road Atlas)."
+  }
+}

@@ -1,0 +1,273 @@
+/* The photo viewer: the client's real photos, full screen on ink. On black the
+   action is yellow, so the arrows are yellow discs with ink triangles. */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--ink);
+  color: #fff;
+  overscroll-behavior: contain;
+}
+
+.viewer::backdrop {
+  background: var(--ink);
+}
+
+.viewer[open] {
+  animation: viewer-in 0.35s var(--ease-out);
+}
+
+@keyframes viewer-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.viewer :focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.frame {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(12px, 2vw, 20px);
+  height: 100%;
+  padding: max(14px, env(safe-area-inset-top)) var(--gutter) max(18px, env(safe-area-inset-bottom));
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.title {
+  min-width: 0;
+  overflow: hidden;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  margin-left: auto;
+  color: rgb(255 255 255 / 0.74);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1.5px solid rgb(255 255 255 / 0.4);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.closeIcon {
+  width: 22px;
+  height: 22px;
+}
+
+@media (hover: hover) {
+  .close:hover {
+    border-color: var(--yellow);
+    background: var(--yellow);
+    color: var(--ink);
+  }
+}
+
+/* ---------- The photo on show ---------- */
+
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+  min-height: 0;
+  margin: 0;
+}
+
+.shot {
+  position: relative;
+  min-height: 0;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.img {
+  object-fit: contain;
+  animation: shot-in 0.45s var(--ease-out);
+}
+
+@keyframes shot-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+.caption {
+  justify-self: center;
+  max-width: var(--measure);
+  color: rgb(255 255 255 / 0.74);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.arrow {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color 0.3s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.arrow[data-side="left"] {
+  left: 0;
+}
+
+.arrow[data-side="right"] {
+  right: 0;
+}
+
+.arrow:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.triLeft,
+.triRight {
+  display: block;
+  width: 12px;
+  height: 14px;
+  background: currentColor;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.triRight {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translateX(1px);
+}
+
+.triLeft {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  transform: translateX(-1px);
+}
+
+@media (hover: hover) {
+  .arrow:hover {
+    background: #fff;
+  }
+
+  .arrow[data-side="right"]:hover .triRight {
+    transform: translateX(4px);
+  }
+
+  .arrow[data-side="left"]:hover .triLeft {
+    transform: translateX(-4px);
+  }
+}
+
+/* ---------- The whole set ---------- */
+
+.thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.3) transparent;
+}
+
+.thumb {
+  display: block;
+  flex: none;
+  height: 64px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.06);
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.thumb[aria-current] {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--ink), 0 0 0 4px var(--yellow);
+}
+
+@media (hover: hover) {
+  .thumb:hover {
+    opacity: 1;
+  }
+}
+
+.thumbImg {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Phones: smaller discs over the photo's edges; swiping does the same. */
+@media (max-width: 700px) {
+  .arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .arrow[data-side="left"] {
+    left: -4px;
+  }
+
+  .arrow[data-side="right"] {
+    right: -4px;
+  }
+
+  .thumbs {
+    justify-content: flex-start;
+  }
+
+  .thumb {
+    height: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer[open],
+  .img {
+    animation: none;
+  }
+}

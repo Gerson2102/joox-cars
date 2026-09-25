@@ -1,0 +1,290 @@
+/* The import strip: the client's own photos at one height, their widths from
+   their own proportions, bleeding off the page edges like the showroom stage.
+   By default a strip you swipe; with the script ([data-scrub]) the page holds
+   it in view while scrolling carries it sideways (ProofStrip.tsx sets the
+   runway's height and the track's position). */
+
+.proof {
+  --h: clamp(300px, 30vw, 420px);
+  --edge: max(var(--gutter), calc(50vw - 620px)); /* the content column's left edge */
+  position: relative;
+  min-width: 0;
+  padding-top: clamp(36px, 4.5vw, 64px);
+  border-top: 1px solid var(--line);
+}
+
+.frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* the strip is wider than the page; the column is not */
+  gap: 24px;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.text {
+  display: grid;
+  gap: 8px;
+}
+
+.title {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.1;
+}
+
+.body {
+  max-width: 46ch;
+  color: var(--fg-2);
+}
+
+/* ---------- Paging (the plain strip only) ---------- */
+
+.nav {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--yellow);
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-out), background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.arrow:active {
+  transform: scale(0.92);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.triLeft,
+.triRight {
+  display: block;
+  width: 11px;
+  height: 13px;
+  background: currentColor;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.triRight {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translateX(1px);
+}
+
+.triLeft {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  transform: translateX(-1px);
+}
+
+@media (hover: hover) {
+  .arrow:hover {
+    background: var(--yellow);
+    color: var(--ink);
+  }
+
+  .arrow:hover .triRight {
+    transform: translateX(3px);
+  }
+
+  .arrow:hover .triLeft {
+    transform: translateX(-3px);
+  }
+}
+
+/* The count and the line: only while scrolling carries the strip. */
+.count,
+.progress {
+  display: none;
+}
+
+.count {
+  align-items: baseline;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.countNow {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1;
+}
+
+.countOf {
+  font-weight: 600;
+  color: var(--fg-2);
+}
+
+.progress {
+  position: relative;
+  height: 2px;
+  background: var(--line);
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ---------- The strip ---------- */
+
+.window {
+  min-width: 0;
+  margin-inline: calc(50% - 50vw);
+}
+
+.strip {
+  display: flex;
+  gap: 14px;
+  padding: 4px var(--edge) 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--edge);
+  scrollbar-width: thin;
+  scrollbar-color: rgb(19 19 19 / 0.28) transparent;
+}
+
+.strip > li {
+  display: grid;
+  flex: none;
+  gap: 10px;
+  width: calc(var(--h) * var(--ratio));
+  scroll-snap-align: start;
+}
+
+.shot {
+  display: block;
+  width: 100%;
+  height: var(--h);
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 14px;
+  background: var(--rule);
+  cursor: zoom-in;
+}
+
+.shot:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .shot:hover .img {
+    transform: scale(1.035);
+  }
+}
+
+.caption {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Carried by the scroll ---------- */
+
+.proof[data-scrub] {
+  --h: clamp(280px, min(30vw, 50svh), 460px);
+}
+
+.proof[data-scrub] .frame {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  align-content: center;
+  gap: clamp(20px, 3.2svh, 32px);
+  padding-top: calc(var(--nav-h) + 12px);
+}
+
+.proof[data-scrub] .nav {
+  display: none;
+}
+
+.proof[data-scrub] .count {
+  display: flex;
+}
+
+.proof[data-scrub] .progress {
+  display: block;
+}
+
+.proof[data-scrub] .window {
+  overflow: clip; /* clip, not hidden: focus can never scroll it out of step */
+}
+
+.proof[data-scrub] .strip {
+  width: max-content;
+  overflow: visible;
+  scroll-snap-type: none;
+  will-change: transform;
+}
+
+/* Each photo drifts against the travel inside its frame (--shift runs about -1 to 1 across the screen). */
+.proof[data-scrub] .img {
+  transform: translate3d(calc(var(--shift, 0) * -7%), 0, 0) scale(1.16);
+  transition: none;
+}
+
+.proof[data-scrub] .shot {
+  transition: filter 0.4s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .proof[data-scrub] .shot:hover {
+    filter: brightness(1.06);
+  }
+}
+
+@media (max-width: 700px) {
+  .proof {
+    --h: 300px;
+  }
+
+  .proof[data-scrub] {
+    --h: min(300px, 46svh);
+  }
+
+  .strip {
+    gap: 10px;
+  }
+
+  .nav {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img {
+    transition: none;
+  }
+}

@@ -1,0 +1,1039 @@
+/* ---------- Bands: the brand's three grounds, one job each ----------
+   White, JOOX yellow and ink, as whole-width bands in a fixed rhythm. Each band
+   sets its own ink, secondary ink and hairline; everything inside reads them,
+   so a component looks right on any ground. */
+
+.band {
+  --fg: var(--ink);
+  --fg-2: rgb(19 19 19 / 0.74);
+  --line: rgb(19 19 19 / 0.14);
+  --accent: var(--yellow);
+  --error: #b3261e;
+  position: relative;
+  padding: clamp(80px, 11vw, 160px) var(--gutter);
+  background: var(--bg, var(--paper));
+  color: var(--fg);
+}
+
+.white {
+  --bg: var(--paper);
+}
+
+.yellow {
+  --bg: var(--yellow);
+  --fg-2: rgb(19 19 19 / 0.8);
+  --line: rgb(19 19 19 / 0.22);
+  --accent: var(--ink);
+  --ink-flood: #fff; /* an ink button floods white here: yellow would vanish into the band */
+}
+
+.black,
+.faqPanel {
+  --yellow-flood: #fff; /* a yellow button floods white here: ink would vanish into the band */
+  --yellow-flood-fg: var(--ink);
+}
+
+.black {
+  --bg: var(--ink);
+  --fg: #fff;
+  --fg-2: rgb(255 255 255 / 0.74);
+  --line: rgb(255 255 255 / 0.16);
+  --error: #ffb4a9;
+}
+
+.black :focus-visible {
+  outline-color: var(--yellow);
+}
+
+/* Short labels take the band's secondary ink. */
+.yellow :global(.map-label) {
+  color: rgb(19 19 19 / 0.8);
+}
+
+.black :global(.map-label) {
+  color: rgb(255 255 255 / 0.62);
+}
+
+/* The curtain: a coloured band opens from its centre outward as it arrives,
+   like the JOOX word parting in the hero film. Scroll-linked where supported;
+   elsewhere, and under reduced motion, the band is simply open. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .curtain {
+      animation: curtain linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 55vh;
+    }
+  }
+}
+
+@keyframes curtain {
+  from {
+    clip-path: inset(0 18% 0 18% round 56px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0);
+  }
+}
+
+/* White follows white only once (reviews, then questions): a hairline parts them. */
+.continues {
+  padding-top: 0;
+}
+
+.continues .inner {
+  padding-top: clamp(64px, 8vw, 120px);
+  border-top: 1px solid var(--line);
+}
+
+.inner {
+  display: grid;
+  gap: clamp(36px, 4.5vw, 64px);
+  max-width: 1240px;
+  margin: 0 auto;
+  min-width: 0;
+}
+
+.head {
+  display: grid;
+  gap: 18px;
+  max-width: 920px;
+}
+
+.headWide {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  align-items: end;
+  column-gap: clamp(32px, 5vw, 80px);
+  max-width: none;
+}
+
+.headWide .lead {
+  justify-self: end;
+}
+
+.showroomBand {
+  padding-top: clamp(64px, 7vw, 104px);
+}
+
+/* The logo's triangle leads each band title (a mark, not a kicker). */
+.title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.32em;
+  max-width: 15em;
+  font-size: var(--display-2);
+}
+
+.title::before {
+  content: "";
+  flex: none;
+  width: 0.34em;
+  height: 0.42em;
+  background: var(--accent);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translateY(-0.04em);
+}
+
+.lead {
+  max-width: var(--measure);
+  font-size: var(--text-lead);
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.note {
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--fg-2);
+}
+
+/* The logo's ◂ ▸, drawn. */
+.triRight {
+  display: block;
+  width: 10px;
+  height: 12px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* ---------- Services: the four at a glance ---------- */
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 3px solid var(--fg);
+}
+
+.services > li {
+  transition: opacity 0.8s var(--ease-out), transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.service {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  height: 100%;
+  min-height: 230px;
+  padding: 28px 28px 80px;
+  text-decoration: none;
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* Hover: the tile floods yellow from the ground up. */
+.service::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--yellow);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  transition: transform 0.55s var(--ease-out);
+}
+
+.services li:last-child .service {
+  border-right: 0;
+}
+
+.serviceName {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.08;
+}
+
+.serviceLine {
+  max-width: 28ch;
+  color: var(--fg-2);
+}
+
+.serviceGo {
+  position: absolute;
+  left: 28px;
+  bottom: 26px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--yellow);
+  transition: transform 0.5s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .service:hover::before {
+    transform: scaleY(1);
+  }
+
+  .service:hover .serviceGo {
+    transform: translateX(8px);
+  }
+}
+
+.service:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---------- Rental and sales: the showroom band ---------- */
+
+.showroom {
+  display: grid;
+  gap: 28px;
+}
+
+/* The whole rental fleet together at home: the client's own photo, wide. */
+.together {
+  display: grid;
+  gap: 12px;
+  margin: clamp(12px, 2vw, 28px) 0 0;
+}
+
+.togetherFrame {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgb(19 19 19 / 0.12);
+}
+
+.togetherImg {
+  object-fit: cover;
+  object-position: 50% 44%;
+}
+
+.salesMore {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  padding-top: 28px;
+  border-top: 1.5px solid var(--line);
+}
+
+.salesMoreText {
+  display: grid;
+  gap: 6px;
+}
+
+.salesMoreTitle {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.1;
+}
+
+.salesMoreBody {
+  max-width: 46ch;
+  color: var(--fg-2);
+}
+
+/* ---------- Import: the journey, left to right ---------- */
+
+.journey {
+  --progress: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* The road between the numbers: a pale track, filled in ink step by step, in a loop (Journey.tsx). */
+.road {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  right: 10px;
+  height: 2px;
+  background: var(--line);
+}
+
+.roadFill {
+  position: absolute;
+  inset: 0;
+  background: var(--fg);
+  transform: scaleX(var(--progress));
+  transform-origin: 0 50%;
+  transition: transform 1s cubic-bezier(0.65, 0, 0.2, 1);
+}
+
+.road::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  width: 12px;
+  height: 14px;
+  background: var(--fg);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+/* Unlit: a paper square with an ink ring. Lit: ink with a yellow numeral. The
+   step the road has just reached also wears a yellow ring outside it. */
+.stepNum {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--ink);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.45s var(--ease-out), color 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+}
+
+.step[data-lit] .stepNum {
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.step[data-current] .stepNum {
+  box-shadow: inset 0 0 0 2px var(--ink), 0 0 0 3px var(--paper), 0 0 0 5px var(--yellow);
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roadFill,
+  .stepNum {
+    transition: none;
+  }
+}
+
+.stepTitle {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}
+
+.stepBody {
+  font-size: var(--text-sm);
+  color: var(--fg-2);
+}
+
+.importFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.time {
+  display: grid;
+  gap: 4px;
+}
+
+.timeValue {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+}
+
+/* ---------- Parts: title left, the request right ---------- */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(36px, 5vw, 88px);
+  align-items: start;
+}
+
+.splitAside {
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 10px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+/* Fields on the black band: dark wells with a hairline that lights on focus. */
+.field input {
+  width: 100%;
+  min-width: 0;
+  height: 58px;
+  padding: 0 18px;
+  border: 1.5px solid rgb(255 255 255 / 0.18);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.06);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  caret-color: var(--yellow);
+  transition: border-color 0.25s var(--ease-out), background-color 0.25s var(--ease-out);
+}
+
+.field input::placeholder {
+  color: rgb(255 255 255 / 0.56);
+}
+
+.field input:hover {
+  border-color: rgb(255 255 255 / 0.36);
+}
+
+.field input:focus-visible {
+  outline: none;
+  border-color: var(--yellow);
+  background: rgb(255 255 255 / 0.09);
+  box-shadow: 0 0 0 3px rgb(253 205 3 / 0.28);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.fieldError {
+  color: var(--error);
+  font-weight: 500;
+}
+
+/* ---------- Folding (phones): import and parts show title and lead first ---------- */
+
+.fold {
+  display: contents;
+}
+
+.foldToggle {
+  display: none;
+}
+
+.foldChevron {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.foldToggle[aria-expanded="true"] .foldChevron {
+  transform: rotate(-135deg) translateY(-2px);
+}
+
+/* ---------- About: driven by eternal purpose ---------- */
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(36px, 5vw, 88px);
+  align-items: start;
+}
+
+.aboutText {
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.aboutTitle {
+  max-width: 9em;
+  font-size: clamp(2.5rem, 1.2rem + 4.6vw, 5.5rem);
+}
+
+.eternal {
+  color: var(--yellow);
+}
+
+/* The family's story, in their words: the opening line large, then the telling. */
+.aboutLead {
+  max-width: 22ch;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.15;
+}
+
+.story {
+  display: grid;
+  gap: 1em;
+  max-width: var(--measure);
+  font-size: var(--text-lead);
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.paths {
+  display: grid;
+  gap: 10px;
+  margin: 0.2em 0 0.4em;
+  color: var(--fg);
+  font-weight: 700;
+}
+
+.paths li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.paths .triRight {
+  color: var(--yellow);
+}
+
+.storyClose {
+  margin-top: 0.4em;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.15;
+  color: var(--fg);
+}
+
+/* The loop keeps company with the story as it scrolls past. */
+.loop {
+  position: sticky;
+  top: calc(var(--nav-h) + 64px);
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  justify-self: center;
+  overflow: visible;
+}
+
+.loopPath {
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s var(--ease-out);
+}
+
+:global(.js) .loop:not([data-drawn]) .loopPath {
+  stroke-dashoffset: 1;
+}
+
+.loopMark {
+  fill: #fff;
+  opacity: 0;
+  animation: mark-in 0.5s 1.6s var(--ease-out) forwards;
+}
+
+@keyframes mark-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Reviews ---------- */
+
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.reviews > li {
+  transition: opacity 0.8s var(--ease-out), transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.review {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding-top: 22px;
+  border-top: 3px solid var(--fg);
+}
+
+.quoteMark {
+  height: 0.5em;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 4.5rem;
+  line-height: 1;
+  color: var(--yellow);
+}
+
+.review blockquote {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.review figcaption {
+  color: var(--fg-2);
+}
+
+/* ---------- Questions ---------- */
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+/* The way out of the list: a black panel that stays beside it. */
+.faqPanel {
+  position: sticky;
+  top: calc(var(--nav-h) + 32px);
+  display: grid;
+  gap: 16px;
+  padding: clamp(24px, 2.6vw, 36px);
+  border-radius: 20px;
+  background: var(--ink);
+  color: #fff;
+}
+
+.faqPanelTitle {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.1;
+}
+
+.faqPanelBody {
+  color: rgb(255 255 255 / 0.74);
+}
+
+.faqPanel :focus-visible {
+  outline-color: var(--yellow);
+}
+
+/* ---------- Contact and location ---------- */
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(36px, 5vw, 88px);
+  align-items: stretch;
+}
+
+.contactMain {
+  display: grid;
+  gap: 30px;
+  align-content: start;
+}
+
+.contactList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 22px 56px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+
+.contactList dd {
+  margin-top: 6px;
+  font-size: var(--text-lead);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.contactList dd a {
+  color: inherit;
+  text-decoration-color: rgb(255 255 255 / 0.4);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.3s var(--ease-out);
+}
+
+.contactList dd a:hover {
+  text-decoration-color: var(--yellow);
+}
+
+.contactWide {
+  grid-column: 1 / -1;
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+
+.social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.socialIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--yellow);
+}
+
+/* Where to find JOOX: the town in the display voice, and the way to the map. */
+.map {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 10px;
+  min-height: 300px;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+}
+
+.mapPlace {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-2);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.mapArea {
+  margin-bottom: 14px;
+  color: var(--fg-2);
+}
+
+.pin {
+  width: 18px;
+  height: 22px;
+  background: var(--yellow);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px 48px;
+  align-items: center;
+  padding: 48px var(--gutter) max(40px, env(safe-area-inset-bottom));
+  background: var(--paper);
+}
+
+.footerLogo {
+  width: 180px;
+  height: auto;
+}
+
+.footerNav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 28px;
+}
+
+.footerNav a {
+  display: inline-block;
+  padding: 8px 0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.footerNav a:hover {
+  text-decoration: underline;
+}
+
+.footerSocial {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+  gap: 4px 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.footerSocial a {
+  display: inline-block;
+  padding: 8px 0;
+  font-weight: 500;
+  text-underline-offset: 0.25em;
+}
+
+.footerNote {
+  grid-column: 1 / -1;
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+/* ---------- Tablets ---------- */
+
+@media (max-width: 1100px) {
+  .services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .services li:nth-child(2) .service {
+    border-right: 0;
+  }
+
+  .services li:nth-child(n + 3) .service {
+    border-top: 1px solid var(--line);
+  }
+
+  .journey {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 36px;
+  }
+
+  .road {
+    display: none;
+  }
+
+  .split,
+  .faqGrid,
+  .contactGrid,
+  .aboutGrid,
+  .headWide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .headWide .lead {
+    justify-self: start;
+  }
+
+  .faqPanel {
+    position: static;
+  }
+
+  .loop {
+    position: static;
+    max-width: 420px;
+    justify-self: start;
+  }
+
+  .reviews {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 700px) {
+  .band {
+    padding-top: 72px;
+    padding-bottom: 80px;
+  }
+
+  .continues {
+    padding-top: 0;
+  }
+
+  .continues .inner {
+    padding-top: 64px;
+  }
+
+  .services {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .services li .service {
+    min-height: 0;
+    padding: 22px 76px 22px 18px;
+    border-right: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .services li:first-child .service {
+    border-top: 0;
+  }
+
+  .serviceGo {
+    left: auto;
+    right: 14px;
+    bottom: auto;
+    top: 50%;
+    margin-top: -20px;
+  }
+
+  /* The journey reads downward: numbers on a vertical road that fills as you scroll. */
+  .journey {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .road {
+    display: block;
+    top: 24px;
+    bottom: 24px;
+    left: 22px;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .road::after {
+    display: none;
+  }
+
+  .roadFill {
+    transform: scaleY(var(--progress));
+    transform-origin: 50% 0;
+  }
+
+  .step {
+    grid-template-columns: 46px minmax(0, 1fr);
+    column-gap: 16px;
+    padding-bottom: 26px;
+  }
+
+  .stepNum {
+    grid-row: span 2;
+  }
+
+  .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fields .field:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+
+  /* Folds: only with JS; without it, everything shows. */
+  :global(.js) .foldToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    justify-self: start;
+    min-height: 52px;
+    padding: 12px 22px;
+    border: 2px solid var(--fg);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--fg);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  :global(.js) .fold[data-open="false"] {
+    display: none;
+  }
+
+  .contactList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .map {
+    min-height: 200px;
+  }
+
+  .togetherFrame {
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+  }
+
+  .footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footerNav ul {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loopPath {
+    transition: none;
+  }
+
+  .loopMark {
+    animation: none;
+  }
+
+  .service::before {
+    transition: none;
+  }
+}

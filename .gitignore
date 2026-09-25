@@ -1,0 +1,57 @@
+/node_modules
+/.next/
+/out/
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+# downloaded stock sources and debug renders for scripts/media
+/.media-src/
+__pycache__/
+
+# Higgsfield helper runtime, job ledger (prompts, request IDs) and downloads
+/work/
+/outputs/
+
+# lossless ffmpeg intermediates scripts/media writes into public/ while encoding (hundreds of MB)
+*.intermediate.mkv
+
+# the client's raw photos (unblurred plates, people, the family home); only scripts/media/photos.py reads them
+/cars-ready-to-sell/
+/cars-to-export/
+/cars-to-rent/
+
+# third-party design references; the client's logo source stays
+/references/*
+!/references/brand/
+
+# screenshots pasted while working on the site
+/image*.png
+
+# Impeccable: config.json, design.json, surfaces/ and decision/ are shared; the rest is local run state
+/.impeccable/review/
+/.impeccable/questions/
+/.impeccable/live/
+/.impeccable/history/
+/.impeccable/critique/*
+!/.impeccable/critique/ignore.md
+/.impeccable/config.local.json
+**/.impeccable/hook.cache.json
+**/.impeccable/hook.pending.json
+
+# env files and the Vercel CLI project link
+.env*
+!.env.example
+.vercel
+
+# logs
+*.log
+
+# editors, Windows and OneDrive clutter
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+~$*
+
+# Claude Code per-machine settings
+.claude/settings.local.json

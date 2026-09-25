@@ -1,0 +1,350 @@
+{
+  "meta": {
+    "title": "JOOX CARS · Car rental, US import, spare parts and vehicle sales",
+    "description": "Rent a car we imported ourselves. JOOX CARS rents, imports from the US, and sells vehicles and spare parts from Guápiles, Limón, Costa Rica, with the full cost clear from day one."
+  },
+  "nav": {
+    "home": "JOOX CARS, home",
+    "label": "Main",
+    "links": {
+      "rental": "Rental",
+      "import": "Import",
+      "parts": "Parts",
+      "sales": "Sales",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "language": "ES",
+    "languageLabel": "Ver en español",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Message us on WhatsApp",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "menu": "Menu",
+    "place": "JOOX CARS · Guápiles, Costa Rica"
+  },
+  "hero": {
+    "title": "Rent a car we imported ourselves.",
+    "sub": "JOOX CARS rents, imports from the US, and sells vehicles and spare parts, with the full cost clear from day one.",
+    "primary": "Rent a car",
+    "secondary": "Get an import quote"
+  },
+  "services": {
+    "title": "We rent, import and sell.",
+    "items": {
+      "rental": {
+        "name": "Car rental",
+        "line": "Cars from our own fleet, each one imported by us."
+      },
+      "import": {
+        "name": "Import from the US",
+        "line": "We bring your vehicle from US auctions."
+      },
+      "parts": {
+        "name": "Spare parts",
+        "line": "Parts for your vehicle. Ask us on WhatsApp."
+      },
+      "sales": {
+        "name": "Vehicle sales",
+        "line": "Vehicles we import and get ready ourselves."
+      }
+    }
+  },
+  "carousel": {
+    "prev": "Previous car",
+    "next": "Next car",
+    "of": "of",
+    "photo": "Photo",
+    "model": "Model photo",
+    "show": "Show",
+    "photos": "See photos",
+    "adjusted": "colour adjusted",
+    "pd": "public domain",
+    "modelNote": "Reference photo of the model. The car's own photos are under “See photos”."
+  },
+  "viewer": {
+    "close": "Close",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "of": "of",
+    "choose": "Choose a photo"
+  },
+  "rental": {
+    "title": "Car rental",
+    "lead": "Every car in the fleet came from a US auction, and we imported it ourselves. You see the daily price and what the insurance covers before you book.",
+    "list": "Rental fleet",
+    "specs": {
+      "year": "Year",
+      "engine": "Engine",
+      "gearbox": "Gearbox",
+      "seats": "Seats",
+      "color": "Colour"
+    },
+    "price": "[PRICE]",
+    "perDay": "per day",
+    "reserve": "Book on WhatsApp",
+    "cars": [
+      {
+        "slug": "mitsubishi-outlander-sport-2020",
+        "brand": "Mitsubishi",
+        "model": "Outlander Sport",
+        "year": "2020",
+        "body": "SUV",
+        "color": "Orange",
+        "engine": "2000 cc",
+        "gearbox": "Automatic",
+        "seats": "5",
+        "ref": "orange 2020 Mitsubishi Outlander Sport"
+      },
+      {
+        "slug": "kia-sportage-2020",
+        "brand": "Kia",
+        "model": "Sportage",
+        "year": "2020",
+        "body": "SUV",
+        "color": "Black",
+        "engine": "2400 cc",
+        "gearbox": "Automatic",
+        "seats": "5",
+        "ref": "black 2020 Kia Sportage"
+      },
+      {
+        "slug": "mitsubishi-outlander-sport-2015",
+        "brand": "Mitsubishi",
+        "model": "Outlander Sport",
+        "year": "2015",
+        "body": "SUV",
+        "color": "Black",
+        "engine": "2000 cc",
+        "gearbox": "Automatic",
+        "seats": "5",
+        "ref": "black 2015 Mitsubishi Outlander Sport"
+      }
+    ],
+    "whatsapp": "Hi, I'd like to rent the {car}.",
+    "together": "The whole fleet, in Guápiles, Pococí."
+  },
+  "import": {
+    "title": "Import from the US",
+    "lead": "You choose the vehicle and we handle the rest, with the full cost clear from day one.",
+    "steps": [
+      {
+        "title": "Choose the vehicle",
+        "body": "Tell us what you are looking for, or send us the auction link."
+      },
+      {
+        "title": "Full cost",
+        "body": "We give you the estimated total: vehicle, shipping, taxes and paperwork."
+      },
+      {
+        "title": "Auction purchase",
+        "body": "We buy the vehicle at the US auction."
+      },
+      {
+        "title": "Shipping",
+        "body": "We ship it to Costa Rica."
+      },
+      {
+        "title": "Customs and registration",
+        "body": "We handle customs and registration."
+      },
+      {
+        "title": "Delivery",
+        "body": "We hand you your vehicle."
+      }
+    ],
+    "time": "Approximate time",
+    "timeValue": "[X weeks]",
+    "quote": "Get an import quote",
+    "whatsapp": "Hi, I'd like a quote to import a vehicle.",
+    "open": "See the 6 steps",
+    "proof": {
+      "title": "20 cars imported so far.",
+      "body": "Photos from our own imports.",
+      "list": "Photos from our imports",
+      "prev": "Previous photos",
+      "next": "More photos",
+      "of": "of"
+    }
+  },
+  "parts": {
+    "title": "Spare parts",
+    "lead": "Tell us what you need and we confirm availability and price on WhatsApp.",
+    "form": {
+      "make": "Make",
+      "model": "Model",
+      "year": "Year",
+      "part": "Part you need",
+      "partHint": "For example: front brake pads",
+      "send": "Ask on WhatsApp",
+      "message": "Hi, I'm looking for a spare part."
+    },
+    "catalog": "Placeholder: the spare-parts catalogue is coming soon.",
+    "open": "Ask for a part"
+  },
+  "sales": {
+    "title": "Vehicle sales",
+    "lead": "We import them ourselves, repair them if needed and get them ready to sell. 12 sold so far.",
+    "list": "Vehicles for sale",
+    "ask": "Ask about this vehicle",
+    "more": {
+      "title": "Not seeing the one you want?",
+      "body": "Tell us which vehicle you want and we quote its import from the US.",
+      "link": "Get an import quote"
+    },
+    "specs": {
+      "year": "Year",
+      "km": "Mileage",
+      "gearbox": "Gearbox",
+      "drive": "Drive",
+      "seats": "Seats",
+      "color": "Colour"
+    },
+    "price": "[PRICE]",
+    "km": "[KM] km",
+    "cars": [
+      {
+        "slug": "jeep-wrangler-unlimited",
+        "brand": "Jeep",
+        "model": "Wrangler Unlimited",
+        "year": "[YEAR]",
+        "body": "4-door SUV",
+        "color": "Black",
+        "gearbox": "Automatic",
+        "drive": "4x4",
+        "seats": "5",
+        "ref": "black Jeep Wrangler Unlimited"
+      }
+    ],
+    "whatsapp": "Hi, I'm interested in the {car}."
+  },
+  "about": {
+    "label": "About",
+    "tagline": [
+      "Driven by",
+      "eternal",
+      "purpose"
+    ],
+    "lead": "JOOX began as a family idea.",
+    "story": [
+      "In 2021, after the pandemic, my brother Harry Mata suggested we start a car rental business. With hard work, a loan and a real drive to get ahead, we made the company official and started working in Puntarenas and Cóbano.",
+      "Over the years we learned that distance could also hold back our growth and our decisions. That is how the idea of building our own project in Guápiles, Pococí, Limón was born.",
+      "At the same time we discovered a new world: importing vehicles. And while looking for solutions for our own cars, we also started importing spare parts from different international platforms.",
+      "Little by little, three paths came together:"
+    ],
+    "paths": [
+      "Car rental",
+      "Vehicle import",
+      "Auto parts"
+    ],
+    "after": [
+      "In 2026 we decided to bring it all under one name: JOOX Cars.",
+      "But JOOX is more than cars. It is a story of family, learning, work and vision for the future.",
+      "And that vision lives at home too. Our children, Joslyn and Josh, help wash the vehicles and are learning from an early age the value of work and of managing what they earn.",
+      "Because for us, starting a business doesn't only mean building a company."
+    ],
+    "close": "It means building a future together."
+  },
+  "reviews": {
+    "title": "What our customers say",
+    "items": [
+      {
+        "quote": "[A rental customer's review]",
+        "who": "[Name] · Rental"
+      },
+      {
+        "quote": "[An import customer's review]",
+        "who": "[Name] · Import"
+      },
+      {
+        "quote": "[A spare-parts customer's review]",
+        "who": "[Name] · Parts"
+      }
+    ],
+    "placeholder": "Placeholder: real customer reviews replace these examples."
+  },
+  "faq": {
+    "title": "Common questions",
+    "items": [
+      {
+        "q": "What do I need to rent a car?",
+        "a": "[Requirements: driving licence, minimum age and deposit.]"
+      },
+      {
+        "q": "What does the insurance cover?",
+        "a": "[Insurance details: coverage, deductible and deposit.]"
+      },
+      {
+        "q": "How long does an import take?",
+        "a": "About [X weeks], from the auction purchase to delivery."
+      },
+      {
+        "q": "What does the import cost include?",
+        "a": "We give you the estimated total before buying: vehicle, shipping, taxes and paperwork."
+      },
+      {
+        "q": "Can you find parts for my vehicle?",
+        "a": "Tell us the make, model, year and part, and we confirm availability and price on WhatsApp."
+      },
+      {
+        "q": "Do the vehicles for sale come with a warranty?",
+        "a": "[Warranty details for the vehicles for sale.]"
+      }
+    ],
+    "more": "Can't find your answer?",
+    "ask": "Message us on WhatsApp",
+    "lead": "What people ask us most about rental, import, parts and sales.",
+    "moreBody": "Write to us and we answer on WhatsApp."
+  },
+  "contact": {
+    "title": "Contact",
+    "lead": "The fastest way to reach us is WhatsApp.",
+    "whatsapp": "Message us on WhatsApp",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "addressValue": "Guápiles, Pococí, Limón",
+    "hours": "Hours",
+    "hoursValue": "[HOURS]",
+    "social": "Social",
+    "map": "Location",
+    "mapPlace": "Guápiles",
+    "mapArea": "Pococí, Limón · Costa Rica",
+    "mapLink": "Open in Google Maps"
+  },
+  "footer": {
+    "tagline": "Driven by eternal purpose",
+    "rights": "© 2026 JOOX CARS",
+    "media": "The opening video is stand-in footage until our own shoot is ready."
+  },
+  "photos": {
+    "fleet-grass": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles",
+    "fleet-row": "The three rental cars, from the front",
+    "fleet-doors": "The three rental cars with their doors open",
+    "outlander-sport-2020": "Orange 2020 Mitsubishi Outlander Sport",
+    "outlander-sport-2015": "Black 2015 Mitsubishi Outlander Sport",
+    "sportage-2020": "Black 2020 Kia Sportage",
+    "wrangler-front": "Front",
+    "wrangler-rear": "From behind",
+    "wrangler-back": "Looking inside",
+    "wrangler-cabin": "The cabin",
+    "wrangler-key": "Keys in hand",
+    "import-lot": "Ford Raptor and F-150",
+    "import-rubicon": "Jeep Wrangler Rubicon",
+    "import-tow": "On the tow truck, Houston, Texas",
+    "import-container": "In the container",
+    "import-x6": "BMW X6",
+    "import-papers": "The paperwork",
+    "import-4runner": "Toyota 4Runner",
+    "import-containers": "Containers",
+    "import-rebel": "RAM pickup",
+    "import-keys": "The keys"
+  },
+  "whatsapp": {
+    "general": "Hi, I have a question.",
+    "rental": "Hi, I'd like to rent a car."
+  },
+  "fold": {
+    "close": "Hide"
+  }
+}
