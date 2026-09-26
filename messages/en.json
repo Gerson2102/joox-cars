@@ -346,5 +346,10 @@
   },
   "fold": {
     "close": "Hide"
+  },
+  "notFound": {
+    "title": "This page doesn't exist",
+    "lead": "The link may have a typo, or the page is no longer here.",
+    "home": "Back to home"
   }
 }

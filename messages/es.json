@@ -346,5 +346,10 @@
   },
   "fold": {
     "close": "Ocultar"
+  },
+  "notFound": {
+    "title": "Esta página no existe",
+    "lead": "Puede que el enlace tenga un error o que la página ya no esté.",
+    "home": "Volver al inicio"
   }
 }

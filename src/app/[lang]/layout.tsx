@@ -1,15 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/contact";
+import { archivo } from "@/lib/font";
 import { getDictionary, hasLocale, locales } from "./dictionaries";
 import "./site.css";
-
-const archivo = Archivo({
-  subsets: ["latin", "latin-ext"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
-  display: "swap",
-});
 
 export const dynamicParams = false;
 
@@ -22,9 +16,11 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   if (!hasLocale(lang)) return {};
   const t = await getDictionary(lang);
   return {
+    metadataBase: new URL(SITE_URL),
     title: t.meta.title,
     description: t.meta.description,
-    alternates: { languages: { es: "/es", en: "/en" } },
+    alternates: { canonical: `/${lang}`, languages: { es: "/es", en: "/en", "x-default": "/" } },
+    openGraph: { type: "website", title: t.meta.title, description: t.meta.description },
   };
 }
 

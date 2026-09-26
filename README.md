@@ -6,6 +6,7 @@ The website of JOOX CARS, a Costa Rican business that rents cars from its own fl
 | --- | --- |
 | `/` | Redirects to `/en` when the browser's first language is English, to `/es` otherwise (`src/proxy.ts`) |
 | `/es`, `/en` | The homepage |
+| Any other URL | A 404 in Spanish and English with the way home in each (`src/app/global-not-found.tsx`) |
 
 ## Run it
 

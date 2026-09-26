@@ -16,6 +16,7 @@ Sources are not committed. `scripts/media/sources.json` lists every source URL, 
 | `../brand/joox-cars-mark.webp` (`public/brand/`) | 96 KB | Header logo | The client's logo raster (`references/brand/joox-cars-logo.png`) | White background unmixed to transparency (alpha = 1 − darkest channel), trimmed, 240 px tall | **The vector logo (SVG)** |
 | `../brand/joox-cars-mark-reversed.webp` (`public/brand/`) | 79 KB | Header logo over the hero film | The mark above | `scripts/media/brand_reversed.py`: near-black swapped for white, yellow kept, edges blended | **The vector logo's reversed version (SVG)** |
 | `../brand/joox-cars-lockup.webp` (`public/brand/`) | 121 KB | Footer logo with the tagline | Same raster | Same, with "Driven by eternal purpose", 320 px tall | The vector lockup (SVG) |
+| `src/app/[lang]/opengraph-image.jpg` | 55 KB | Link previews (WhatsApp, Facebook, X) | Same raster | Trimmed, centred on its own white at 66 % of the height, 1200 × 630, JPEG q90 | A card from the vector lockup |
 
 The logos are lossless WebP. The homepage uses no grain overlay; the film keeps the look it was baked with, full-bleed as the hero.
 

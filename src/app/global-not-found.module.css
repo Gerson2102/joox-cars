@@ -1,0 +1,17 @@
+/* The 404: one black band filling the screen. */
+.page {
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
+}
+
+.mark {
+  width: 120px;
+  height: auto;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
