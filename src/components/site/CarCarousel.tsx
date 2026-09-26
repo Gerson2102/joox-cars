@@ -173,48 +173,51 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
         {credit ? <p className={`map-label ${styles.tag}`}>{labels.model}</p> : null}
       </div>
 
-      <div className={styles.info} key={car.slug}>
-        <div className={styles.titleRow}>
-          <div className={styles.name}>
-            <h3 className={styles.model}>
-              <span className={styles.brand}>{car.brand}</span> {car.model}
-            </h3>
-            <p className={styles.body}>
-              {car.body} · {car.year}
-            </p>
-            {car.photos.length ? (
-              <Btn variant="ink" size="sm" icon="photos" type="button" opensDialog onClick={() => setPhoto(0)} className={styles.photos}>
-                {`${labels.photos} (${car.photos.length})`}
-              </Btn>
-            ) : null}
-          </div>
-          <div className={styles.buy}>
-            <p className={styles.price}>
-              <strong>{price.value}</strong> {price.unit}
-            </p>
-            <Btn variant="ink" icon="whatsapp" href={wa(car.message)} external>
-              {action}
-            </Btn>
-          </div>
-        </div>
-
-        <dl className={styles.specs}>
-          {car.specs.map((s) => (
-            <div key={s.label}>
-              <dt>{s.label}</dt>
-              <dd>{s.value}</dd>
+      {/* Every car's details are in the page (for search and AI crawlers); only the one on show is visible. */}
+      {cars.map((c, i) => (
+        <div key={c.slug} className={styles.info} hidden={i !== index}>
+          <div className={styles.titleRow}>
+            <div className={styles.name}>
+              <h3 className={styles.model}>
+                <span className={styles.brand}>{c.brand}</span> {c.model}
+              </h3>
+              <p className={styles.body}>
+                {c.body} · {c.year}
+              </p>
+              {c.photos.length ? (
+                <Btn variant="ink" size="sm" icon="photos" type="button" opensDialog onClick={() => setPhoto(0)} className={styles.photos}>
+                  {`${labels.photos} (${c.photos.length})`}
+                </Btn>
+              ) : null}
             </div>
-          ))}
-        </dl>
+            <div className={styles.buy}>
+              <p className={styles.price}>
+                <strong>{price.value}</strong> {price.unit}
+              </p>
+              <Btn variant="ink" icon="whatsapp" href={wa(c.message)} external>
+                {action}
+              </Btn>
+            </div>
+          </div>
 
-        {credit ? (
-          <p className={styles.credit}>
-            {labels.modelNote} {labels.photo}: <a href={credit.page} target="_blank" rel="noopener noreferrer">{credit.author}</a>,{" "}
-            {credit.license === "Public domain" ? labels.pd : credit.license}
-            {credit.adjusted ? `, ${labels.adjusted}` : ""}.
-          </p>
-        ) : null}
-      </div>
+          <dl className={styles.specs}>
+            {c.specs.map((s) => (
+              <div key={s.label}>
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {c.cutout.credit ? (
+            <p className={styles.credit}>
+              {labels.modelNote} {labels.photo}: <a href={c.cutout.credit.page} target="_blank" rel="noopener noreferrer">{c.cutout.credit.author}</a>,{" "}
+              {c.cutout.credit.license === "Public domain" ? labels.pd : c.cutout.credit.license}
+              {c.cutout.credit.adjusted ? `, ${labels.adjusted}` : ""}.
+            </p>
+          ) : null}
+        </div>
+      ))}
 
       {single ? null : (
         <div className={styles.meta}>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { CSSProperties, ReactNode } from "react";
 import { getDictionary, hasLocale, type Dictionary } from "./dictionaries";
+import { businessJsonLd } from "./structured-data";
 import { wa } from "@/lib/whatsapp";
 import { EMAIL, MAP_URL, PHONE, SOCIAL } from "@/lib/contact";
 import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, type PhotoId } from "@/lib/fleet";
@@ -87,6 +88,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd(t, lang)).replace(/</g, "\\u003c") }} />
       <SiteHeader t={t.nav} lang={lang} whatsappText={t.whatsapp.general} tagline={t.about.tagline} />
       <ScrollFX />
       <main>

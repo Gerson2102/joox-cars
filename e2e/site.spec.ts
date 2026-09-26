@@ -20,6 +20,17 @@ for (const [lang, t] of [["es", es], ["en", en]] as const) {
   });
 }
 
+test("crawlers that don't run JavaScript get every car and the business data", async ({ request }) => {
+  const html = await (await request.get("/es")).text();
+  for (const car of [...es.rental.cars, ...es.sales.cars]) expect(html).toContain(`${car.model}</h3>`);
+  for (const car of es.rental.cars) expect(html).toContain(car.engine);
+
+  const jsonLd = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/)![1]);
+  expect(jsonLd.name).toBe("JOOX CARS");
+  expect(jsonLd.hasOfferCatalog[0].itemListElement).toHaveLength(es.rental.cars.length);
+  expect(JSON.stringify(jsonLd)).not.toMatch(/\[\p{L}/u); // no "[AÑO]"-style placeholders
+});
+
 test("an unknown URL shows the 404 page, with the way home", async ({ page }) => {
   const response = await page.goto("/es/nada");
   expect(response?.status()).toBe(404);

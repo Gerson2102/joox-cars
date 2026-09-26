@@ -221,6 +221,10 @@
   gap: 24px;
 }
 
+.info[hidden] {
+  display: none;
+}
+
 .info > * {
   animation: info-in 0.7s var(--ease-out) both;
 }
