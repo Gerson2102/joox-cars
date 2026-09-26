@@ -16,6 +16,15 @@ npm run dev      # http://localhost:3000
 npm run build && npm start
 ```
 
+### Test
+
+End-to-end checks in `e2e/` (Playwright, Chromium) build the site, serve it on port 3100 and walk it: the language redirect, both homepages, the 404, the parts form's WhatsApp message, the showroom and its photos, and the phone menu. They read their text from `messages/`, so copy edits don't break them.
+
+```bash
+npx playwright install chromium   # once per machine
+npm test
+```
+
 ### Deploy
 
 On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). No environment variables. Every page is prerendered; `src/proxy.ts` runs as a function for the `/` redirect. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).

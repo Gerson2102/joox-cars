@@ -46,6 +46,10 @@ __pycache__/
 # logs
 *.log
 
+# Playwright results and reports
+/test-results/
+/playwright-report/
+
 # editors, Windows and OneDrive clutter
 .vscode/
 .idea/
