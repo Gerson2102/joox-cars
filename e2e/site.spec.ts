@@ -22,7 +22,8 @@ for (const [lang, t] of [["es", es], ["en", en]] as const) {
 
 test("crawlers that don't run JavaScript get every car and the business data", async ({ request }) => {
   const html = await (await request.get("/es")).text();
-  for (const car of [...es.rental.cars, ...es.sales.cars]) expect(html).toContain(`${car.model}</h3>`);
+  const headings = [...html.matchAll(/<h3[^>]*>(.*?)<\/h3>/g)].map((m) => m[1].replace(/<[^>]+>/g, ""));
+  for (const car of [...es.rental.cars, ...es.sales.cars]) expect(headings).toContain(`${car.brand} ${car.model} ${car.year}`);
   for (const car of es.rental.cars) expect(html).toContain(car.engine);
 
   const jsonLd = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/)![1]);

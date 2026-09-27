@@ -30,7 +30,7 @@ export function HeroStage({ t }: { t: Copy }) {
     phone: { query: PHONE, base: "/media/v2/film-phone" },
   });
 
-  const common = { alt: "", sizes: "100vw", quality: 78 };
+  const common = { alt: "", sizes: "100vw", quality: 78, loading: "eager" } as const;
   const {
     props: { srcSet: desktop },
   } = getImageProps({ ...common, src: "/media/v2/poster.webp", width: 1920, height: 1080 });

@@ -179,11 +179,9 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
           <div className={styles.titleRow}>
             <div className={styles.name}>
               <h3 className={styles.model}>
-                <span className={styles.brand}>{c.brand}</span> {c.model}
+                <span className={styles.plain}>{c.brand}</span> {c.model} <span className={styles.plain}>{c.year}</span>
               </h3>
-              <p className={styles.body}>
-                {c.body} · {c.year}
-              </p>
+              <p className={styles.body}>{c.body}</p>
               {c.photos.length ? (
                 <Btn variant="ink" size="sm" icon="photos" type="button" opensDialog onClick={() => setPhoto(0)} className={styles.photos}>
                   {`${labels.photos} (${c.photos.length})`}

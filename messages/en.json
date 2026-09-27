@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "JOOX CARS · Car rental, US import, spare parts and vehicle sales",
-    "description": "Rent a car we imported ourselves. JOOX CARS rents, imports from the US, and sells vehicles and spare parts from Guápiles, Limón, Costa Rica, with the full cost clear from day one."
+    "title": "Car Rental in Guápiles, Costa Rica & US Import | JOOX CARS",
+    "description": "Rent a car we imported ourselves, in Guápiles, Costa Rica. We also import vehicles from the US and sell cars and spare parts."
   },
   "nav": {
     "home": "JOOX CARS, home",
@@ -25,7 +25,7 @@
   },
   "hero": {
     "title": "Rent a car we imported ourselves.",
-    "sub": "JOOX CARS rents, imports from the US, and sells vehicles and spare parts, with the full cost clear from day one.",
+    "sub": "From Guápiles, Costa Rica, JOOX CARS rents, imports from the US, and sells vehicles and spare parts, with the full cost clear from day one.",
     "primary": "Rent a car",
     "secondary": "Get an import quote"
   },

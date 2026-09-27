@@ -256,8 +256,8 @@
   gap: 6px;
 }
 
-/* "Kia Sportage": the make in plain weight, the model in the display voice. */
-.brand {
+/* "Kia Sportage 2020": the make and year in plain weight, the model in the display voice. */
+.plain {
   font-stretch: 100%;
   font-weight: 500;
   letter-spacing: -0.01em;

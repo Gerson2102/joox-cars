@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "JOOX CARS · Renta, importación, repuestos y venta de vehículos",
-    "description": "Rente un carro que nosotros mismos importamos. JOOX CARS renta, importa desde EE. UU. y vende vehículos y repuestos desde Guápiles, Limón, con el costo completo claro desde el primer día."
+    "title": "Renta de carros en Guápiles e importación | JOOX CARS",
+    "description": "Rente un carro que nosotros mismos importamos, en Guápiles, Limón. También importamos vehículos desde EE. UU. y vendemos carros y repuestos."
   },
   "nav": {
     "home": "JOOX CARS, inicio",
@@ -25,7 +25,7 @@
   },
   "hero": {
     "title": "Rente un carro que nosotros mismos importamos.",
-    "sub": "En JOOX CARS rentamos, importamos desde EE. UU. y vendemos vehículos y repuestos, con el costo completo claro desde el primer día.",
+    "sub": "Desde Guápiles, Limón, JOOX CARS renta, importa desde EE. UU. y vende vehículos y repuestos, con el costo completo claro desde el primer día.",
     "primary": "Rentar un carro",
     "secondary": "Cotizar una importación"
   },

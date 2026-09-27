@@ -9,7 +9,7 @@ export const MAP_URL = "https://www.google.com/maps/search/?api=1&query=" + enco
 
 // Profile links without the share-tracking parameters they were copied with.
 export const SOCIAL = [
-  { name: "Facebook", href: "https://www.facebook.com/share/1FN6cRheaY/" },
+  { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61587259602081" },
   { name: "Instagram", href: "https://www.instagram.com/joox6287" },
   { name: "TikTok", href: "https://www.tiktok.com/@joox7731" },
 ];

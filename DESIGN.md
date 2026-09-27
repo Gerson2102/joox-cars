@@ -263,7 +263,7 @@ The logo's three colours as grounds, with ink and white at reduced alpha for eve
 - **Hero display** (800, 125%, `hero-display`, 0.98, -0.02em, balanced): the H1 over the film, three lines in both languages. Short desktops and phones step it down inside the hero stage.
 - **Band title** (800, 125%, `band-title`, 0.98, -0.02em, max 15em): each band's H2, led by the logo's triangle in the band's accent (yellow on white and black, ink on yellow). The About title runs larger (`clamp(2.5rem, 1.2rem + 4.6vw, 5.5rem)`, max 9em) and sets ETERNAL in yellow, as in the lockup.
 - **Ghost name** (800, 125%, uppercase, `ghost-name`): the model's name behind the car on show, transparent with a 1.5px ink stroke at 0.26.
-- **Model name** (800, 125%, `model-name`): the car on show; the make before it at 100% width, weight 500.
+- **Model name** (800, 125%, `model-name`): the car on show; the make before it and the year after it at 100% width, weight 500.
 - **Display 3** (800, 125%, `display-3`): service names, the FAQ panel title, the import time value, the sales "not seeing it" title.
 - **Lead** (400, `lead`, max 58ch, pretty wrapping): each band's lead, FAQ answers, the price line.
 - **Body** (400, 1rem, 1.55): default text. Review quotes are 1.25rem at 500; FAQ questions 600 at `clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem)`.
