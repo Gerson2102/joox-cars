@@ -67,7 +67,7 @@ export function PartsForm({ t }: { t: Copy }) {
           ) : null}
         </label>
       </div>
-      <Btn type="submit" variant="yellow" icon="whatsapp">
+      <Btn type="submit" variant="ink" icon="whatsapp">
         {t.send}
       </Btn>
     </form>

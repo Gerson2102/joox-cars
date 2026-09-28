@@ -1,52 +1,52 @@
 {
   "meta": {
     "title": "Renta de carros en Guápiles e importación | JOOX CARS",
-    "description": "Rente un carro que nosotros mismos importamos, en Guápiles, Limón. También importamos vehículos desde EE. UU. y vendemos carros y repuestos."
+    "description": "Renta y venta de vehículos en Guápiles, Limón. Importamos vehículos desde EE. UU. y conseguimos repuestos de diferentes plataformas."
   },
   "nav": {
     "home": "JOOX CARS, inicio",
     "label": "Principal",
     "links": {
       "rental": "Renta",
+      "sales": "Venta",
       "import": "Importación",
       "parts": "Repuestos",
-      "sales": "Venta",
       "about": "Nosotros",
       "contact": "Contacto"
     },
     "language": "EN",
     "languageLabel": "View in English",
     "whatsapp": "WhatsApp",
-    "whatsappLabel": "Escríbanos por WhatsApp",
+    "whatsappLabel": "Escribinos por WhatsApp",
     "menuOpen": "Abrir menú",
     "menuClose": "Cerrar menú",
     "menu": "Menú",
     "place": "JOOX CARS · Guápiles, Costa Rica"
   },
   "hero": {
-    "title": "Rente un carro que nosotros mismos importamos.",
-    "sub": "Desde Guápiles, Limón, JOOX CARS renta, importa desde EE. UU. y vende vehículos y repuestos, con el costo completo claro desde el primer día.",
-    "primary": "Rentar un carro",
-    "secondary": "Cotizar una importación"
+    "title": "Tu vehículo. Nuestra experiencia.",
+    "sub": "Desde Guápiles, Limón, JOOX CARS renta, vende vehículos, importa desde EE. UU. y consigue repuestos de diferentes plataformas.",
+    "primary": "Ver vehículos",
+    "secondary": "Cotizar importación"
   },
   "services": {
-    "title": "Rentamos, importamos, vendemos.",
+    "title": "Rentamos, vendemos, importamos y conseguimos tus repuestos.",
     "items": {
       "rental": {
         "name": "Renta de vehículos",
-        "line": "Carros de nuestra propia flota, cada uno importado por nosotros."
-      },
-      "import": {
-        "name": "Importación desde EE. UU.",
-        "line": "Le traemos su vehículo desde subastas en EE. UU."
-      },
-      "parts": {
-        "name": "Venta de repuestos",
-        "line": "Repuestos para su vehículo. Consulte por WhatsApp."
+        "line": "Vehículos confiables, en excelentes condiciones y un servicio al cliente excepcional."
       },
       "sales": {
         "name": "Venta de vehículos",
-        "line": "Vehículos que importamos y preparamos nosotros."
+        "line": "Vehículos nacionales e importados, seleccionados por su calidad y excelentes condiciones."
+      },
+      "import": {
+        "name": "Importación de vehículos",
+        "line": "Te traemos el vehículo que buscás desde EE. UU. y te acompañamos en todo el proceso."
+      },
+      "parts": {
+        "name": "Repuestos",
+        "line": "Conseguimos el repuesto que necesitás para tu vehículo en diferentes plataformas."
       }
     }
   },
@@ -71,7 +71,7 @@
   },
   "rental": {
     "title": "Renta de vehículos",
-    "lead": "Cada carro de la flota llegó de una subasta en EE. UU. y lo importamos nosotros. Usted ve el precio por día y lo que incluye el seguro antes de reservar.",
+    "lead": "Ofrecemos vehículos confiables, impecables y en excelentes condiciones para que disfrutes cada viaje con comodidad y tranquilidad.",
     "list": "Flota de renta",
     "specs": {
       "year": "Año",
@@ -121,43 +121,50 @@
         "ref": "Mitsubishi Outlander Sport 2015 negro"
       }
     ],
-    "whatsapp": "Hola, quiero rentar el {car}.",
-    "together": "La flota completa, en Guápiles, Pococí."
+    "whatsapp": "Hola, quiero rentar el {car}."
   },
   "import": {
-    "title": "Importación desde EE. UU.",
-    "lead": "Usted elige el vehículo y nosotros hacemos el resto, con el costo completo claro desde el primer día.",
+    "title": "Importación de vehículos desde EE. UU.",
+    "lead": "Desde encontrar el vehículo hasta verlo llegar a Costa Rica, te acompañamos en cada paso.",
     "steps": [
       {
-        "title": "Elija el vehículo",
-        "body": "Usted nos dice qué busca, o nos manda el enlace de la subasta."
+        "title": "Buscamos",
+        "body": "Revisamos con vos las opciones en EE. UU."
       },
       {
-        "title": "Costo completo",
-        "body": "Le damos el costo total estimado: vehículo, envío, impuestos y trámites."
+        "title": "Elegís",
+        "body": "Escogés el vehículo, con el precio y las condiciones claros."
       },
       {
-        "title": "Compra en subasta",
-        "body": "Compramos el vehículo en la subasta en EE. UU."
+        "title": "Compramos",
+        "body": "Hacemos la oferta o la compra y coordinamos los pagos."
       },
       {
-        "title": "Envío",
-        "body": "Lo enviamos a Costa Rica."
+        "title": "Transportamos",
+        "body": "Una grúa lo lleva hasta el punto de embarque."
       },
       {
-        "title": "Aduana e inscripción",
-        "body": "Hacemos los trámites de aduana e inscripción."
+        "title": "Embarcamos",
+        "body": "Viaja en barco hacia Costa Rica."
       },
       {
-        "title": "Entrega",
-        "body": "Le entregamos su vehículo."
+        "title": "Importamos",
+        "body": "Desembarque, almacén e inspección DEKRA."
+      },
+      {
+        "title": "Nacionalizamos",
+        "body": "Tasación y pago de impuestos."
+      },
+      {
+        "title": "Entregamos",
+        "body": "Aprobación y salida: el gran día."
       }
     ],
     "time": "Tiempo aproximado",
     "timeValue": "[X semanas]",
-    "quote": "Cotizar una importación",
+    "quote": "Cotizar importación",
     "whatsapp": "Hola, quiero cotizar la importación de un vehículo.",
-    "open": "Ver los 6 pasos",
+    "open": "Ver los 8 pasos",
     "proof": {
       "title": "Van 20 carros importados.",
       "body": "Fotos de nuestras propias importaciones.",
@@ -165,16 +172,80 @@
       "prev": "Fotos anteriores",
       "next": "Más fotos",
       "of": "de"
+    },
+    "process": {
+      "toggle": "Ver el proceso completo",
+      "intro": "JOOX no solo consigue el vehículo: acompañamos y coordinamos todo el proceso hasta que queda listo para salir de aduanas en Costa Rica.",
+      "stages": [
+        {
+          "title": "Etapa 1 · Desde EE. UU.",
+          "steps": [
+            {
+              "title": "Nos contactás",
+              "body": "Nos decís qué vehículo buscás o cuál ya encontraste en EE. UU. Conversamos sobre marca, modelo, año, color, presupuesto y características."
+            },
+            {
+              "title": "Buscamos y analizamos las opciones",
+              "body": "Te mostramos las plataformas y fuentes con las que trabajamos y revisamos juntos las opciones según marca y modelo, año, color, condición, precio, ubicación y costos asociados. Conocés las opciones antes de decidir."
+            },
+            {
+              "title": "Elegimos el vehículo y hacemos la oferta",
+              "body": "Cuando encontrás una opción que te interesa, coordinamos con el dealer o vendedor la oferta o la compra. Conocés el precio y las condiciones antes de avanzar."
+            },
+            {
+              "title": "Vehículo adquirido",
+              "body": "Aceptada la oferta o adquirido el vehículo, comienza formalmente la importación. Se coordinan los pagos a la subasta, al vendedor o al dealer, según la modalidad de compra."
+            },
+            {
+              "title": "Transporte terrestre",
+              "body": "Hecho el pago, pedimos la grúa desde donde está el vehículo hasta el punto de embarque. Con nuestro manual de referencia estimamos este costo según la distancia antes de coordinar el traslado."
+            },
+            {
+              "title": "Embarque hacia Costa Rica",
+              "body": "En el punto de embarque coordinamos el transporte marítimo, que se paga según las medidas y características del vehículo. Luego viaja hacia Costa Rica."
+            }
+          ]
+        },
+        {
+          "title": "Etapa 2 · En Costa Rica",
+          "steps": [
+            {
+              "title": "Desembarque y traslado a almacén",
+              "body": "Al llegar a Costa Rica, el vehículo se desembarca y pasa al almacén que indica la naviera."
+            },
+            {
+              "title": "Inspección DEKRA",
+              "body": "En el almacén, el vehículo pasa la inspección con DEKRA, necesaria para continuar con su nacionalización."
+            },
+            {
+              "title": "Tasación de impuestos",
+              "body": "Después de la inspección se espera la tasación de impuestos, calculada con la tabla de valores que determina el valor del vehículo."
+            },
+            {
+              "title": "Pago de impuestos",
+              "body": "Con la tasación lista se pagan los impuestos, y el vehículo espera la aprobación para continuar."
+            },
+            {
+              "title": "Bodegaje y autorización de salida",
+              "body": "Mientras se completa el proceso pueden generarse costos de bodegaje, que se cancelan según corresponda."
+            },
+            {
+              "title": "Aprobación y salida: el gran día",
+              "body": "Con las aprobaciones y los pagos completos, el vehículo sale y sigue hacia su destino final."
+            }
+          ]
+        }
+      ]
     }
   },
   "parts": {
     "title": "Venta de repuestos",
-    "lead": "Díganos qué necesita y le confirmamos disponibilidad y precio por WhatsApp.",
+    "lead": "Decinos qué necesitás y te confirmamos disponibilidad y precio por WhatsApp.",
     "form": {
       "make": "Marca",
       "model": "Modelo",
       "year": "Año",
-      "part": "Repuesto que necesita",
+      "part": "Repuesto que necesitás",
       "partHint": "Por ejemplo: pastillas de freno delanteras",
       "send": "Consultar por WhatsApp",
       "message": "Hola, busco un repuesto."
@@ -184,13 +255,13 @@
   },
   "sales": {
     "title": "Venta de vehículos",
-    "lead": "Los importamos nosotros, los reparamos si hace falta y los preparamos para la venta. Van 12 vendidos.",
+    "lead": "Tu próximo vehículo puede estar aquí. Conocé nuestra selección de vehículos disponibles y encontrá la opción ideal para vos.",
     "list": "Vehículos en venta",
     "ask": "Preguntar por este vehículo",
     "more": {
-      "title": "¿No ve el que busca?",
-      "body": "Díganos qué vehículo quiere y le cotizamos la importación desde EE. UU.",
-      "link": "Cotizar una importación"
+      "title": "¿Ya tenés tu próximo vehículo en mente?",
+      "body": "Encontrémoslo juntos.",
+      "link": "Cotizar importación"
     },
     "specs": {
       "year": "Año",
@@ -219,31 +290,51 @@
     "whatsapp": "Hola, me interesa el {car}."
   },
   "about": {
-    "label": "Nosotros",
     "tagline": [
       "Driven by",
       "eternal",
       "purpose"
     ],
-    "lead": "JOOX nació de una idea familiar.",
-    "story": [
-      "En 2021, después de la pandemia, mi hermano Harry Mata nos propuso iniciar un negocio de renta de vehículos. Con esfuerzo, un préstamo y muchas ganas de salir adelante, formalizamos nuestra empresa y comenzamos a trabajar en Puntarenas y Cóbano.",
-      "Con los años aprendimos que la distancia también podía limitar nuestro crecimiento y la toma de decisiones. Así nació la idea de construir nuestro propio proyecto en Guápiles, Pococí, Limón.",
-      "Al mismo tiempo descubrimos un mundo nuevo: la importación de vehículos. Y buscando soluciones para nuestros propios vehículos, comenzamos también a importar repuestos desde diferentes plataformas internacionales.",
-      "Así, poco a poco, fueron uniéndose tres caminos:"
-    ],
-    "paths": [
-      "Renta de vehículos",
-      "Importación de vehículos",
-      "Repuestos"
-    ],
-    "after": [
-      "En 2026 decidimos unir todo bajo un solo nombre: JOOX Cars.",
-      "Pero JOOX es más que carros. Es una historia de familia, aprendizaje, trabajo y visión de futuro.",
-      "Y esa visión también se vive en casa. Nuestros hijos, Joslyn y Josh, participan ayudando con el lavado de vehículos y aprendiendo desde pequeños el valor del trabajo y de administrar lo que ganan.",
-      "Porque para nosotros, emprender no solo significa construir un negocio."
-    ],
-    "close": "Significa construir un futuro juntos."
+    "mission": {
+      "title": "Misión",
+      "body": "Brindar soluciones automotrices integrales que faciliten la compra, importación, venta y renta de vehículos, así como la búsqueda e importación de repuestos, acompañando a nuestros clientes en cada etapa con asesoría, transparencia y respaldo."
+    },
+    "vision": {
+      "title": "Visión",
+      "body": "Ser una empresa referente en soluciones automotrices, conectando a Costa Rica con el mercado internacional de vehículos y repuestos, reconocida por nuestra confiabilidad, transparencia y excelencia en el servicio, construyendo relaciones duraderas y un crecimiento sostenible."
+    },
+    "dna": {
+      "title": "ADN JOOX",
+      "values": "Conectar · Resolver · Acompañar",
+      "body": "Somos un puente entre nuestros clientes y el mercado automotriz internacional. Buscamos soluciones, facilitamos procesos y acompañamos a nuestros clientes de principio a fin, trabajando con transparencia, confianza y compromiso para convertir cada necesidad automotriz en una solución concreta."
+    },
+    "what": {
+      "title": "¿Qué hacemos?",
+      "lead": "Conectamos personas con las soluciones automotrices que necesitan. En JOOX rentamos y vendemos vehículos, conseguimos e importamos vehículos desde EE. UU. y buscamos y traemos repuestos de diferentes plataformas y proveedores.",
+      "items": [
+        {
+          "name": "Renta",
+          "line": "vehículos para tus viajes, trabajo o necesidades del día a día."
+        },
+        {
+          "name": "Venta",
+          "line": "comprás tu próximo vehículo."
+        },
+        {
+          "name": "Importación",
+          "line": "buscamos el vehículo en EE. UU. y JOOX lo trae."
+        },
+        {
+          "name": "Repuestos",
+          "line": "nos indicás el repuesto que necesitás y JOOX lo consigue."
+        }
+      ],
+      "close": "Ya sea que estés buscando un vehículo, quieras importar uno que encontraste por tu cuenta o necesités un repuesto específico, te acompañamos durante todo el proceso."
+    },
+    "meaning": {
+      "title": "El significado de JOOX",
+      "body": "JOOX representa movimiento, conexión global y soluciones automotrices integrales. Las letras «OO» simbolizan ruedas en movimiento infinito, continuidad y confianza, reflejando un servicio que acompaña al cliente en cada etapa: compra, repuestos y renta."
+    }
   },
   "reviews": {
     "title": "Lo que dicen nuestros clientes",
@@ -276,25 +367,25 @@
       },
       {
         "q": "¿Cuánto tarda una importación?",
-        "a": "Aproximadamente [X semanas], desde la compra en la subasta hasta la entrega."
+        "a": "Aproximadamente [X semanas], desde la compra hasta la entrega."
       },
       {
-        "q": "¿Qué incluye el costo de una importación?",
-        "a": "Le damos el costo total estimado antes de comprar: vehículo, envío, impuestos y trámites."
+        "q": "¿Cuánto cuesta importar un vehículo?",
+        "a": "Te damos un costo aproximado desde el inicio, pero no un precio exacto: cada etapa cobra según el caso. La grúa depende de dónde esté el vehículo, el barco cobra según sus medidas, el bodegaje según el tiempo en el almacén y los impuestos según las características del vehículo."
       },
       {
         "q": "¿Consiguen repuestos para mi vehículo?",
-        "a": "Díganos la marca, el modelo, el año y el repuesto, y le confirmamos disponibilidad y precio por WhatsApp."
+        "a": "Decinos la marca, el modelo, el año y el repuesto, y te confirmamos disponibilidad y precio por WhatsApp."
       },
       {
         "q": "¿Los vehículos en venta tienen garantía?",
         "a": "[Detalle de la garantía de los vehículos en venta.]"
       }
     ],
-    "more": "¿No encuentra su respuesta?",
+    "more": "¿No encontrás tu respuesta?",
     "ask": "Escribir por WhatsApp",
     "lead": "Lo que más nos preguntan sobre renta, importación, repuestos y venta.",
-    "moreBody": "Escríbanos y le respondemos por WhatsApp."
+    "moreBody": "Escribinos y te respondemos por WhatsApp."
   },
   "contact": {
     "title": "Contacto",
@@ -341,8 +432,7 @@
     "import-keys": "Las llaves"
   },
   "whatsapp": {
-    "general": "Hola, tengo una consulta.",
-    "rental": "Hola, quiero rentar un carro."
+    "general": "Hola, tengo una consulta."
   },
   "fold": {
     "close": "Ocultar"

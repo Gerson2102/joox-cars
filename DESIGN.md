@@ -16,6 +16,7 @@ colors:
   line-on-yellow: "rgb(19 19 19 / 0.22)"
   line-on-black: "rgb(255 255 255 / 0.16)"
   error: "#b3261e"
+  error-on-yellow: "#8c1d18"
   error-on-black: "#ffb4a9"
 typography:
   hero-display:
@@ -183,15 +184,15 @@ components:
     rounded: "{rounded.round}"
     size: "40px"
   step-number:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
     rounded: "{rounded.step}"
     size: "46px"
   step-number-lit:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.yellow}"
+    backgroundColor: "{colors.yellow}"
+    textColor: "{colors.ink}"
   text-field-dark:
-    backgroundColor: "rgb(255 255 255 / 0.06)"
+    backgroundColor: "{colors.ink}"
     textColor: "{colors.paper}"
     rounded: "{rounded.field}"
     padding: "0 18px"
@@ -209,7 +210,7 @@ components:
 
 **Creative North Star: "The Brand in Bands"**
 
-Below the hero film, the homepage is the JOOX logo laid out flat: full-width bands of paper white, JOOX yellow and ink, each carrying one service, in a fixed rhythm (white, yellow, white, black, yellow, black, white, white, black, then a white footer). A band is the unit of the page; it sets its own ink, secondary ink and hairline, and everything inside reads them, so the same component is right on any ground. Rental leads, and the cars stand in a showroom on yellow, one at a time, like a manufacturer's configurator: each car in true side profile on a dotted studio floor, the model's name huge and outlined behind it, the neighbours waiting at the page edges, smaller and softly out of focus. The client's own photos are the proof beside the polish: every car's real photos a tap away, the whole fleet together at home in Guápiles, and a strip of the client's imports.
+Below the hero film, the homepage is the JOOX logo laid out flat: full-width bands of paper white, JOOX yellow and ink, each carrying one service, in a fixed rhythm (white, yellow, white, black, yellow, black, white, white, black, then a white footer). A band is the unit of the page; it sets its own ink, secondary ink and hairline, and everything inside reads them, so the same component is right on any ground. The bands follow the client's menu (rental, sales, import, parts). Rental leads, and the cars stand in a showroom on yellow (the car for sale on white), one at a time, like a manufacturer's configurator: each car in true side profile on a dotted studio floor, the model's name huge and outlined behind it, the neighbours waiting at the page edges, smaller and softly out of focus. The client's own photos are the proof beside the polish: every car's real photos a tap away, the whole fleet together at home in Guápiles, and a strip of the client's imports.
 
 Air, not noise: every band has one job and generous padding, the yellow is spent in whole grounds rather than sprinkled, and the logo's own devices (the ◂ ▸ triangles that flank CARS and the OO infinity loop) are the only ornaments. Motion carries the premium feel: the cars drive the way their carousel travels, coloured bands open from the centre like the curtain in the hero film, the import road runs through its steps in a loop, the import photos travel sideways as you scroll, and the one button floods from its icon capsule.
 
@@ -229,10 +230,10 @@ Archivo carries the whole page on its width axis: expanded ExtraBold for display
 The logo's three colours as grounds, with ink and white at reduced alpha for everything secondary.
 
 ### Primary
-- **JOOX Yellow** (`yellow`): a whole band ground (rental, sales); the primary action on white, black and the film (Rent a car, the parts request, the FAQ and contact WhatsApp buttons); and the brand marks and states that belong to it: the title triangle on white and black bands, the About loop and the word ETERNAL, the contact pin, lit import numerals, the header's scroll-spy pill, an open FAQ ring, the service tile's hover flood, the carousel arrows' triangles, and the focus ring on black.
+- **JOOX Yellow** (`yellow`): a whole band ground (rental, parts); the primary action on white, black and the film (Ver vehículos, the sales and import WhatsApp buttons, the FAQ and contact WhatsApp buttons); and the brand marks and states that belong to it: the title triangle on white and black bands, the About loop and the word ETERNAL, the contact pin, lit import numerals and the full process's step numbers, the header's scroll-spy pill, an open FAQ ring, the service tile's hover flood, the carousel arrows' triangles, and the focus ring on black.
 
 ### Neutral
-- **Ink** (`ink`): the third ground (parts, about, contact, the FAQ panel, the phone menu sheet), all text on white and yellow, the primary action on a yellow band, carousel arrow discs, service discs, lit import steps, the 3px top rules over services, reviews and the FAQ list, and the focus ring on white and yellow.
+- **Ink** (`ink`): the third ground (import, about, contact, the FAQ panel, the phone menu sheet), all text on white and yellow, the primary action on a yellow band, carousel arrow discs, service discs, the parts form's wells, the 3px top rules over services, reviews and the FAQ list, and the focus ring on white and yellow.
 - **Paper** (`paper`): the white bands and footer, the header capsule (at 0.9), text on black.
 - **Soft Ink** (`ink-soft`, `ink-soft-on-yellow`): leads, notes, secondary lines, spec labels and short labels. 0.74 on white, 0.8 on yellow.
 - **Soft White** (`white-soft`, `white-label`): leads and body on black at 0.74; short labels on black at 0.62.
@@ -241,7 +242,7 @@ The logo's three colours as grounds, with ink and white at reduced alpha for eve
 - **Rule Grey** (`rule`) and **Scroll Grey** (`rule-strong`): text selection and the scrollbar thumb, nothing else.
 
 ### Scoped exceptions
-- **Error** (`error` on white, `error-on-black` on black): the parts form's invalid field border and its message.
+- **Error** (`error` on white, `error-on-yellow` on yellow, `error-on-black` on black): the parts form's invalid field border and its message.
 - The hero film's scrims are a green-black (`rgb(12 16 14)`) inside the film stage, and only where type sits: under the header and the canopy behind the copy. They are the film's shade, not a palette colour; the rest of the film is left as shot, with no controls or captions over it.
 
 ### Named Rules
@@ -280,7 +281,7 @@ The logo's three colours as grounds, with ink and white at reduced alpha for eve
 
 **Bands.** Every section is a full-width band: `band-pad` top and bottom (72px and 80px on phones) inside the fluid `gutter`, content in a grid of max `content-max` with `band-gap` between the head and the body. Band heads stack title and lead (max 920px); the showroom bands set title and lead side by side (lead aligned right, stacking at ≤1100px) and start sooner (`showroom-top`) so the stage arrives early.
 
-**Band compositions.** Services: four tiles in a row under a 3px ink rule (2×2 at ≤1100px, a list at ≤700px). Import: six steps on a horizontal road (3 columns and no road at ≤1100px; a vertical road at ≤700px). Parts: title and lead left, the request right (5/7). About: the family's story and the loop (7/5), the loop sticky beside the story. Reviews: three columns under 3px rules. Questions: the list and a sticky black panel beside it (8/4). Contact: WhatsApp and the keys, beside the map card (7/5). Two-column bands stack at ≤1100px.
+**Band compositions.** Services: four tiles in a row under a 3px ink rule (2×2 at ≤1100px, a list at ≤700px). Import: eight steps on a horizontal road (4 columns and no road at ≤1100px; a vertical road at ≤700px), the full process folded below them in two stage columns (one at ≤1100px). Parts: title and lead left, the request right (5/7). About: mission, vision, DNA, what JOOX does and the name's meaning, each a display-3 heading over lead-size text, beside the loop (7/5), the loop sticky beside them. Reviews: three columns under 3px rules. Questions: the list and a sticky black panel beside it (8/4). Contact: WhatsApp and the keys, beside the map card (7/5). Two-column bands stack at ≤1100px.
 
 **The showroom stage.** It bleeds to the viewport edges. Every car is a side-profile cutout on the same canvas, shown `car-w` wide. A step is `50vw + car-w × 0.14`, so a neighbour sits most of the way off the page: only its nearer end shows, at 0.86 scale and out of focus; cars further off fade out. The ◂ ▸ arrows sit in the gaps either side of the car on show, at the height of its body. The stage is the tallest car (`car-w × 0.42`) plus a 40px floor and room for the ghost name. A car on its own stands with no arrows, dots or count. On phones the car is `car-w-phone`, a step is `50vw + car-w × 0.3` (the neighbours are slivers at 0.8 scale), the arrows sit together under the car, and specs run three across.
 
@@ -338,12 +339,12 @@ Under the import journey: a display-3 line that carries the track record in word
 Four tiles under a 3px ink rule, parted by band hairlines: a display-3 name, one line, and an ink disc with a yellow ▸ in the bottom corner. Hover floods the tile yellow from the ground up (0.55s) and slides the disc 8px right; reduced motion drops the flood's transition.
 
 ### Import journey
-Six numbered steps on a road: a 2px band-line track with a ▸ at its end. While the journey is on screen it runs on its own, in a loop: the road fills in ink from step to step (1s on the drive curve, a step every 1.1s), each number (`step-number`) lights from a paper square with an ink ring to ink with a yellow numeral as the fill reaches it, and the step just reached wears a yellow ring and grows to 1.06. The finished road holds for 2.4s, empties, and runs again; it pauses off screen and starts again from the first step when it returns. On phones the road runs vertically beside the numbers. Beneath: the import strip, then the approximate time (a label over a display-3 value) and the ink WhatsApp quote button. Before the script runs and under reduced motion the road is full and every number lit.
+Eight numbered steps on the black band, on a road: a 2px band-line track with a ▸ at its end. While the journey is on screen it runs on its own, in a loop: the road fills in white from step to step (1s on the drive curve, a step every 1.1s), each number (`step-number`) lights from an ink square with a faint white ring to yellow with an ink numeral as the fill reaches it, and the step just reached wears a white ring and grows to 1.06. The finished road holds for 2.4s, empties, and runs again; it pauses off screen and starts again from the first step when it returns. On phones the road runs vertically beside the numbers. Below it, "Ver el proceso completo" (a pill like the phone folds, in a native `<details>`) opens the client's twelve steps in two stages, numbered through in yellow, each a bold title over a soft line. Beneath: the import strip (white arrow discs on black), then the approximate time (a label over a display-3 value) and the yellow WhatsApp quote button. Before the script runs and under reduced motion the road is full and every number lit.
 
 ### Inputs / Fields
-- **Style (black band):** dark wells (`text-field-dark`), 1.5px white 0.18 border, `field` corners, white text, yellow caret, placeholder white 0.56; labels above at 0.875rem, 600, soft white.
-- **Hover / Focus:** border lifts to white 0.36; focus turns it yellow with a 3px yellow 0.28 glow and a slightly lighter well.
-- **Error:** border and message in `error-on-black`. The request is written into a WhatsApp message; the submit is the yellow button.
+- **Style (yellow band):** ink wells (`text-field-dark`), 1.5px ink border, `field` corners, white text, yellow caret, placeholder white 0.56; labels above at 0.875rem, 600, ink at 0.8.
+- **Hover / Focus:** the border lifts to white 0.36; focus is the band's 2px ink ring at 3px offset.
+- **Error:** border and message in `error-on-yellow`. The request is written into a WhatsApp message; the submit is the ink button.
 
 ### Questions
 A list under a 3px ink rule, 1px hairlines between. Each question is a 72px trigger at 600 with a 44px ring holding a plus; hover fills the ring yellow, open turns it to a yellow cross (rotated 45°) and the answer grows open (0.5s) with its text fading down in. Beside it, the sticky black `faq-panel` with a display-3 title, soft-white body and the yellow WhatsApp button.

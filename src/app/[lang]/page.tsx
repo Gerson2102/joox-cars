@@ -12,6 +12,7 @@ import { HeroStage } from "@/components/site/HeroStage";
 import { CarCarousel, type CarSlide } from "@/components/site/CarCarousel";
 import { ProofStrip } from "@/components/site/ProofStrip";
 import { Journey } from "@/components/site/Journey";
+import { ImportProcess } from "@/components/site/ImportProcess";
 import { PartsForm } from "@/components/site/PartsForm";
 import { Fold } from "@/components/site/Fold";
 import { Loop } from "@/components/site/Loop";
@@ -20,8 +21,8 @@ import { Btn } from "@/components/site/Btn";
 import { ScrollFX } from "@/components/site/ScrollFX";
 import b from "@/components/site/bands.module.css";
 
-const SERVICES = ["rental", "import", "parts", "sales"] as const;
-const NAV = ["rental", "import", "parts", "sales", "about", "contact"] as const;
+const SERVICES = ["rental", "sales", "import", "parts"] as const;
+const NAV = ["rental", "sales", "import", "parts", "about", "contact"] as const;
 
 type Tone = "white" | "yellow" | "black";
 const i = (n: number) => ({ ["--i" as string]: n }) as CSSProperties;
@@ -77,6 +78,16 @@ function Band({
   );
 }
 
+/** One part of the About band: its heading, then its text in the band's secondary ink. */
+function AboutPart({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className={b.aboutPart} data-reveal="rise">
+      <h3 className={b.aboutHeading}>{title}</h3>
+      {children}
+    </div>
+  );
+}
+
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
@@ -119,7 +130,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               labels={{ ...t.carousel, list: t.rental.list }}
               viewer={t.viewer}
               price={{ value: t.rental.price, unit: t.rental.perDay }}
-              action={t.rental.reserve}
+              action={{ label: t.rental.reserve, variant: "ink" }}
               cars={slides(t, t.rental.cars, t.rental.whatsapp, (c) => [
                 { label: r.year, value: c.year },
                 { label: r.engine, value: c.engine },
@@ -139,57 +150,22 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   className={b.togetherImg}
                 />
               </div>
-              <figcaption className="map-label">{t.rental.together}</figcaption>
+              <figcaption className="map-label" lang="en">
+                {t.footer.tagline}
+              </figcaption>
             </figure>
           </div>
         </Band>
 
-        {/* White: how an import works (the road runs through the steps in a loop), then the client's own imports. */}
-        <Band id="import" tone="white" title={t.import.title} lead={t.import.lead}>
-          <Fold id="import" openLabel={t.import.open} closeLabel={t.fold.close}>
-            <Journey steps={t.import.steps} />
-          </Fold>
-          <ProofStrip t={t.import.proof} photos={IMPORTS.map((id) => photo(t, id))} viewer={t.viewer} />
-          <div className={b.importFoot}>
-            <p className={b.time}>
-              <span className="map-label">{t.import.time}</span>
-              <span className={b.timeValue}>{t.import.timeValue}</span>
-            </p>
-            <Btn variant="ink" icon="whatsapp" href={wa(t.import.whatsapp)} external>
-              {t.import.quote}
-            </Btn>
-          </div>
-        </Band>
-
-        {/* Black: ask for a spare part. Title left, the request right. */}
-        <section id="parts" aria-labelledby="parts-title" className={`${b.band} ${b.black} ${b.curtain}`}>
-          <div className={`${b.inner} ${b.split}`}>
-            <div className={b.splitAside}>
-              <h2 id="parts-title" className={`display ${b.title}`} data-reveal="title">
-                {t.parts.title}
-              </h2>
-              <p className={b.lead} data-reveal="rise">
-                {t.parts.lead}
-              </p>
-            </div>
-            <div className={b.splitAside} data-reveal="rise">
-              <Fold id="parts" openLabel={t.parts.open} closeLabel={t.fold.close}>
-                <PartsForm t={t.parts.form} />
-                <p className={b.note}>{t.parts.catalog}</p>
-              </Fold>
-            </div>
-          </div>
-        </section>
-
-        {/* Yellow: the cars for sale, facing right; a car on its own simply stands. */}
-        <Band id="sales" tone="yellow" title={t.sales.title} lead={t.sales.lead} wide className={b.showroomBand}>
+        {/* White: the cars for sale, facing right; a car on its own simply stands. */}
+        <Band id="sales" tone="white" title={t.sales.title} lead={t.sales.lead} wide className={b.showroomBand}>
           <div className={b.showroom}>
             <CarCarousel
               travel="right"
               labels={{ ...t.carousel, list: t.sales.list }}
               viewer={t.viewer}
               price={{ value: t.sales.price }}
-              action={t.sales.ask}
+              action={{ label: t.sales.ask, variant: "yellow" }}
               cars={slides(t, t.sales.cars, t.sales.whatsapp, (c) => [
                 { label: s.year, value: c.year },
                 { label: s.km, value: t.sales.km },
@@ -211,33 +187,80 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
         </Band>
 
-        {/* Black: who JOOX is, in the family's own words. The loop is the logo's OO, drawn once, travelled forever. */}
+        {/* Black: how an import works (the road runs through the steps in a loop, the full process folds out
+            below it), then the client's own imports. */}
+        <Band id="import" tone="black" title={t.import.title} lead={t.import.lead}>
+          <Fold id="import" openLabel={t.import.open} closeLabel={t.fold.close}>
+            <Journey steps={t.import.steps} />
+            <ImportProcess t={t.import.process} />
+          </Fold>
+          <ProofStrip t={t.import.proof} photos={IMPORTS.map((id) => photo(t, id))} viewer={t.viewer} />
+          <div className={b.importFoot}>
+            <p className={b.time}>
+              <span className="map-label">{t.import.time}</span>
+              <span className={b.timeValue}>{t.import.timeValue}</span>
+            </p>
+            <Btn variant="yellow" icon="whatsapp" href={wa(t.import.whatsapp)} external>
+              {t.import.quote}
+            </Btn>
+          </div>
+        </Band>
+
+        {/* Yellow: ask for a spare part. Title left, the request right. */}
+        <section id="parts" aria-labelledby="parts-title" className={`${b.band} ${b.yellow} ${b.curtain}`}>
+          <div className={`${b.inner} ${b.split}`}>
+            <div className={b.splitAside}>
+              <h2 id="parts-title" className={`display ${b.title}`} data-reveal="title">
+                {t.parts.title}
+              </h2>
+              <p className={b.lead} data-reveal="rise">
+                {t.parts.lead}
+              </p>
+            </div>
+            <div className={b.splitAside} data-reveal="rise">
+              <Fold id="parts" openLabel={t.parts.open} closeLabel={t.fold.close}>
+                <PartsForm t={t.parts.form} />
+                <p className={b.note}>{t.parts.catalog}</p>
+              </Fold>
+            </div>
+          </div>
+        </section>
+
+        {/* Black: who JOOX is: mission, vision, DNA, what it does and what the name means. The loop is the
+            logo's OO, drawn once, travelled forever. */}
         <section id="about" aria-labelledby="about-title" className={`${b.band} ${b.black} ${b.curtain}`}>
           <div className={`${b.inner} ${b.aboutGrid}`}>
             <div className={b.aboutText}>
               <h2 id="about-title" className={`display ${b.aboutTitle}`} lang="en" data-reveal="title">
                 {driven} <span className={b.eternal}>{eternal}</span> {purpose}
               </h2>
-              <p className={b.aboutLead} data-reveal="rise">
-                {t.about.lead}
-              </p>
-              <div className={b.story}>
-                {t.about.story.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
-                <ul className={b.paths}>
-                  {t.about.paths.map((p) => (
-                    <li key={p}>
+              <AboutPart title={t.about.mission.title}>
+                <p>{t.about.mission.body}</p>
+              </AboutPart>
+              <AboutPart title={t.about.vision.title}>
+                <p>{t.about.vision.body}</p>
+              </AboutPart>
+              <AboutPart title={t.about.dna.title}>
+                <p className={b.aboutLead}>{t.about.dna.values}</p>
+                <p>{t.about.dna.body}</p>
+              </AboutPart>
+              <AboutPart title={t.about.what.title}>
+                <p>{t.about.what.lead}</p>
+                <ul className={b.aboutList}>
+                  {t.about.what.items.map((item) => (
+                    <li key={item.name}>
                       <span className={b.triRight} aria-hidden="true" />
-                      {p}
+                      <span>
+                        <strong>{item.name}:</strong> {item.line}
+                      </span>
                     </li>
                   ))}
                 </ul>
-                {t.about.after.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
-                <p className={b.storyClose}>{t.about.close}</p>
-              </div>
+                <p>{t.about.what.close}</p>
+              </AboutPart>
+              <AboutPart title={t.about.meaning.title}>
+                <p>{t.about.meaning.body}</p>
+              </AboutPart>
             </div>
             <Loop />
           </div>

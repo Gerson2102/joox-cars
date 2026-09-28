@@ -22,7 +22,7 @@ type NavCopy = {
   place: string;
 };
 
-const KEYS = ["rental", "import", "parts", "sales", "about", "contact"] as const;
+const KEYS = ["rental", "sales", "import", "parts", "about", "contact"] as const;
 const noop = () => () => {};
 
 /**

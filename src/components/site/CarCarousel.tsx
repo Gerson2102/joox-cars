@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import type { Credit, Img } from "@/lib/fleet";
 import { wa } from "@/lib/whatsapp";
-import { Btn } from "./Btn";
+import { Btn, type BtnVariant } from "./Btn";
 import { PhotoViewer, type Photo, type ViewerLabels } from "./PhotoViewer";
 import styles from "./carousel.module.css";
 
@@ -41,7 +41,8 @@ type Props = {
   };
   viewer: ViewerLabels;
   price: { value: string; unit?: string };
-  action: string;
+  /** The WhatsApp button: ink on a yellow band, yellow on white (the action follows the ground). */
+  action: { label: string; variant: BtnVariant };
 };
 
 /**
@@ -192,8 +193,8 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
               <p className={styles.price}>
                 <strong>{price.value}</strong> {price.unit}
               </p>
-              <Btn variant="ink" icon="whatsapp" href={wa(c.message)} external>
-                {action}
+              <Btn variant={action.variant} icon="whatsapp" href={wa(c.message)} external>
+                {action.label}
               </Btn>
             </div>
           </div>

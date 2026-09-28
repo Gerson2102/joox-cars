@@ -24,6 +24,7 @@
   --fg-2: rgb(19 19 19 / 0.8);
   --line: rgb(19 19 19 / 0.22);
   --accent: var(--ink);
+  --error: #8c1d18; /* the white bands' red is too light on yellow */
   --ink-flood: #fff; /* an ink button floods white here: yellow would vanish into the band */
 }
 
@@ -300,11 +301,12 @@
   --progress: 1;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 24px;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 20px;
 }
 
-/* The road between the numbers: a pale track, filled in ink step by step, in a loop (Journey.tsx). */
+/* The road between the numbers: a pale track, filled in the band's ink step by step, in a loop (Journey.tsx). */
 .road {
   position: absolute;
   top: 22px;
@@ -341,8 +343,8 @@
   gap: 8px;
 }
 
-/* Unlit: a paper square with an ink ring. Lit: ink with a yellow numeral. The
-   step the road has just reached also wears a yellow ring outside it. */
+/* On the black band. Unlit: an ink square with a faint white ring. Lit: yellow with an ink
+   numeral. The step the road has just reached also wears a white ring outside it. */
 .stepNum {
   position: relative;
   display: grid;
@@ -350,9 +352,9 @@
   width: 46px;
   height: 46px;
   border-radius: 12px;
-  background: var(--paper);
-  color: var(--ink);
-  box-shadow: inset 0 0 0 2px var(--ink);
+  background: var(--ink);
+  color: #fff;
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.4);
   font-stretch: 125%;
   font-weight: 800;
   font-size: 1.125rem;
@@ -361,12 +363,13 @@
 }
 
 .step[data-lit] .stepNum {
-  background: var(--ink);
-  color: var(--yellow);
+  background: var(--yellow);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--yellow);
 }
 
 .step[data-current] .stepNum {
-  box-shadow: inset 0 0 0 2px var(--ink), 0 0 0 3px var(--paper), 0 0 0 5px var(--yellow);
+  box-shadow: inset 0 0 0 2px var(--yellow), 0 0 0 3px var(--ink), 0 0 0 5px #fff;
   transform: scale(1.06);
 }
 
@@ -410,6 +413,72 @@
   font-size: var(--display-3);
 }
 
+/* The full process, folded under the journey (ImportProcess.tsx): two stages side by side, numbered through. */
+.processToggle {
+  list-style: none;
+}
+
+.processToggle::-webkit-details-marker {
+  display: none;
+}
+
+.process[open] .foldChevron {
+  transform: rotate(-135deg) translateY(-2px);
+}
+
+.processBody {
+  display: grid;
+  gap: 32px;
+  padding-top: 32px;
+}
+
+.stages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(36px, 5vw, 88px);
+}
+
+.stage {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.stageTitle {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: var(--display-3);
+  line-height: 1.1;
+}
+
+.stageSteps li {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: 14px;
+  row-gap: 4px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.stageNum {
+  grid-row: span 2;
+  font-stretch: 125%;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.stageStepTitle {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}
+
+.stageStepBody {
+  font-size: var(--text-sm);
+  color: var(--fg-2);
+}
+
 /* ---------- Parts: title left, the request right ---------- */
 
 .split {
@@ -448,20 +517,20 @@
   grid-column: 1 / -1;
 }
 
-/* Fields on the black band: dark wells with a hairline that lights on focus. */
+/* Fields on the yellow band: ink wells with white type, a hairline that lights on hover, the band's ink ring on focus. */
 .field input {
   width: 100%;
   min-width: 0;
   height: 58px;
   padding: 0 18px;
-  border: 1.5px solid rgb(255 255 255 / 0.18);
+  border: 1.5px solid var(--ink);
   border-radius: 14px;
-  background: rgb(255 255 255 / 0.06);
+  background: var(--ink);
   color: #fff;
   font-size: 1rem;
   font-weight: 400;
   caret-color: var(--yellow);
-  transition: border-color 0.25s var(--ease-out), background-color 0.25s var(--ease-out);
+  transition: border-color 0.25s var(--ease-out);
 }
 
 .field input::placeholder {
@@ -470,13 +539,6 @@
 
 .field input:hover {
   border-color: rgb(255 255 255 / 0.36);
-}
-
-.field input:focus-visible {
-  outline: none;
-  border-color: var(--yellow);
-  background: rgb(255 255 255 / 0.09);
-  box-shadow: 0 0 0 3px rgb(253 205 3 / 0.28);
 }
 
 .field input[aria-invalid="true"] {
@@ -494,8 +556,25 @@
   display: contents;
 }
 
+/* The pill toggles: the phone folds (below) and the full import process. */
+.foldToggle,
+.processToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 52px;
+  padding: 12px 22px;
+  border: 2px solid var(--fg);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .foldToggle {
   display: none;
+  justify-self: start;
 }
 
 .foldChevron {
@@ -535,44 +614,17 @@
   color: var(--yellow);
 }
 
-/* The family's story, in their words: the opening line large, then the telling. */
-.aboutLead {
-  max-width: 22ch;
-  font-stretch: 125%;
-  font-weight: 800;
-  font-size: var(--display-3);
-  line-height: 1.15;
-}
-
-.story {
+/* Mission, vision, DNA, what JOOX does and what the name means: each a heading over the band's secondary ink. */
+.aboutPart {
   display: grid;
-  gap: 1em;
+  gap: 0.8em;
   max-width: var(--measure);
   font-size: var(--text-lead);
   color: var(--fg-2);
   text-wrap: pretty;
 }
 
-.paths {
-  display: grid;
-  gap: 10px;
-  margin: 0.2em 0 0.4em;
-  color: var(--fg);
-  font-weight: 700;
-}
-
-.paths li {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.paths .triRight {
-  color: var(--yellow);
-}
-
-.storyClose {
-  margin-top: 0.4em;
+.aboutHeading {
   font-stretch: 125%;
   font-weight: 800;
   font-size: var(--display-3);
@@ -580,7 +632,35 @@
   color: var(--fg);
 }
 
-/* The loop keeps company with the story as it scrolls past. */
+/* The DNA's three verbs, large. */
+.aboutLead {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.625rem, 1.2rem + 1.4vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--fg);
+}
+
+.aboutList {
+  display: grid;
+  gap: 10px;
+  color: var(--fg);
+}
+
+.aboutList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* The triangle sits on the item's first line. */
+.aboutList .triRight {
+  flex: none;
+  margin-top: 0.5em;
+  color: var(--yellow);
+}
+
+/* The loop keeps company with the text as it scrolls past. */
 .loop {
   position: sticky;
   top: calc(var(--nav-h) + 64px);
@@ -865,12 +945,17 @@
   }
 
   .journey {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     row-gap: 36px;
   }
 
   .road {
     display: none;
+  }
+
+  .stages {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .split,
@@ -985,17 +1070,6 @@
   /* Folds: only with JS; without it, everything shows. */
   :global(.js) .foldToggle {
     display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    justify-self: start;
-    min-height: 52px;
-    padding: 12px 22px;
-    border: 2px solid var(--fg);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--fg);
-    font-weight: 600;
-    cursor: pointer;
   }
 
   :global(.js) .fold[data-open="false"] {

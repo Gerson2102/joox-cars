@@ -60,19 +60,14 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--ink);
-  color: var(--yellow);
+  background: var(--paper);
+  color: var(--ink);
   cursor: pointer;
   transition: transform 0.25s var(--ease-out), background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
 }
 
 .arrow:active {
   transform: scale(0.92);
-}
-
-.arrow:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
 }
 
 .triLeft,
@@ -164,7 +159,7 @@
   scroll-snap-type: x proximity;
   scroll-padding-inline: var(--edge);
   scrollbar-width: thin;
-  scrollbar-color: rgb(19 19 19 / 0.28) transparent;
+  scrollbar-color: var(--line) transparent;
 }
 
 .strip > li {
@@ -185,11 +180,6 @@
   border-radius: 14px;
   background: var(--rule);
   cursor: zoom-in;
-}
-
-.shot:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
 }
 
 .img {

@@ -1,16 +1,16 @@
 {
   "meta": {
     "title": "Car Rental in Guápiles, Costa Rica & US Import | JOOX CARS",
-    "description": "Rent a car we imported ourselves, in Guápiles, Costa Rica. We also import vehicles from the US and sell cars and spare parts."
+    "description": "Car rental and sales in Guápiles, Costa Rica. We import vehicles from the US and source spare parts from different platforms."
   },
   "nav": {
     "home": "JOOX CARS, home",
     "label": "Main",
     "links": {
       "rental": "Rental",
+      "sales": "Sales",
       "import": "Import",
       "parts": "Parts",
-      "sales": "Sales",
       "about": "About",
       "contact": "Contact"
     },
@@ -24,29 +24,29 @@
     "place": "JOOX CARS · Guápiles, Costa Rica"
   },
   "hero": {
-    "title": "Rent a car we imported ourselves.",
-    "sub": "From Guápiles, Costa Rica, JOOX CARS rents, imports from the US, and sells vehicles and spare parts, with the full cost clear from day one.",
-    "primary": "Rent a car",
+    "title": "Your vehicle. Our experience.",
+    "sub": "From Guápiles, Costa Rica, JOOX CARS rents and sells vehicles, imports from the US and sources spare parts from different platforms.",
+    "primary": "See vehicles",
     "secondary": "Get an import quote"
   },
   "services": {
-    "title": "We rent, import and sell.",
+    "title": "We rent, sell, import and find your spare parts.",
     "items": {
       "rental": {
         "name": "Car rental",
-        "line": "Cars from our own fleet, each one imported by us."
-      },
-      "import": {
-        "name": "Import from the US",
-        "line": "We bring your vehicle from US auctions."
-      },
-      "parts": {
-        "name": "Spare parts",
-        "line": "Parts for your vehicle. Ask us on WhatsApp."
+        "line": "Reliable vehicles in excellent condition, with outstanding customer service."
       },
       "sales": {
         "name": "Vehicle sales",
-        "line": "Vehicles we import and get ready ourselves."
+        "line": "Local and imported vehicles, chosen for their quality and excellent condition."
+      },
+      "import": {
+        "name": "Vehicle import",
+        "line": "We bring the vehicle you want from the US and stay with you through the whole process."
+      },
+      "parts": {
+        "name": "Spare parts",
+        "line": "We find the part your vehicle needs across different platforms."
       }
     }
   },
@@ -71,7 +71,7 @@
   },
   "rental": {
     "title": "Car rental",
-    "lead": "Every car in the fleet came from a US auction, and we imported it ourselves. You see the daily price and what the insurance covers before you book.",
+    "lead": "We offer reliable, spotless vehicles in excellent condition, so you can enjoy every trip in comfort and peace of mind.",
     "list": "Rental fleet",
     "specs": {
       "year": "Year",
@@ -121,43 +121,50 @@
         "ref": "black 2015 Mitsubishi Outlander Sport"
       }
     ],
-    "whatsapp": "Hi, I'd like to rent the {car}.",
-    "together": "The whole fleet, in Guápiles, Pococí."
+    "whatsapp": "Hi, I'd like to rent the {car}."
   },
   "import": {
-    "title": "Import from the US",
-    "lead": "You choose the vehicle and we handle the rest, with the full cost clear from day one.",
+    "title": "Vehicle import from the US",
+    "lead": "From finding the vehicle to seeing it arrive in Costa Rica, we are with you every step of the way.",
     "steps": [
       {
-        "title": "Choose the vehicle",
-        "body": "Tell us what you are looking for, or send us the auction link."
+        "title": "We search",
+        "body": "We go through the US options with you."
       },
       {
-        "title": "Full cost",
-        "body": "We give you the estimated total: vehicle, shipping, taxes and paperwork."
+        "title": "You choose",
+        "body": "You pick the vehicle, with the price and terms clear."
       },
       {
-        "title": "Auction purchase",
-        "body": "We buy the vehicle at the US auction."
+        "title": "We buy",
+        "body": "We make the offer or the purchase and arrange the payments."
       },
       {
-        "title": "Shipping",
-        "body": "We ship it to Costa Rica."
+        "title": "We haul",
+        "body": "A tow truck takes it to the port."
       },
       {
-        "title": "Customs and registration",
-        "body": "We handle customs and registration."
+        "title": "We ship",
+        "body": "It sails to Costa Rica."
       },
       {
-        "title": "Delivery",
-        "body": "We hand you your vehicle."
+        "title": "We import",
+        "body": "Unloading, bonded warehouse and DEKRA inspection."
+      },
+      {
+        "title": "We clear customs",
+        "body": "Tax assessment and payment."
+      },
+      {
+        "title": "We deliver",
+        "body": "Approval and release: the big day."
       }
     ],
     "time": "Approximate time",
     "timeValue": "[X weeks]",
     "quote": "Get an import quote",
     "whatsapp": "Hi, I'd like a quote to import a vehicle.",
-    "open": "See the 6 steps",
+    "open": "See the 8 steps",
     "proof": {
       "title": "20 cars imported so far.",
       "body": "Photos from our own imports.",
@@ -165,6 +172,70 @@
       "prev": "Previous photos",
       "next": "More photos",
       "of": "of"
+    },
+    "process": {
+      "toggle": "See the full process",
+      "intro": "JOOX does more than find the vehicle: we coordinate the whole process until it is ready to leave customs in Costa Rica.",
+      "stages": [
+        {
+          "title": "Stage 1 · In the US",
+          "steps": [
+            {
+              "title": "You contact us",
+              "body": "Tell us which vehicle you are looking for, or which one you already found in the US. We talk about make, model, year, colour, budget and features."
+            },
+            {
+              "title": "We search and compare options",
+              "body": "We show you the platforms and sources we work with and go through the options together by make and model, year, colour, condition, price, location and related costs. You see the options before you decide."
+            },
+            {
+              "title": "We choose the vehicle and make the offer",
+              "body": "When you find one you like, we arrange the offer or purchase with the dealer or seller. You know the price and terms before going ahead."
+            },
+            {
+              "title": "Vehicle purchased",
+              "body": "Once the offer is accepted or the vehicle is bought, the import formally begins. Payments to the auction, the seller or the dealer are arranged, depending on how it was bought."
+            },
+            {
+              "title": "Overland transport",
+              "body": "Once paid, we book the tow truck from the vehicle's location to the port. Our reference manual lets us estimate this cost by distance before arranging the move."
+            },
+            {
+              "title": "Shipping to Costa Rica",
+              "body": "At the port we arrange the sea freight, which is priced by the vehicle's size and features. Then it sails for Costa Rica."
+            }
+          ]
+        },
+        {
+          "title": "Stage 2 · In Costa Rica",
+          "steps": [
+            {
+              "title": "Unloading and bonded warehouse",
+              "body": "When it reaches Costa Rica, the vehicle is unloaded and moved to the warehouse the shipping line assigns."
+            },
+            {
+              "title": "DEKRA inspection",
+              "body": "At the warehouse, the vehicle goes through the DEKRA inspection needed to continue with its registration in Costa Rica."
+            },
+            {
+              "title": "Tax assessment",
+              "body": "After the inspection comes the tax assessment, based on the official table that sets the vehicle's value."
+            },
+            {
+              "title": "Tax payment",
+              "body": "With the assessment done, the taxes are paid and the vehicle waits for approval to continue."
+            },
+            {
+              "title": "Storage and release authorisation",
+              "body": "Storage fees can build up while the process is completed, and are paid as they apply."
+            },
+            {
+              "title": "Approval and release: the big day",
+              "body": "With every approval and payment complete, the vehicle is released and heads to its final destination."
+            }
+          ]
+        }
+      ]
     }
   },
   "parts": {
@@ -184,12 +255,12 @@
   },
   "sales": {
     "title": "Vehicle sales",
-    "lead": "We import them ourselves, repair them if needed and get them ready to sell. 12 sold so far.",
+    "lead": "Your next vehicle could be here. Browse our selection of available vehicles and find the right one for you.",
     "list": "Vehicles for sale",
     "ask": "Ask about this vehicle",
     "more": {
-      "title": "Not seeing the one you want?",
-      "body": "Tell us which vehicle you want and we quote its import from the US.",
+      "title": "Already have your next vehicle in mind?",
+      "body": "Let's find it together.",
       "link": "Get an import quote"
     },
     "specs": {
@@ -219,31 +290,51 @@
     "whatsapp": "Hi, I'm interested in the {car}."
   },
   "about": {
-    "label": "About",
     "tagline": [
       "Driven by",
       "eternal",
       "purpose"
     ],
-    "lead": "JOOX began as a family idea.",
-    "story": [
-      "In 2021, after the pandemic, my brother Harry Mata suggested we start a car rental business. With hard work, a loan and a real drive to get ahead, we made the company official and started working in Puntarenas and Cóbano.",
-      "Over the years we learned that distance could also hold back our growth and our decisions. That is how the idea of building our own project in Guápiles, Pococí, Limón was born.",
-      "At the same time we discovered a new world: importing vehicles. And while looking for solutions for our own cars, we also started importing spare parts from different international platforms.",
-      "Little by little, three paths came together:"
-    ],
-    "paths": [
-      "Car rental",
-      "Vehicle import",
-      "Auto parts"
-    ],
-    "after": [
-      "In 2026 we decided to bring it all under one name: JOOX Cars.",
-      "But JOOX is more than cars. It is a story of family, learning, work and vision for the future.",
-      "And that vision lives at home too. Our children, Joslyn and Josh, help wash the vehicles and are learning from an early age the value of work and of managing what they earn.",
-      "Because for us, starting a business doesn't only mean building a company."
-    ],
-    "close": "It means building a future together."
+    "mission": {
+      "title": "Mission",
+      "body": "To provide complete automotive solutions that make it easier to buy, import, sell and rent vehicles, and to find and import spare parts, standing by our customers at every stage with advice, transparency and support."
+    },
+    "vision": {
+      "title": "Vision",
+      "body": "To be a leading automotive solutions company, connecting Costa Rica with the international vehicle and parts market, known for our reliability, transparency and excellent service, building lasting relationships and sustainable growth."
+    },
+    "dna": {
+      "title": "JOOX DNA",
+      "values": "Connect · Solve · Stand by",
+      "body": "We are a bridge between our customers and the international car market. We look for solutions, make processes easier and stand by our customers from start to finish, working with transparency, trust and commitment to turn every automotive need into a concrete solution."
+    },
+    "what": {
+      "title": "What we do",
+      "lead": "We connect people with the automotive solutions they need. At JOOX we rent and sell vehicles, find and import vehicles from the US, and source spare parts from different platforms and suppliers.",
+      "items": [
+        {
+          "name": "Rental",
+          "line": "vehicles for your trips, work or everyday needs."
+        },
+        {
+          "name": "Sales",
+          "line": "buy your next vehicle."
+        },
+        {
+          "name": "Import",
+          "line": "we find the vehicle in the US and JOOX brings it."
+        },
+        {
+          "name": "Parts",
+          "line": "tell us the part you need and JOOX finds it."
+        }
+      ],
+      "close": "Whether you are looking for a vehicle, want to import one you found yourself or need a specific part, we are with you through the whole process."
+    },
+    "meaning": {
+      "title": "What JOOX means",
+      "body": "JOOX stands for movement, global connection and complete automotive solutions. The letters “OO” are wheels in endless motion, continuity and trust: a service that stays with the customer at every stage, from buying to parts and rental."
+    }
   },
   "reviews": {
     "title": "What our customers say",
@@ -276,11 +367,11 @@
       },
       {
         "q": "How long does an import take?",
-        "a": "About [X weeks], from the auction purchase to delivery."
+        "a": "About [X weeks], from purchase to delivery."
       },
       {
-        "q": "What does the import cost include?",
-        "a": "We give you the estimated total before buying: vehicle, shipping, taxes and paperwork."
+        "q": "How much does it cost to import a vehicle?",
+        "a": "We give you an approximate cost from the start, but not an exact price: each stage charges case by case. The tow depends on where the vehicle is, the ship charges by its size, storage by how long it stays in the warehouse, and taxes by the vehicle's features."
       },
       {
         "q": "Can you find parts for my vehicle?",
@@ -341,8 +432,7 @@
     "import-keys": "The keys"
   },
   "whatsapp": {
-    "general": "Hi, I have a question.",
-    "rental": "Hi, I'd like to rent a car."
+    "general": "Hi, I have a question."
   },
   "fold": {
     "close": "Hide"

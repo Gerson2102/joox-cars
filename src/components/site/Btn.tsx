@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { ArrowIcon, ExternalIcon, PhotosIcon, WhatsAppIcon } from "@/components/icons";
 import styles from "./buttons.module.css";
 
-type BtnVariant = "yellow" | "ink" | "white" | "ghostLight";
+export type BtnVariant = "yellow" | "ink" | "white" | "ghostLight";
 type Icon = "arrow" | "whatsapp" | "photos" | "external";
 
 const ICONS = { arrow: ArrowIcon, whatsapp: WhatsAppIcon, photos: PhotosIcon, external: ExternalIcon };
