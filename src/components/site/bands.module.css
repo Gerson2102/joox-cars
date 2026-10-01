@@ -101,31 +101,38 @@
   max-width: 920px;
 }
 
-.headWide {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-  align-items: end;
-  column-gap: clamp(32px, 5vw, 80px);
-  max-width: none;
-}
-
-.headWide .lead {
-  justify-self: end;
-}
-
 .showroomBand {
   padding-top: clamp(64px, 7vw, 104px);
 }
 
-/* The logo's triangle leads each band title (a mark, not a kicker). */
 .title {
-  display: flex;
-  align-items: baseline;
-  gap: 0.32em;
   max-width: 15em;
   font-size: var(--display-2);
 }
 
-.title::before {
+/* The services statement runs long: smaller and wider, so it reads in two lines. */
+.servicesBand .head {
+  max-width: none;
+}
+
+.servicesBand .title {
+  max-width: 24em;
+  font-size: clamp(2rem, 1.1rem + 2.6vw, 3.25rem);
+}
+
+/* The questions are a utility: a quieter title. */
+.faqBand .title {
+  font-size: clamp(1.875rem, 1.2rem + 2vw, 3rem);
+}
+
+/* The logo's triangle leads three band titles (services, import, contact): a signature, not a kicker. */
+.mark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.32em;
+}
+
+.mark::before {
   content: "";
   flex: none;
   width: 0.34em;
@@ -149,21 +156,15 @@
   color: var(--fg-2);
 }
 
-/* The logo's ◂ ▸, drawn. */
-.triRight {
-  display: block;
-  width: 10px;
-  height: 12px;
-  background: currentColor;
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-/* ---------- Services: the four at a glance ---------- */
+/* ---------- Services: the four at a glance ----------
+   Rental's landscape photo beside the two portrait ones, all uncropped and one
+   height (16fr : 9fr is (4/3) : (3/4)); parts, with no photo yet, runs under
+   them as a yellow panel. Name, line and the arrow disc sit under each photo. */
 
 .services {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 3px solid var(--fg);
+  grid-template-columns: minmax(0, 16fr) repeat(2, minmax(0, 9fr));
+  gap: 40px clamp(16px, 2vw, 28px);
 }
 
 .services > li {
@@ -171,34 +172,52 @@
   transition-delay: calc(var(--i, 0) * 90ms);
 }
 
+.services > li:last-child {
+  grid-column: 1 / -1;
+}
+
 .service {
-  position: relative;
-  isolation: isolate;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "frame frame" "text go";
   align-content: start;
-  gap: 12px;
+  gap: 18px 20px;
   height: 100%;
-  min-height: 230px;
-  padding: 28px 28px 80px;
   text-decoration: none;
-  border-right: 1px solid var(--line);
-  overflow: hidden;
 }
 
-/* Hover: the tile floods yellow from the ground up. */
-.service::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+.service:not([data-photo]) {
+  grid-template-areas: "text go";
+  align-content: center;
+  align-items: center;
+  padding: clamp(24px, 2.6vw, 36px);
+  border-radius: 20px;
   background: var(--yellow);
-  transform: scaleY(0);
-  transform-origin: 50% 100%;
-  transition: transform 0.55s var(--ease-out);
+  transition: background-color 0.3s var(--ease-out);
 }
 
-.services li:last-child .service {
-  border-right: 0;
+.serviceFrame {
+  grid-area: frame;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--rule);
+}
+
+.services > li:first-child .serviceFrame {
+  aspect-ratio: 4 / 3;
+}
+
+.serviceImg {
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.serviceText {
+  grid-area: text;
+  display: grid;
+  gap: 6px;
 }
 
 .serviceName {
@@ -209,36 +228,50 @@
 }
 
 .serviceLine {
-  max-width: 28ch;
+  max-width: 40ch;
   color: var(--fg-2);
 }
 
+/* The same arrow as the buttons: this goes somewhere on the page. */
 .serviceGo {
-  position: absolute;
-  left: 28px;
-  bottom: 26px;
+  grid-area: go;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--ink);
   color: var(--yellow);
-  transition: transform 0.5s var(--ease-out);
+  transition: transform 0.5s var(--ease-out), background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.serviceArrow {
+  width: 20px;
+  height: 20px;
 }
 
 @media (hover: hover) {
-  .service:hover::before {
-    transform: scaleY(1);
+  .service:hover .serviceImg {
+    transform: scale(1.035);
   }
 
   .service:hover .serviceGo {
-    transform: translateX(8px);
+    transform: translateX(4px);
+  }
+
+  .service[data-photo]:hover .serviceGo {
+    background: var(--yellow);
+    color: var(--ink);
+  }
+
+  .service:not([data-photo]):hover {
+    background: var(--yellow-hover);
   }
 }
 
 .service:focus-visible {
-  outline-offset: -3px;
+  outline-offset: 6px;
+  border-radius: 20px;
 }
 
 /* ---------- Rental and sales: the showroom band ---------- */
@@ -592,17 +625,22 @@
 
 /* ---------- About: driven by eternal purpose ---------- */
 
+/* Mission beside vision, DNA beside what JOOX does. */
 .aboutGrid {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: clamp(36px, 5vw, 88px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(36px, 4.5vw, 64px) clamp(36px, 5vw, 88px);
   align-items: start;
 }
 
-.aboutText {
+/* The name's meaning beside the loop it explains. */
+.meaning {
   display: grid;
-  gap: 28px;
-  align-content: start;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(36px, 5vw, 88px);
+  align-items: center;
+  padding-top: clamp(36px, 4.5vw, 64px);
+  border-top: 1px solid var(--line);
 }
 
 .aboutTitle {
@@ -632,8 +670,9 @@
   color: var(--fg);
 }
 
-/* The DNA's three verbs, large. */
+/* The DNA's three verbs, large, one per line (a half column cannot hold them in one). */
 .aboutLead {
+  display: grid;
   font-stretch: 125%;
   font-weight: 800;
   font-size: clamp(1.625rem, 1.2rem + 1.4vw, 2.25rem);
@@ -641,33 +680,10 @@
   color: var(--fg);
 }
 
-.aboutList {
-  display: grid;
-  gap: 10px;
-  color: var(--fg);
-}
-
-.aboutList li {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-/* The triangle sits on the item's first line. */
-.aboutList .triRight {
-  flex: none;
-  margin-top: 0.5em;
-  color: var(--yellow);
-}
-
-/* The loop keeps company with the text as it scrolls past. */
 .loop {
-  position: sticky;
-  top: calc(var(--nav-h) + 64px);
   width: 100%;
-  max-width: 560px;
+  max-width: 520px;
   height: auto;
-  justify-self: center;
   overflow: visible;
 }
 
@@ -840,36 +856,40 @@
   color: var(--yellow);
 }
 
-/* Where to find JOOX: the town in the display voice, and the way to the map. */
+/* Where to find JOOX: the map, then the town in the display voice and the way to Google Maps. */
 .map {
   display: grid;
-  align-content: center;
-  justify-items: start;
-  gap: 10px;
-  min-height: 300px;
-  padding: clamp(24px, 3vw, 40px);
+  grid-template-rows: minmax(260px, 1fr) auto;
+  overflow: hidden;
   border: 1.5px solid var(--line);
   border-radius: 20px;
+}
+
+.mapFrame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgb(255 255 255 / 0.06);
+}
+
+.mapInfo {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: clamp(20px, 2.4vw, 32px);
 }
 
 .mapPlace {
   font-stretch: 125%;
   font-weight: 800;
-  font-size: var(--display-2);
-  line-height: 0.98;
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
+  line-height: 1;
   letter-spacing: -0.02em;
 }
 
 .mapArea {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   color: var(--fg-2);
-}
-
-.pin {
-  width: 18px;
-  height: 22px;
-  background: var(--yellow);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
 /* ---------- Footer ---------- */
@@ -932,16 +952,17 @@
 /* ---------- Tablets ---------- */
 
 @media (max-width: 1100px) {
+  /* Rental's photo across the top, sales and import side by side under it. */
   .services {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .services li:nth-child(2) .service {
-    border-right: 0;
+  .services > li:first-child {
+    grid-column: 1 / -1;
   }
 
-  .services li:nth-child(n + 3) .service {
-    border-top: 1px solid var(--line);
+  .services > li:first-child .serviceFrame {
+    aspect-ratio: 16 / 9;
   }
 
   .journey {
@@ -960,24 +981,12 @@
 
   .split,
   .faqGrid,
-  .contactGrid,
-  .aboutGrid,
-  .headWide {
+  .contactGrid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .headWide .lead {
-    justify-self: start;
   }
 
   .faqPanel {
     position: static;
-  }
-
-  .loop {
-    position: static;
-    max-width: 420px;
-    justify-self: start;
   }
 
   .reviews {
@@ -1001,27 +1010,30 @@
     padding-top: 64px;
   }
 
+  /* A list: each photo a small square beside its name. */
   .services {
     grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
 
-  .services li .service {
-    min-height: 0;
-    padding: 22px 76px 22px 18px;
-    border-right: 0;
-    border-top: 1px solid var(--line);
+  .service {
+    align-items: center;
   }
 
-  .services li:first-child .service {
-    border-top: 0;
+  .service[data-photo] {
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    grid-template-areas: "frame text go";
+    column-gap: 16px;
   }
 
-  .serviceGo {
-    left: auto;
-    right: 14px;
-    bottom: auto;
-    top: 50%;
-    margin-top: -20px;
+  .serviceFrame,
+  .services > li:first-child .serviceFrame {
+    aspect-ratio: 1;
+    border-radius: 14px;
+  }
+
+  .serviceLine {
+    font-size: var(--text-sm);
   }
 
   /* The journey reads downward: numbers on a vertical road that fills as you scroll. */
@@ -1076,12 +1088,21 @@
     display: none;
   }
 
+  .aboutGrid,
+  .meaning {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .loop {
+    max-width: 360px;
+  }
+
   .contactList {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .map {
-    min-height: 200px;
+    grid-template-rows: 240px auto;
   }
 
   .togetherFrame {
@@ -1107,7 +1128,7 @@
     animation: none;
   }
 
-  .service::before {
+  .serviceImg {
     transition: none;
   }
 }

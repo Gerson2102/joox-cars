@@ -12,17 +12,20 @@ type Props = {
 };
 
 const EASE = 0.1; // how much of the remaining distance the strip covers each frame
+const RATE = 2; // pixels the strip travels per pixel scrolled
 
 /**
  * The client's own imports. Scrolling down the page holds the strip in view
  * and carries it sideways, eased toward the scroll position, each photo
  * drifting slightly inside its frame; a count and a line show the way through.
- * Without the script, and under reduced motion, it is a strip you swipe or
- * page with the arrows. Any photo opens full screen.
+ * Without the script, on touch screens (where a sideways swipe is the natural
+ * gesture) and under reduced motion, it is a strip you swipe or page with the
+ * arrows. Any photo opens full screen.
  */
 export function ProofStrip({ t, photos, viewer }: Props) {
   const [photo, setPhoto] = useState<number | null>(null);
   const runwayRef = useRef<HTMLDivElement>(null);
+  const heldRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
   const countRef = useRef<HTMLSpanElement>(null);
@@ -30,8 +33,9 @@ export function ProofStrip({ t, photos, viewer }: Props) {
 
   useEffect(() => {
     const runway = runwayRef.current;
+    const held = heldRef.current;
     const track = trackRef.current;
-    if (!runway || !track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!runway || !held || !track || window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
     runway.dataset.scrub = "";
 
     const items = Array.from(track.children) as HTMLElement[];
@@ -63,11 +67,17 @@ export function ProofStrip({ t, photos, viewer }: Props) {
       target = p * travel;
       kick();
     };
+    // The frame is held where its CSS centres it under the header, for `span` pixels of scroll;
+    // the runway is just tall enough for that, so no empty band opens above or below the strip.
     const measure = () => {
       travel = Math.max(0, track.scrollWidth - window.innerWidth);
-      runway.style.height = `${window.innerHeight + travel}px`;
-      top = runway.getBoundingClientRect().top + window.scrollY;
-      span = Math.max(1, runway.offsetHeight - window.innerHeight);
+      span = Math.max(1, travel / RATE);
+      held.style.setProperty("--held-h", `${held.offsetHeight}px`);
+      const pin = parseFloat(getComputedStyle(held).top);
+      const style = getComputedStyle(runway);
+      const lead = parseFloat(style.borderTopWidth) + parseFloat(style.paddingTop);
+      runway.style.height = `${lead + held.offsetHeight + span}px`;
+      top = runway.getBoundingClientRect().top + window.scrollY + lead - pin;
       centres = items.map((it) => it.offsetLeft + it.offsetWidth / 2);
       read();
     };
@@ -92,6 +102,7 @@ export function ProofStrip({ t, photos, viewer }: Props) {
       cancelAnimationFrame(raf);
       delete runway.dataset.scrub;
       runway.style.height = "";
+      held.style.removeProperty("--held-h");
       track.style.transform = "";
       focusRef.current = () => {};
     };
@@ -106,7 +117,7 @@ export function ProofStrip({ t, photos, viewer }: Props) {
 
   return (
     <div ref={runwayRef} className={styles.proof}>
-      <div className={styles.frame}>
+      <div ref={heldRef} className={styles.frame}>
         <div className={styles.head}>
           <div className={styles.text}>
             <h3 className={styles.title}>{t.title}</h3>

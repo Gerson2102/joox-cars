@@ -25,9 +25,14 @@ def origin(key: str) -> str:
     return f"{s['page']} ({s['license']})"
 
 
+def poster(stem: str) -> str:
+    """A hero poster's path under OUT (v2_bake.py names them by content)."""
+    return "v2/" + os.path.basename(glob.glob(os.path.join(OUT, "v2", f"{stem}-????????.webp"))[0])
+
+
 ORIGINS = {
-    "v2/poster.webp": f"Baked frame at 5.0 s of {origin('forest')}, {LOOK}: JOOX drawn in (closed curtain), the car cut out with BiRefNet and steadied over neighbouring frames, plate blurred. Made by scripts/media/v2_bake.py.",
-    "v2/poster-phone.webp": f"Phone crop (890x1080) of the baked V2 frame at 5.0 s of {origin('forest')}, {LOOK}. Made by scripts/media/v2_bake.py.",
+    poster("poster"): f"Baked frame at 5.0 s of {origin('forest')}, {LOOK}: JOOX drawn in (closed curtain), the car cut out with BiRefNet and steadied over neighbouring frames, plate blurred. Made by scripts/media/v2_bake.py.",
+    poster("poster-phone"): f"Phone crop (890x1080) of the baked V2 frame at 4.13 s of {origin('forest')}, {LOOK}. Made by scripts/media/v2_bake.py.",
     **{
         "fleet/" + os.path.basename(glob.glob(os.path.join(OUT, "fleet", f"{slug}-side-*.webp"))[0]): (
             f"Side-profile showroom cutout of a model photo for the client's car: the Wikimedia Commons photo \"{car['commons']}\" by {car['author']} "

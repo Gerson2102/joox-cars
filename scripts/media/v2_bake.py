@@ -31,7 +31,7 @@ Two layouts, one render each:
 Outputs in public/media/v2/:
   film.av1.mp4/.mp4, film-720.*   desktop layout (1080p and 1280 wide)
   film-phone.av1.mp4/.mp4         phone layout
-  poster.webp, poster-phone.webp  the frame at POSTER_SRC_T (LCP images)
+  poster-<hash>.webp, poster-phone-<hash>.webp  the frames at POSTER_SRC_T (LCP images), named by content
 
 The stand-in car's licence plate is blurred in every frame.
 
@@ -40,6 +40,8 @@ override the word, e.g. for another language.
 """
 
 import functools
+import glob
+import hashlib
 import json
 import os
 
@@ -55,7 +57,9 @@ SPEED = 1.4                       # playback speed; the output keeps every sourc
 OUT_FPS = f"{round(24000 * SPEED)}/1001"
 START = 1.2                       # source second the loop starts at (road still empty)
 DISSOLVE = 0.35                   # output seconds of the loop dissolve (empty road both sides)
-POSTER_SRC_T = 5.0                # source second of the poster (car in front of the word)
+# Source second of each poster: the car in front of the word; on the phone, where the word is smaller and
+# the car would hide the J, the car arriving beside the whole word.
+POSTER_SRC_T = {"desktop": 5.0, "phone": 4.13}
 BG_RANGE = (0.0, 1.8)             # car-free seconds for the clean plate
 ROI_TOP = 0.46                    # the car never rises above this fraction of the frame
 BASELINE = 0.8                    # the word's baseline, fraction of the frame height
@@ -410,6 +414,16 @@ def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndar
     return out
 
 
+def save_poster(frame: np.ndarray, out: str, stem: str) -> str:
+    """Saves a poster named by its content, like the fleet cutouts, so a new frame never hides behind a
+    cached optimised copy; removes the one it replaces. Returns the file name (HeroStage.tsx points at it)."""
+    for old in glob.glob(os.path.join(out, f"{stem}-????????.webp*")) + glob.glob(os.path.join(out, f"{stem}.webp*")):
+        os.remove(old)
+    name = f"{stem}-{hashlib.sha1(frame.tobytes()).hexdigest()[:8]}.webp"
+    save_webp(frame, os.path.join(out, name))
+    return name
+
+
 def main() -> None:
     out = out_dir("v2")
     src = source_path("forest")
@@ -530,7 +544,8 @@ def main() -> None:
         "phone": Encoder(os.path.join(out, "film-phone"), widths["phone"], H, OUT_FPS),
     }
     lead: dict[str, list[np.ndarray]] = {k: [] for k in crops}
-    poster_i = round(POSTER_SRC_T * SRC_FPS)
+    poster_i = {name: round(t * SRC_FPS) for name, t in POSTER_SRC_T.items()}
+    posters: dict[str, str] = {}
     done = 0
     for i, fr in enumerate(read_frames(src, vf, W, H, start=0)):
         if i < lead_i:
@@ -552,8 +567,8 @@ def main() -> None:
                 cover = cover * (1 - a)
             comp = (f * (1 - cover[..., None]) + BONE * cover[..., None])[:, cx0:cx0 + cw]
             comp8 = np.clip(comp + 0.5, 0, 255).astype(np.uint8)
-            if i == poster_i:
-                save_webp(comp8, os.path.join(out, "poster.webp" if name == "desktop" else "poster-phone.webp"))
+            if i == poster_i[name]:
+                posters[name] = save_poster(comp8, out, "poster" if name == "desktop" else "poster-phone")
             if i < start_i:
                 lead[name].append(comp8)
                 continue
@@ -563,14 +578,14 @@ def main() -> None:
                 comp8 = (comp8.astype(np.float32) * (1 - w) + lead[name][tail_k].astype(np.float32) * w + 0.5).astype(np.uint8)
             encs[name].write(comp8)
 
-    poster_t = round((poster_i - start_i) / (SRC_FPS * SPEED), 3)
+    poster_t = {name: round((pi - start_i) / (SRC_FPS * SPEED), 3) for name, pi in poster_i.items()}
     for name, enc in encs.items():
         print(name, enc.close(small=name == "desktop"))
     with open(os.path.join(CACHE, "timing.json"), "w", encoding="utf-8") as fh:
         json.dump({"posterTime": poster_t, "phoneX0": phone_x0,
                    "curtain_out_s": [round((cross + OPEN[0] * SRC_FPS - start_i) / (SRC_FPS * SPEED), 2),
                                      round((cross + CLOSE[1] * SRC_FPS - start_i) / (SRC_FPS * SPEED), 2)]}, fh)
-    print("poster at film time", poster_t, "; phone crop x0", phone_x0)
+    print("posters", posters, "at film time", poster_t, "; phone crop x0", phone_x0)
 
 
 if __name__ == "__main__":

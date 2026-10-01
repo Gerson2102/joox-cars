@@ -207,13 +207,11 @@
   --h: clamp(280px, min(30vw, 50svh), 460px);
 }
 
+/* Held centred in the space under the header (ProofStrip.tsx measures --held-h). */
 .proof[data-scrub] .frame {
   position: sticky;
-  top: 0;
-  height: 100svh;
-  align-content: center;
+  top: max(calc(var(--nav-h) + 12px), calc((100svh + var(--nav-h) - var(--held-h, 0px)) / 2));
   gap: clamp(20px, 3.2svh, 32px);
-  padding-top: calc(var(--nav-h) + 12px);
 }
 
 .proof[data-scrub] .nav {

@@ -31,11 +31,7 @@ type Props = {
     prev: string;
     next: string;
     of: string;
-    photo: string;
-    model: string;
     modelNote: string;
-    adjusted: string;
-    pd: string;
     show: string;
     photos: string;
   };
@@ -112,7 +108,6 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
   };
 
   const car = cars[index];
-  const credit = car.cutout.credit;
   const nextLabel = (side: "left" | "right") => (side === travel ? labels.next : labels.prev);
 
   return (
@@ -170,8 +165,6 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
                 <span className={side === "left" ? styles.triLeft : styles.triRight} aria-hidden="true" />
               </button>
             ))}
-
-        {credit ? <p className={`map-label ${styles.tag}`}>{labels.model}</p> : null}
       </div>
 
       {/* Every car's details are in the page (for search and AI crawlers); only the one on show is visible. */}
@@ -208,13 +201,8 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
             ))}
           </dl>
 
-          {c.cutout.credit ? (
-            <p className={styles.credit}>
-              {labels.modelNote} {labels.photo}: <a href={c.cutout.credit.page} target="_blank" rel="noopener noreferrer">{c.cutout.credit.author}</a>,{" "}
-              {c.cutout.credit.license === "Public domain" ? labels.pd : c.cutout.credit.license}
-              {c.cutout.credit.adjusted ? `, ${labels.adjusted}` : ""}.
-            </p>
-          ) : null}
+          {/* A model photo says so; its credit is in the footer. */}
+          {c.cutout.credit ? <p className={styles.note}>{labels.modelNote}</p> : null}
         </div>
       ))}
 

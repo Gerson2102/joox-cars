@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import type { CSSProperties, ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { getDictionary, hasLocale, type Dictionary } from "./dictionaries";
 import { businessJsonLd } from "./structured-data";
 import { wa } from "@/lib/whatsapp";
-import { EMAIL, MAP_URL, PHONE, SOCIAL } from "@/lib/contact";
-import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, type PhotoId } from "@/lib/fleet";
-import { ExternalIcon } from "@/components/icons";
+import { EMAIL, MAP_URL, PHONE, SOCIAL, mapEmbed } from "@/lib/contact";
+import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, SERVICE_PHOTOS, type PhotoId } from "@/lib/fleet";
+import { ArrowIcon, ExternalIcon } from "@/components/icons";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { HeroStage } from "@/components/site/HeroStage";
 import { CarCarousel, type CarSlide } from "@/components/site/CarCarousel";
@@ -46,7 +46,7 @@ function Band({
   tone,
   title,
   lead,
-  wide,
+  mark,
   className,
   children,
 }: {
@@ -54,16 +54,16 @@ function Band({
   tone: Tone;
   title: string;
   lead?: string;
-  /** Title and lead side by side (the showrooms), so the stage starts sooner. */
-  wide?: boolean;
+  /** The logo's triangle before the title: kept for three bands so it stays a signature. */
+  mark?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className={`${b.band} ${b[tone]} ${tone !== "white" ? b.curtain : ""} ${className ?? ""}`}>
       <div className={b.inner}>
-        <header className={wide ? `${b.head} ${b.headWide}` : b.head}>
-          <h2 id={`${id}-title`} className={`display ${b.title}`} data-reveal="title">
+        <header className={b.head}>
+          <h2 id={`${id}-title`} className={`display ${b.title} ${mark ? b.mark : ""}`} data-reveal="title">
             {title}
           </h2>
           {lead ? (
@@ -96,6 +96,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   const other = lang === "es" ? "en" : "es";
   const r = t.rental.specs;
   const s = t.sales.specs;
+  const credits = [...t.rental.cars, ...t.sales.cars].flatMap((c) => FLEET[c.slug]?.cutout.credit ?? []);
 
   return (
     <>
@@ -105,25 +106,42 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <main>
         <HeroStage t={t.hero} />
 
-        {/* White: the four services at a glance. */}
-        <Band id="services" tone="white" title={t.services.title}>
+        {/* White: the four services at a glance, each under the client's own photo (parts has none yet). */}
+        <Band id="services" tone="white" title={t.services.title} mark className={b.servicesBand}>
           <ul className={b.services} data-reveal="stagger">
-            {SERVICES.map((k, n) => (
-              <li key={k} style={i(n)}>
-                <a href={`#${k}`} className={b.service}>
-                  <span className={b.serviceName}>{t.services.items[k].name}</span>
-                  <span className={b.serviceLine}>{t.services.items[k].line}</span>
-                  <span className={b.serviceGo} aria-hidden="true">
-                    <span className={b.triRight} />
-                  </span>
-                </a>
-              </li>
-            ))}
+            {SERVICES.map((k, n) => {
+              const p = SERVICE_PHOTOS[k];
+              return (
+                <li key={k} style={i(n)}>
+                  <a href={`#${k}`} className={b.service} data-photo={p ? "" : undefined}>
+                    {p ? (
+                      <span className={b.serviceFrame}>
+                        <Image
+                          src={PHOTOS[p].src}
+                          alt=""
+                          fill
+                          sizes="(max-width: 700px) 88px, (max-width: 1100px) 100vw, 560px"
+                          quality={78}
+                          className={b.serviceImg}
+                        />
+                      </span>
+                    ) : null}
+                    <span className={b.serviceText}>
+                      <span className={b.serviceName}>{t.services.items[k].name}</span>
+                      <span className={b.serviceLine}>{t.services.items[k].line}</span>
+                    </span>
+                    <span className={b.serviceGo} aria-hidden="true">
+                      <ArrowIcon className={b.serviceArrow} />
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </Band>
 
         {/* Yellow: the rental showroom, then the whole fleet together at home. */}
-        <Band id="rental" tone="yellow" title={t.rental.title} lead={t.rental.lead} wide className={b.showroomBand}>
+        <Band id="rental" tone="yellow" title={t.rental.title} lead={t.rental.lead} className={b.showroomBand}>
           <div className={b.showroom}>
             <CarCarousel
               travel="left"
@@ -158,7 +176,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </Band>
 
         {/* White: the cars for sale, facing right; a car on its own simply stands. */}
-        <Band id="sales" tone="white" title={t.sales.title} lead={t.sales.lead} wide className={b.showroomBand}>
+        <Band id="sales" tone="white" title={t.sales.title} lead={t.sales.lead} className={b.showroomBand}>
           <div className={b.showroom}>
             <CarCarousel
               travel="right"
@@ -189,7 +207,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
         {/* Black: how an import works (the road runs through the steps in a loop, the full process folds out
             below it), then the client's own imports. */}
-        <Band id="import" tone="black" title={t.import.title} lead={t.import.lead}>
+        <Band id="import" tone="black" title={t.import.title} lead={t.import.lead} mark>
           <Fold id="import" openLabel={t.import.open} closeLabel={t.fold.close}>
             <Journey steps={t.import.steps} />
             <ImportProcess t={t.import.process} />
@@ -226,14 +244,14 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
         </section>
 
-        {/* Black: who JOOX is: mission, vision, DNA, what it does and what the name means. The loop is the
-            logo's OO, drawn once, travelled forever. */}
+        {/* Black: who JOOX is: mission and vision side by side, then DNA and what it does, then the
+            name's meaning beside the loop it explains (the logo's OO, drawn once, travelled forever). */}
         <section id="about" aria-labelledby="about-title" className={`${b.band} ${b.black} ${b.curtain}`}>
-          <div className={`${b.inner} ${b.aboutGrid}`}>
-            <div className={b.aboutText}>
-              <h2 id="about-title" className={`display ${b.aboutTitle}`} lang="en" data-reveal="title">
-                {driven} <span className={b.eternal}>{eternal}</span> {purpose}
-              </h2>
+          <div className={b.inner}>
+            <h2 id="about-title" className={`display ${b.aboutTitle}`} lang="en" data-reveal="title">
+              {driven} <span className={b.eternal}>{eternal}</span> {purpose}
+            </h2>
+            <div className={b.aboutGrid}>
               <AboutPart title={t.about.mission.title}>
                 <p>{t.about.mission.body}</p>
               </AboutPart>
@@ -241,28 +259,24 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 <p>{t.about.vision.body}</p>
               </AboutPart>
               <AboutPart title={t.about.dna.title}>
-                <p className={b.aboutLead}>{t.about.dna.values}</p>
+                <p className={b.aboutLead}>
+                  {t.about.dna.values.split(" · ").map((v) => (
+                    <span key={v}>{v}</span>
+                  ))}
+                </p>
                 <p>{t.about.dna.body}</p>
               </AboutPart>
               <AboutPart title={t.about.what.title}>
                 <p>{t.about.what.lead}</p>
-                <ul className={b.aboutList}>
-                  {t.about.what.items.map((item) => (
-                    <li key={item.name}>
-                      <span className={b.triRight} aria-hidden="true" />
-                      <span>
-                        <strong>{item.name}:</strong> {item.line}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
                 <p>{t.about.what.close}</p>
               </AboutPart>
+            </div>
+            <div className={b.meaning}>
+              <Loop />
               <AboutPart title={t.about.meaning.title}>
                 <p>{t.about.meaning.body}</p>
               </AboutPart>
             </div>
-            <Loop />
           </div>
         </section>
 
@@ -285,7 +299,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </Band>
 
         {/* White, continued: the common questions, and a way out beside them. */}
-        <Band id="faq" tone="white" title={t.faq.title} lead={t.faq.lead} className={b.continues}>
+        <Band id="faq" tone="white" title={t.faq.title} lead={t.faq.lead} className={`${b.continues} ${b.faqBand}`}>
           <div className={b.faqGrid}>
             <Faq items={t.faq.items} />
             <aside className={b.faqPanel} data-reveal="rise">
@@ -302,7 +316,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <section id="contact" aria-labelledby="contact-title" className={`${b.band} ${b.black} ${b.curtain}`}>
           <div className={`${b.inner} ${b.contactGrid}`}>
             <div className={b.contactMain}>
-              <h2 id="contact-title" className={`display ${b.title}`} data-reveal="title">
+              <h2 id="contact-title" className={`display ${b.title} ${b.mark}`} data-reveal="title">
                 {t.contact.title}
               </h2>
               <p className={b.lead} data-reveal="rise">
@@ -346,13 +360,15 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               </dl>
             </div>
             <div className={b.map}>
-              <span className={b.pin} aria-hidden="true" />
-              <span className="map-label">{t.contact.map}</span>
-              <p className={b.mapPlace}>{t.contact.mapPlace}</p>
-              <p className={b.mapArea}>{t.contact.mapArea}</p>
-              <Btn variant="ghostLight" icon="external" href={MAP_URL} external>
-                {t.contact.mapLink}
-              </Btn>
+              <iframe className={b.mapFrame} src={mapEmbed(lang)} title={t.contact.mapTitle} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              <div className={b.mapInfo}>
+                <span className="map-label">{t.contact.map}</span>
+                <p className={b.mapPlace}>{t.contact.mapPlace}</p>
+                <p className={b.mapArea}>{t.contact.mapArea}</p>
+                <Btn variant="ghostLight" icon="external" href={MAP_URL} external>
+                  {t.contact.mapLink}
+                </Btn>
+              </div>
             </div>
           </div>
         </section>
@@ -387,6 +403,20 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </li>
         </ul>
         <p className={b.footerNote}>{t.footer.media}</p>
+        <p className={b.footerNote}>
+          {t.footer.credits}{" "}
+          {credits.map((c, n) => (
+            <Fragment key={c.page}>
+              {n ? ", " : ""}
+              <a href={c.page} target="_blank" rel="noopener noreferrer">
+                {c.author}
+              </a>{" "}
+              ({c.license === "Public domain" ? t.footer.pd : c.license}
+              {c.adjusted ? `, ${t.footer.adjusted}` : ""})
+            </Fragment>
+          ))}
+          .
+        </p>
         <p className={b.footerNote}>{t.footer.rights}</p>
       </footer>
     </>

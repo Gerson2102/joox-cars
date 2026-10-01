@@ -204,16 +204,6 @@
   }
 }
 
-/* "Model photo": marks a car shown by a photo of its model, not the client's own. */
-.tag {
-  position: absolute;
-  left: var(--gutter);
-  top: 20px;
-  padding: 4px 10px;
-  border: 1px solid rgb(19 19 19 / 0.3);
-  border-radius: 999px;
-}
-
 /* ---------- The car on show ---------- */
 
 .info {
@@ -343,14 +333,9 @@
   font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2rem);
 }
 
-.credit {
+.note {
   font-size: 0.75rem;
   color: rgb(19 19 19 / 0.78);
-}
-
-.credit a {
-  color: inherit;
-  text-underline-offset: 0.2em;
 }
 
 /* Progress: one bar per car, the one on show long and ink; the count beside it. */
@@ -366,30 +351,32 @@
   gap: 8px;
 }
 
+/* The button is the bar's own width, so the gaps between bars stay even as the long one moves. */
 .dot {
-  width: 44px;
+  width: 24px;
   height: 24px;
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
+  transition: width 0.5s var(--ease-out);
 }
 
-/* Each bar grows from its left end (a transform, not a width change). */
+.dot[data-active] {
+  width: 44px;
+}
+
 .dot::before {
   content: "";
   display: block;
   height: 4px;
   border-radius: 2px;
   background: rgb(19 19 19 / 0.28);
-  transform: scaleX(0.45);
-  transform-origin: 0 50%;
-  transition: transform 0.5s var(--ease-out), background-color 0.3s var(--ease-out);
+  transition: background-color 0.3s var(--ease-out);
 }
 
 .dot[data-active]::before {
   background: var(--ink);
-  transform: none;
 }
 
 .dot:focus-visible {
@@ -432,10 +419,6 @@
 
   .arrow[data-side="right"] {
     right: calc(50% - 56px);
-  }
-
-  .tag {
-    top: 12px;
   }
 
   .specs {

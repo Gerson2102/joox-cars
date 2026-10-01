@@ -54,12 +54,8 @@
     "prev": "Carro anterior",
     "next": "Siguiente carro",
     "of": "de",
-    "photo": "Foto",
-    "model": "Foto del modelo",
     "show": "Ver",
     "photos": "Ver fotos",
-    "adjusted": "color ajustado",
-    "pd": "dominio público",
     "modelNote": "Foto de referencia del modelo. Las fotos del carro, en «Ver fotos»."
   },
   "viewer": {
@@ -311,24 +307,6 @@
     "what": {
       "title": "¿Qué hacemos?",
       "lead": "Conectamos personas con las soluciones automotrices que necesitan. En JOOX rentamos y vendemos vehículos, conseguimos e importamos vehículos desde EE. UU. y buscamos y traemos repuestos de diferentes plataformas y proveedores.",
-      "items": [
-        {
-          "name": "Renta",
-          "line": "vehículos para tus viajes, trabajo o necesidades del día a día."
-        },
-        {
-          "name": "Venta",
-          "line": "comprás tu próximo vehículo."
-        },
-        {
-          "name": "Importación",
-          "line": "buscamos el vehículo en EE. UU. y JOOX lo trae."
-        },
-        {
-          "name": "Repuestos",
-          "line": "nos indicás el repuesto que necesitás y JOOX lo consigue."
-        }
-      ],
       "close": "Ya sea que estés buscando un vehículo, quieras importar uno que encontraste por tu cuenta o necesités un repuesto específico, te acompañamos durante todo el proceso."
     },
     "meaning": {
@@ -401,12 +379,16 @@
     "map": "Ubicación",
     "mapPlace": "Guápiles",
     "mapArea": "Pococí, Limón · Costa Rica",
-    "mapLink": "Ver en Google Maps"
+    "mapLink": "Ver en Google Maps",
+    "mapTitle": "Mapa de Guápiles, Pococí, Limón"
   },
   "footer": {
     "tagline": "Driven by eternal purpose",
     "rights": "© 2026 JOOX CARS",
-    "media": "El video de portada es de muestra hasta tener la toma propia."
+    "media": "El video de portada es de muestra hasta tener la toma propia.",
+    "credits": "Fotos de referencia de los modelos, de Wikimedia Commons:",
+    "adjusted": "color ajustado",
+    "pd": "dominio público"
   },
   "photos": {
     "fleet-grass": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles",

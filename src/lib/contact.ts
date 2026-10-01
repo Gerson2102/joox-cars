@@ -5,7 +5,10 @@ export const PHONE = { label: "8716-3308", href: "tel:+50687163308" };
 export const EMAIL = "joox.joy.1813@gmail.com";
 
 /** Guápiles centre until the client shares an exact address or a pin. */
-export const MAP_URL = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Guápiles, Pococí, Limón, Costa Rica");
+const PLACE = encodeURIComponent("Guápiles, Pococí, Limón, Costa Rica");
+export const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${PLACE}`;
+/** The same place as an embedded map (no API key needed), labelled in the page's language. */
+export const mapEmbed = (lang: string) => `https://www.google.com/maps?q=${PLACE}&hl=${lang}&z=13&output=embed`;
 
 // Profile links without the share-tracking parameters they were copied with.
 export const SOCIAL = [

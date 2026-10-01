@@ -54,12 +54,8 @@
     "prev": "Previous car",
     "next": "Next car",
     "of": "of",
-    "photo": "Photo",
-    "model": "Model photo",
     "show": "Show",
     "photos": "See photos",
-    "adjusted": "colour adjusted",
-    "pd": "public domain",
     "modelNote": "Reference photo of the model. The car's own photos are under “See photos”."
   },
   "viewer": {
@@ -311,24 +307,6 @@
     "what": {
       "title": "What we do",
       "lead": "We connect people with the automotive solutions they need. At JOOX we rent and sell vehicles, find and import vehicles from the US, and source spare parts from different platforms and suppliers.",
-      "items": [
-        {
-          "name": "Rental",
-          "line": "vehicles for your trips, work or everyday needs."
-        },
-        {
-          "name": "Sales",
-          "line": "buy your next vehicle."
-        },
-        {
-          "name": "Import",
-          "line": "we find the vehicle in the US and JOOX brings it."
-        },
-        {
-          "name": "Parts",
-          "line": "tell us the part you need and JOOX finds it."
-        }
-      ],
       "close": "Whether you are looking for a vehicle, want to import one you found yourself or need a specific part, we are with you through the whole process."
     },
     "meaning": {
@@ -401,12 +379,16 @@
     "map": "Location",
     "mapPlace": "Guápiles",
     "mapArea": "Pococí, Limón · Costa Rica",
-    "mapLink": "Open in Google Maps"
+    "mapLink": "Open in Google Maps",
+    "mapTitle": "Map of Guápiles, Pococí, Limón"
   },
   "footer": {
     "tagline": "Driven by eternal purpose",
     "rights": "© 2026 JOOX CARS",
-    "media": "The opening video is stand-in footage until our own shoot is ready."
+    "media": "The opening video is stand-in footage until our own shoot is ready.",
+    "credits": "Reference photos of the models, from Wikimedia Commons:",
+    "adjusted": "colour adjusted",
+    "pd": "public domain"
   },
   "photos": {
     "fleet-grass": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles",

@@ -79,6 +79,14 @@ export const FLEET: Record<string, Car> = {
 /** The rental band closes on the three cars together at home in Guápiles. */
 export const FLEET_TOGETHER: PhotoId = "fleet-grass";
 
+/** The services overview: each service's own photo, whole on wide screens (rental's is landscape, the others
+ *  portrait). Parts has none yet; its tile is a yellow panel. */
+export const SERVICE_PHOTOS: Partial<Record<"rental" | "sales" | "import" | "parts", PhotoId>> = {
+  rental: "fleet-row",
+  sales: "wrangler-front",
+  import: "import-container",
+};
+
 /** The import strip, in order. */
 export const IMPORTS: PhotoId[] = [
   "import-lot",
