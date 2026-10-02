@@ -1,6 +1,6 @@
 // JOOX CARS's own details, the same in both languages. Labels live in messages/*.json.
 
-export const SITE_URL = "https://joox-cars.vercel.app";
+export const SITE_URL = "https://jooxcars.com";
 export const PHONE = { label: "8716-3308", href: "tel:+50687163308" };
 export const EMAIL = "joox.joy.1813@gmail.com";
 
