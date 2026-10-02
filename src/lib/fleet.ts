@@ -28,6 +28,8 @@ export const PHOTOS = {
   "wrangler-key": { src: "/media/photos/wrangler-key.webp", width: 960, height: 1280 },
   "wrangler-cabin": { src: "/media/photos/wrangler-cabin.webp", width: 960, height: 1280 },
   "wrangler-back": { src: "/media/photos/wrangler-back.webp", width: 960, height: 1280 },
+  "outlander-2016": { src: "/media/photos/outlander-2016.webp", width: 720, height: 1280 },
+  "outlander-2016-front": { src: "/media/photos/outlander-2016-front.webp", width: 963, height: 1280 },
   "import-lot": { src: "/media/photos/import-lot.webp", width: 960, height: 1280 },
   "import-rubicon": { src: "/media/photos/import-rubicon.webp", width: 960, height: 1280 },
   "import-tow": { src: "/media/photos/import-tow.webp", width: 1280, height: 960 },
@@ -44,6 +46,12 @@ export type PhotoId = keyof typeof PHOTOS;
 
 /** The three rental cars together, shown with every rental car's own photos. */
 const TOGETHER: PhotoId[] = ["fleet-grass", "fleet-row", "fleet-doors"];
+
+/** The white Outlander is for rent and for sale: one model photo, facing each showroom's way. */
+const OUTLANDER_2016 = {
+  credit: { author: "Retired electrician", license: "CC0", page: commons("Moscow, Mitsubishi Outlander (third generation, 2018) Aug 2025 01.jpg") },
+  photos: ["outlander-2016", "outlander-2016-front"] as PhotoId[],
+};
 
 export const FLEET: Record<string, Car> = {
   "mitsubishi-outlander-sport-2020": {
@@ -73,6 +81,14 @@ export const FLEET: Record<string, Car> = {
       credit: { author: "Albert Jankowski", license: "Public domain", page: commons("Cars 003.JPG") },
     },
     photos: ["wrangler-front", "wrangler-rear", "wrangler-back", "wrangler-cabin", "wrangler-key"],
+  },
+  "mitsubishi-outlander-2016": {
+    cutout: { src: "/media/fleet/mitsubishi-outlander-2016-side-dc7e6d89.webp", width: 1760, height: 675, credit: OUTLANDER_2016.credit },
+    photos: OUTLANDER_2016.photos,
+  },
+  "mitsubishi-outlander-2016-sale": {
+    cutout: { src: "/media/fleet/mitsubishi-outlander-2016-sale-side-11a483b8.webp", width: 1760, height: 675, credit: OUTLANDER_2016.credit },
+    photos: OUTLANDER_2016.photos,
   },
 };
 

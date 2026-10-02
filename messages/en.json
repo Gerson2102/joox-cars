@@ -114,6 +114,19 @@
         "gearbox": "Automatic",
         "seats": "5",
         "ref": "black 2015 Mitsubishi Outlander Sport"
+      },
+      {
+        "slug": "mitsubishi-outlander-2016",
+        "brand": "Mitsubishi",
+        "model": "Outlander",
+        "year": "2016",
+        "body": "SUV",
+        "color": "White",
+        "engine": "2400 cc",
+        "gearbox": "Automatic",
+        "seats": "7",
+        "ref": "white 2016 Mitsubishi Outlander",
+        "status": "Being prepared: available soon. Also for sale."
       }
     ],
     "whatsapp": "Hi, I'd like to rent the {car}."
@@ -262,11 +275,15 @@
     },
     "specs": {
       "year": "Year",
-      "km": "Mileage",
+      "mileage": "Mileage",
       "gearbox": "Gearbox",
       "drive": "Drive",
       "seats": "Seats",
       "color": "Colour"
+    },
+    "units": {
+      "km": "km",
+      "mi": "miles"
     },
     "cars": [
       {
@@ -274,13 +291,29 @@
         "brand": "Jeep",
         "model": "Wrangler Unlimited",
         "year": "2012",
-        "km": 175000,
+        "mileage": 175000,
+        "unit": "km",
         "body": "4-door SUV",
         "color": "Black",
         "gearbox": "Automatic",
         "drive": "4x4",
         "seats": "5",
         "ref": "black 2012 Jeep Wrangler Unlimited"
+      },
+      {
+        "slug": "mitsubishi-outlander-2016-sale",
+        "brand": "Mitsubishi",
+        "model": "Outlander",
+        "year": "2016",
+        "mileage": 85000,
+        "unit": "mi",
+        "body": "SUV",
+        "color": "White",
+        "gearbox": "Automatic",
+        "drive": "4x4",
+        "seats": "7",
+        "ref": "white 2016 Mitsubishi Outlander",
+        "status": "Being prepared: available soon. Also for rent."
       }
     ],
     "whatsapp": "Hi, I'm interested in the {car}."
@@ -423,6 +456,8 @@
     "wrangler-back": "Looking inside",
     "wrangler-cabin": "The cabin",
     "wrangler-key": "Keys in hand",
+    "outlander-2016": "White 2016 Mitsubishi Outlander",
+    "outlander-2016-front": "From the front",
     "import-lot": "Ford Raptor and F-150",
     "import-rubicon": "Jeep Wrangler Rubicon",
     "import-tow": "On the tow truck, Houston, Texas",

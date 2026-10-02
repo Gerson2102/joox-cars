@@ -11,10 +11,11 @@ client's home). Nothing is upscaled.
 
 Output: public/media/photos/<id>.webp; the ids are the keys in
 src/lib/fleet.ts (PHOTOS) and the captions in messages/*.json (photos).
-Run from this folder: python photos.py
+Run from this folder: python photos.py [id ...] (only those photos)
 """
 
 import os
+import sys
 
 import cv2
 import numpy as np
@@ -26,6 +27,7 @@ OUT = os.path.join(ROOT, "public", "media", "photos")
 RENT = "cars-to-rent/photo_2026-09-25_"
 IMPORTS = "cars-to-export/photo_2026-09-25_"
 SALE = "cars-ready-to-sell/photo_2026-09-25_"
+RENT_AND_SALE = "cars-to-rent/photo_2026-10-02_"  # the white Outlander, for rent and for sale
 
 # id: (source photo, plates to soften, people to blur, lift) in source pixels.
 PHOTOS = {
@@ -43,6 +45,9 @@ PHOTOS = {
     "wrangler-cabin": (SALE + "08-32-35.jpg", [], [], 0),
     "wrangler-back": (SALE + "08-32-37.jpg", [], [], 0),
     # Imports, in the order the strip shows them.
+    "outlander-2016": (RENT_AND_SALE + "09-58-05.jpg", [], [], 0),
+    "outlander-2016-front": (RENT_AND_SALE + "09-58-09.jpg", [], [], 0),
+
     "import-lot": (IMPORTS + "08-25-23.jpg", [], [], 0),
     "import-rubicon": (IMPORTS + "08-25-31.jpg", [], [], 0),
     "import-tow": (IMPORTS + "08-25-53.jpg", [], [], 0),
@@ -92,9 +97,11 @@ def load(path: str) -> np.ndarray:
     return np.asarray(ImageOps.exif_transpose(Image.open(os.path.join(ROOT, path))).convert("RGB"))
 
 
-def main() -> None:
+def main(only: list[str]) -> None:
     os.makedirs(OUT, exist_ok=True)
     for pid, (src, plates, people, amount) in PHOTOS.items():
+        if only and pid not in only:
+            continue
         rgb = soften(load(src), plates, people)
         if amount:
             rgb = lift(rgb, amount)
@@ -105,4 +112,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

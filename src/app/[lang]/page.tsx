@@ -100,7 +100,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   const other = lang === "es" ? "en" : "es";
   const r = t.rental.specs;
   const s = t.sales.specs;
-  const credits = [...t.rental.cars, ...t.sales.cars].flatMap((c) => FLEET[c.slug]?.cutout.credit ?? []);
+  // One credit per photo: a car for rent and for sale shows the same model photo in both showrooms.
+  const credits = [...new Set([...t.rental.cars, ...t.sales.cars].flatMap((c) => FLEET[c.slug]?.cutout.credit ?? []))];
 
   return (
     <>
@@ -190,7 +191,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               action={{ label: t.sales.ask, variant: "yellow" }}
               cars={slides(t, t.sales.cars, t.sales.whatsapp, (c) => [
                 { label: s.year, value: c.year },
-                { label: s.km, value: `${new Intl.NumberFormat(lang).format(c.km)} km` },
+                { label: s.mileage, value: `${new Intl.NumberFormat(lang).format(c.mileage)} ${t.sales.units[c.unit as keyof typeof t.sales.units]}` },
                 { label: s.gearbox, value: c.gearbox },
                 { label: s.drive, value: c.drive },
                 { label: s.seats, value: c.seats },

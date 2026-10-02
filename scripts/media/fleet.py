@@ -19,7 +19,7 @@ silhouette, and exported as a transparent WebP (1600 px of car at most).
 Outputs in public/media/fleet/: <slug>-side-<hash>.webp, named by content so a
 changed cutout never hides behind a cached copy; the script points
 src/lib/fleet.ts at the new names and removes the old files.
-Run from this folder: python fleet.py (FORCE=1 re-cuts cached mattes).
+Run from this folder: python fleet.py [slug ...] (only those cars; FORCE=1 re-cuts cached mattes).
 """
 
 import glob
@@ -27,6 +27,7 @@ import hashlib
 import io
 import os
 import re
+import sys
 import urllib.request
 
 import cv2
@@ -41,8 +42,19 @@ CACHE = os.path.join(SRC, "fleet")
 UA = {"User-Agent": "JOOXsite/1.0 (media pipeline; gersonloavas@gmail.com)"}
 CAR_W = 1600          # widest the car gets in the output
 
+# The white 2016 Outlander is for rent and for sale: the same photo faces left in the rental
+# showroom and, mirrored, right in the sales one. A 2018 of the same body (the 2016-2018 front),
+# white as photographed, as the client's.
+OUTLANDER_2016 = {
+    "commons": "Moscow, Mitsubishi Outlander (third generation, 2018) Aug 2025 01.jpg",
+    "license": "CC0",
+    "author": "Retired electrician",
+    "plates": [(250, 1630, 480, 1740)],
+    "stickers": [(3030, 830, 3150, 1000)],  # on the rear side window
+}
+
 # slug: the Commons file with its licence and author (or the client's own "file"),
-# plates to soften, whether to mirror it, and an optional "paint" recolour. All
+# plates to soften, stickers to fill in, whether to mirror it, and an optional "paint" recolour. All
 # coordinates are in the source photo's pixels. Rental cars face left, the way
 # their carousel travels; the car for sale faces right.
 CARS = {
@@ -105,6 +117,8 @@ CARS = {
         "license": "Public domain",
         "author": "Albert Jankowski",
     },
+    "mitsubishi-outlander-2016": OUTLANDER_2016,
+    "mitsubishi-outlander-2016-sale": {**OUTLANDER_2016, "mirror": True},  # no lettering on the side
 }
 
 
@@ -300,10 +314,21 @@ def level(rgb: np.ndarray, a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return rgb, np.clip(a, 0, 1)
 
 
+def unstick(rgb: np.ndarray, boxes) -> np.ndarray:
+    """Light stickers on dark glass: their pixels filled in from the glass around them."""
+    if not boxes:
+        return rgb
+    mask = np.zeros(rgb.shape[:2], np.uint8)
+    for x0, y0, x1, y1 in boxes:
+        mask[y0:y1, x0:x1] = (rgb[y0:y1, x0:x1].mean(axis=2) > 110) * 255
+    mask = cv2.dilate(mask, np.ones((7, 7), np.uint8))
+    return cv2.inpaint(np.clip(rgb, 0, 255).astype(np.uint8), mask, 9, cv2.INPAINT_TELEA).astype(np.float32)
+
+
 def cutout(slug: str, car: dict) -> Image.Image:
     im = source(slug, car)
     a = matte(slug, im)  # always on the photo as taken, so the cache holds either way
-    rgb = soften(np.asarray(im), car.get("plates", []))
+    rgb = unstick(soften(np.asarray(im), car.get("plates", [])), car.get("stickers", []))
     spare = None
     if "tyres" in car:
         rgb, a, spare = rebuild_tyres(rgb.astype(np.float32), a, car["tyres"])
@@ -355,11 +380,13 @@ def cutout(slug: str, car: dict) -> Image.Image:
     return Image.fromarray(np.clip(out * [1, 1, 1, 255] + [0.5, 0.5, 0.5, 0.5], 0, 255).astype(np.uint8), "RGBA")
 
 
-def main() -> None:
+def main(only: list[str]) -> None:
     os.makedirs(OUT, exist_ok=True)
     lib = os.path.join(ROOT, "src", "lib", "fleet.ts")
     ts = open(lib, encoding="utf-8").read()
     for slug, car in CARS.items():
+        if only and slug not in only:
+            continue
         img = cutout(slug, car)
         buf = io.BytesIO()
         img.save(buf, "WEBP", quality=86, method=6)
@@ -377,4 +404,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

@@ -114,6 +114,19 @@
         "gearbox": "Automática",
         "seats": "5",
         "ref": "Mitsubishi Outlander Sport 2015 negro"
+      },
+      {
+        "slug": "mitsubishi-outlander-2016",
+        "brand": "Mitsubishi",
+        "model": "Outlander",
+        "year": "2016",
+        "body": "SUV",
+        "color": "Blanco",
+        "engine": "2400 cc",
+        "gearbox": "Automática",
+        "seats": "7",
+        "ref": "Mitsubishi Outlander 2016 blanco",
+        "status": "En preparación: disponible pronto. También está en venta."
       }
     ],
     "whatsapp": "Hola, quiero rentar el {car}."
@@ -262,11 +275,15 @@
     },
     "specs": {
       "year": "Año",
-      "km": "Kilometraje",
+      "mileage": "Kilometraje",
       "gearbox": "Transmisión",
       "drive": "Tracción",
       "seats": "Asientos",
       "color": "Color"
+    },
+    "units": {
+      "km": "km",
+      "mi": "millas"
     },
     "cars": [
       {
@@ -274,13 +291,29 @@
         "brand": "Jeep",
         "model": "Wrangler Unlimited",
         "year": "2012",
-        "km": 175000,
+        "mileage": 175000,
+        "unit": "km",
         "body": "SUV de 4 puertas",
         "color": "Negro",
         "gearbox": "Automática",
         "drive": "4x4",
         "seats": "5",
         "ref": "Jeep Wrangler Unlimited 2012 negro"
+      },
+      {
+        "slug": "mitsubishi-outlander-2016-sale",
+        "brand": "Mitsubishi",
+        "model": "Outlander",
+        "year": "2016",
+        "mileage": 85000,
+        "unit": "mi",
+        "body": "SUV",
+        "color": "Blanco",
+        "gearbox": "Automática",
+        "drive": "4x4",
+        "seats": "7",
+        "ref": "Mitsubishi Outlander 2016 blanco",
+        "status": "En preparación: disponible pronto. También está en renta."
       }
     ],
     "whatsapp": "Hola, me interesa el {car}."
@@ -423,6 +456,8 @@
     "wrangler-back": "Revisando por dentro",
     "wrangler-cabin": "La cabina",
     "wrangler-key": "Con la llave en la mano",
+    "outlander-2016": "Mitsubishi Outlander 2016 blanco",
+    "outlander-2016-front": "De frente",
     "import-lot": "Ford Raptor y F-150",
     "import-rubicon": "Jeep Wrangler Rubicon",
     "import-tow": "En grúa, Houston (Texas)",

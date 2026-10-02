@@ -33,6 +33,7 @@ The client sent its photos through a chat app, already reduced to 1280 px on the
 | `fleet-grass`, `fleet-row`, `fleet-doors` (the three rental cars together at home in Guápiles) | `fleet-grass` closes the rental band; all three are in every rental car's photo viewer |
 | `outlander-sport-2020`, `outlander-sport-2015`, `sportage-2020` | The first photo in each rental car's viewer |
 | `wrangler-front`, `-rear`, `-back`, `-cabin`, `-key` | The Jeep's photo viewer (sales) |
+| `outlander-2016`, `outlander-2016-front` (the white Outlander at the lot, sent 2 October, in `cars-to-rent/`) | Its photo viewer, in both showrooms (it is for rent and for sale) |
 | `import-*` (10) | The import strip, in the order `IMPORTS` lists them |
 
 Not used yet: the other 18 import photos (more cars on the lots, a white Corolla with a young man beside it, an office). Captions stay neutral (the car, or what is happening) because who is in each photo and where it was taken has not been confirmed; the one place named, Houston, is lettered on the tow truck itself.
@@ -49,6 +50,7 @@ No free photo of either Mitsubishi exists in the client's colour, so `scripts/me
 | `fleet/kia-sportage-2020-side-*.webp` | Rental: Sportage 2020, black | [Moscow, Kia Sportage, May 2026 01.jpg](https://commons.wikimedia.org/wiki/File:Moscow,_Kia_Sportage,_May_2026_01.jpg) by Retired electrician (CC0): the same generation (QL), before its 2019 facelift | Navy-black taken to neutral black, plate softened, cutout, levelled, own shadow |
 | `fleet/mitsubishi-outlander-sport-2015-side-*.webp` | Rental: Outlander Sport 2015, black | [Mitsubishi ASX(1).jpg](https://commons.wikimedia.org/wiki/File:Mitsubishi_ASX(1).jpg) by ГП (CC BY-SA 4.0): the 2013–2015 front | Bronze recoloured to black (headlight, fog trim and grille kept), mirrored (no lettering on the side), plate softened, cutout, levelled, own shadow |
 | `fleet/jeep-wrangler-unlimited-side-*.webp` | Sales: Wrangler Unlimited, black | [Cars 003.JPG](https://commons.wikimedia.org/wiki/File:Cars_003.JPG) by Albert Jankowski (public domain): a black four-door JK | Cutout, levelled, own shadow |
+| `fleet/mitsubishi-outlander-2016-side-*.webp`, `fleet/mitsubishi-outlander-2016-sale-side-*.webp` | Rental and sales: Outlander 2016, white | [Moscow, Mitsubishi Outlander (third generation, 2018) Aug 2025 01.jpg](https://commons.wikimedia.org/wiki/File:Moscow,_Mitsubishi_Outlander_(third_generation,_2018)_Aug_2025_01.jpg) by Retired electrician (CC0): a 2018 of the same body (the 2016–2018 front), white as the client's, seen slightly from the front | Plate softened, a ribbon sticker on the rear side window filled in from the glass, cutout, levelled, own shadow; the sales copy mirrored (no lettering on the side) |
 
 Earlier cutouts are kept, unused, in `.media-src/fleet/`: the sample cars of other models in `_samples/`, and the three-quarter cutouts of the client's own photos in `_old3q/`.
 

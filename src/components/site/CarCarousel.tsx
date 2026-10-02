@@ -15,6 +15,8 @@ export type CarSlide = {
   model: string;
   year: string;
   body: string;
+  /** A car not on the road yet: being prepared, and whether it is also for rent or sale. */
+  status?: string;
   specs: { label: string; value: string }[];
   /** The WhatsApp message that names this car. */
   message: string;
@@ -170,6 +172,7 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
                 <span className={styles.plain}>{c.brand}</span> {c.model} <span className={styles.plain}>{c.year}</span>
               </h3>
               <p className={styles.body}>{c.body}</p>
+              {c.status ? <p className={styles.status}>{c.status}</p> : null}
               {c.photos.length ? (
                 <Btn variant="ink" size="sm" icon="photos" type="button" opensDialog onClick={() => setPhoto(0)} className={styles.photos}>
                   {`${labels.photos} (${c.photos.length})`}

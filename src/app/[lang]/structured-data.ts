@@ -18,7 +18,7 @@ const offer = (c: Car) => ({
     color: c.color,
     vehicleTransmission: c.gearbox,
     seatingCapacity: Number(c.seats),
-    ...("km" in c ? { mileageFromOdometer: { "@type": "QuantitativeValue", value: c.km, unitCode: "KMT" } } : {}),
+    ...("mileage" in c ? { mileageFromOdometer: { "@type": "QuantitativeValue", value: c.mileage, unitCode: c.unit === "mi" ? "SMI" : "KMT" } } : {}),
   },
 });
 
