@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { PhotoViewer, type Photo, type ViewerLabels } from "./PhotoViewer";
 import styles from "./proof.module.css";
 
 type Props = {
-  t: { title: string; body: string; list: string; prev: string; next: string; of: string };
+  t: Dictionary["import"]["proof"];
   photos: Photo[];
   viewer: ViewerLabels;
 };

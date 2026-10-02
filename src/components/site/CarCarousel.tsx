@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 import type { Credit, Img } from "@/lib/fleet";
 import { wa } from "@/lib/whatsapp";
 import { Btn, type BtnVariant } from "./Btn";
@@ -26,17 +27,10 @@ type Props = {
   cars: CarSlide[];
   /** Which way the cars face and travel. */
   travel: "right" | "left";
-  labels: {
-    list: string;
-    prev: string;
-    next: string;
-    of: string;
-    modelNote: string;
-    show: string;
-    photos: string;
-  };
+  labels: Dictionary["carousel"] & { list: string };
   viewer: ViewerLabels;
-  price: { value: string; unit?: string };
+  /** A line beside the action, in place of a price (rental rates change with the season). */
+  rate?: string;
   /** The WhatsApp button: ink on a yellow band, yellow on white (the action follows the ground). */
   action: { label: string; variant: BtnVariant };
 };
@@ -49,7 +43,7 @@ type Props = {
  * one comes into focus from behind as the current one moves on. They drive in
  * once when the band comes into view. A car on its own simply stands there.
  */
-export function CarCarousel({ cars, travel, labels, viewer, price, action }: Props) {
+export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Props) {
   const n = cars.length;
   const single = n === 1;
   const t = travel === "right" ? 1 : -1;
@@ -183,9 +177,7 @@ export function CarCarousel({ cars, travel, labels, viewer, price, action }: Pro
               ) : null}
             </div>
             <div className={styles.buy}>
-              <p className={styles.price}>
-                <strong>{price.value}</strong> {price.unit}
-              </p>
+              {rate ? <p className={styles.rate}>{rate}</p> : null}
               <Btn variant={action.variant} icon="whatsapp" href={wa(c.message)} external>
                 {action.label}
               </Btn>

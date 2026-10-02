@@ -2,10 +2,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { getDictionary, hasLocale, type Dictionary } from "./dictionaries";
-import { businessJsonLd } from "./structured-data";
+import { businessJsonLd, faqJsonLd } from "./structured-data";
 import { wa } from "@/lib/whatsapp";
-import { EMAIL, MAP_URL, PHONE, SOCIAL, mapEmbed } from "@/lib/contact";
+import { EMAIL, MAP_URL, PHONE, RENTAL_OPERATOR, SOCIAL, mapEmbed } from "@/lib/contact";
 import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, SERVICE_PHOTOS, type PhotoId } from "@/lib/fleet";
+import { NAV } from "@/lib/sections";
 import { ArrowIcon, ExternalIcon } from "@/components/icons";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { HeroStage } from "@/components/site/HeroStage";
@@ -22,13 +23,15 @@ import { ScrollFX } from "@/components/site/ScrollFX";
 import b from "@/components/site/bands.module.css";
 
 const SERVICES = ["rental", "sales", "import", "parts"] as const;
-const NAV = ["rental", "sales", "import", "parts", "about", "contact"] as const;
 
 type Tone = "white" | "yellow" | "black";
 const i = (n: number) => ({ ["--i" as string]: n }) as CSSProperties;
 
 /** A photo with its caption (also its alt text) in the page's language. */
 const photo = (t: Dictionary, id: PhotoId) => ({ ...PHOTOS[id], caption: t.photos[id] });
+
+/** JSON-LD for a script tag, with "<" escaped so the data can never close the tag. */
+const ld = (data: object) => ({ __html: JSON.stringify(data).replace(/</g, "\\u003c") });
 
 type CarCopy = { slug: string; brand: string; model: string; year: string; body: string; ref: string };
 
@@ -100,7 +103,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd(t, lang)).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(businessJsonLd(t, lang))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(faqJsonLd(t))} />
       <SiteHeader t={t.nav} lang={lang} whatsappText={t.whatsapp.general} tagline={t.about.tagline} />
       <ScrollFX />
       <main>
@@ -120,7 +124,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                           src={PHOTOS[p].src}
                           alt=""
                           fill
-                          sizes="(max-width: 700px) 88px, (max-width: 1100px) 100vw, 560px"
+                          sizes={n === 0 ? "(max-width: 700px) 88px, (max-width: 1100px) 100vw, 560px" : "(max-width: 700px) 88px, (max-width: 1100px) 50vw, 320px"}
                           quality={78}
                           className={b.serviceImg}
                         />
@@ -147,7 +151,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               travel="left"
               labels={{ ...t.carousel, list: t.rental.list }}
               viewer={t.viewer}
-              price={{ value: t.rental.price, unit: t.rental.perDay }}
+              rate={t.rental.rate}
               action={{ label: t.rental.reserve, variant: "ink" }}
               cars={slides(t, t.rental.cars, t.rental.whatsapp, (c) => [
                 { label: r.year, value: c.year },
@@ -182,11 +186,10 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               travel="right"
               labels={{ ...t.carousel, list: t.sales.list }}
               viewer={t.viewer}
-              price={{ value: t.sales.price }}
               action={{ label: t.sales.ask, variant: "yellow" }}
               cars={slides(t, t.sales.cars, t.sales.whatsapp, (c) => [
                 { label: s.year, value: c.year },
-                { label: s.km, value: t.sales.km },
+                { label: s.km, value: `${new Intl.NumberFormat(lang).format(c.km)} km` },
                 { label: s.gearbox, value: c.gearbox },
                 { label: s.drive, value: c.drive },
                 { label: s.seats, value: c.seats },
@@ -214,10 +217,16 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </Fold>
           <ProofStrip t={t.import.proof} photos={IMPORTS.map((id) => photo(t, id))} viewer={t.viewer} />
           <div className={b.importFoot}>
-            <p className={b.time}>
-              <span className="map-label">{t.import.time}</span>
-              <span className={b.timeValue}>{t.import.timeValue}</span>
-            </p>
+            <dl className={b.importFacts}>
+              <div className={b.time}>
+                <dt className="map-label">{t.import.time}</dt>
+                <dd className={b.timeValue}>{t.import.timeValue}</dd>
+              </div>
+              <div className={b.time}>
+                <dt className="map-label">{t.import.fee}</dt>
+                <dd className={b.timeValue}>{t.import.feeValue}</dd>
+              </div>
+            </dl>
             <Btn variant="yellow" icon="whatsapp" href={wa(t.import.whatsapp)} external>
               {t.import.quote}
             </Btn>
@@ -238,7 +247,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             <div className={b.splitAside} data-reveal="rise">
               <Fold id="parts" openLabel={t.parts.open} closeLabel={t.fold.close}>
                 <PartsForm t={t.parts.form} />
-                <p className={b.note}>{t.parts.catalog}</p>
+                <p className={b.partsPricing}>{t.parts.pricing}</p>
               </Fold>
             </div>
           </div>
@@ -281,7 +290,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </section>
 
         {/* White: what customers say. */}
-        <Band id="reviews" tone="white" title={t.reviews.title}>
+        <Band id="reviews" tone="white" title={t.reviews.title} lead={t.reviews.lead}>
           <ul className={b.reviews} data-reveal="stagger">
             {t.reviews.items.map((rv, n) => (
               <li key={rv.who} style={i(n)}>
@@ -295,7 +304,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               </li>
             ))}
           </ul>
-          <p className={b.note}>{t.reviews.placeholder}</p>
         </Band>
 
         {/* White, continued: the common questions, and a way out beside them. */}
@@ -403,6 +411,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </li>
         </ul>
         <p className={b.footerNote}>{t.footer.media}</p>
+        <p className={b.footerNote}>{t.footer.operator.replace("{name}", RENTAL_OPERATOR.name).replace("{id}", RENTAL_OPERATOR.id)}</p>
         <p className={b.footerNote}>
           {t.footer.credits}{" "}
           {credits.map((c, n) => (

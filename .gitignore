@@ -27,6 +27,9 @@ __pycache__/
 # screenshots pasted while working on the site
 /image*.png
 
+# the client's documents (contract, feedback): personal and company data
+/*.docx
+
 # Impeccable: config.json, design.json, surfaces/ and decision/ are shared; the rest is local run state
 /.impeccable/review/
 /.impeccable/questions/

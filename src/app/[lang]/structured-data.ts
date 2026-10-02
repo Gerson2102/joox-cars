@@ -1,4 +1,4 @@
-import { EMAIL, PHONE, SITE_URL, SOCIAL } from "@/lib/contact";
+import { EMAIL, PHONE, RENTAL_OPERATOR, SITE_URL, SOCIAL } from "@/lib/contact";
 import { FLEET_TOGETHER, PHOTOS } from "@/lib/fleet";
 import type { Dictionary, Locale } from "./dictionaries";
 
@@ -18,8 +18,12 @@ const offer = (c: Car) => ({
     color: c.color,
     vehicleTransmission: c.gearbox,
     seatingCapacity: Number(c.seats),
+    ...("km" in c ? { mileageFromOdometer: { "@type": "QuantitativeValue", value: c.km, unitCode: "KMT" } } : {}),
   },
 });
+
+/** The rentals are contracted with GAMA Car Rental; its legal ID is the cédula jurídica. */
+const operator = { "@type": "Organization", name: RENTAL_OPERATOR.name, taxID: RENTAL_OPERATOR.id };
 
 /** The business as schema.org JSON-LD, for search engines and AI assistants. */
 export function businessJsonLd(t: Dictionary, lang: Locale) {
@@ -40,8 +44,19 @@ export function businessJsonLd(t: Dictionary, lang: Locale) {
     knowsLanguage: ["es", "en"],
     sameAs: SOCIAL.map((s) => s.href),
     hasOfferCatalog: [
-      { "@type": "OfferCatalog", name: t.rental.title, itemListElement: t.rental.cars.map(offer) },
+      { "@type": "OfferCatalog", name: t.rental.title, itemListElement: t.rental.cars.map((c) => ({ ...offer(c), offeredBy: operator })) },
       { "@type": "OfferCatalog", name: t.sales.title, itemListElement: t.sales.cars.map(offer) },
     ],
+  };
+}
+
+/** The common questions as schema.org JSON-LD; an answer still waiting for the client's details stays out. */
+export function faqJsonLd(t: Dictionary) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: t.faq.items
+      .filter((f) => known(f.a))
+      .map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
   };
 }

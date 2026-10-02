@@ -3,26 +3,13 @@
 import Image from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+import type { Dictionary, Locale } from "@/app/[lang]/dictionaries";
+import { NAV } from "@/lib/sections";
 import { wa } from "@/lib/whatsapp";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 import { Btn } from "./Btn";
 import styles from "./header.module.css";
 
-type NavCopy = {
-  home: string;
-  label: string;
-  links: { rental: string; import: string; parts: string; sales: string; about: string; contact: string };
-  language: string;
-  languageLabel: string;
-  whatsapp: string;
-  whatsappLabel: string;
-  menuOpen: string;
-  menuClose: string;
-  menu: string;
-  place: string;
-};
-
-const KEYS = ["rental", "sales", "import", "parts", "about", "contact"] as const;
 const noop = () => () => {};
 
 /**
@@ -30,7 +17,7 @@ const noop = () => () => {};
  * Past the film it becomes a floating white capsule, and a yellow pill slides
  * under the link of the section being read. WhatsApp is one tap away everywhere.
  */
-export function SiteHeader({ t, lang, whatsappText, tagline }: { t: NavCopy; lang: "es" | "en"; whatsappText: string; tagline: string[] }) {
+export function SiteHeader({ t, lang, whatsappText, tagline }: { t: Dictionary["nav"]; lang: Locale; whatsappText: string; tagline: string[] }) {
   const [open, setOpen] = useState(false);
   const [overFilm, setOverFilm] = useState(true);
   const [active, setActive] = useState<string | null>(null);
@@ -70,16 +57,21 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: NavCopy; lan
     return () => io.disconnect();
   }, []);
 
-  // The pill follows the active link.
+  // The pill follows the active link, and re-measures when the links change size (the font arriving).
   useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
     const measure = () => {
-      const a = listRef.current?.querySelector<HTMLElement>(`a[data-key="${active}"]`);
-      setPill(a ? { x: a.offsetLeft, w: a.offsetWidth } : null);
+      const a = list.querySelector<HTMLElement>(`a[data-key="${active}"]`);
+      if (!a) return setPill(null);
+      const x = a.offsetLeft;
+      const w = a.offsetWidth;
+      setPill((p) => (p?.x === x && p.w === w ? p : { x, w }));
     };
     measure();
-    window.addEventListener("resize", measure);
-    document.fonts?.ready.then(measure);
-    return () => window.removeEventListener("resize", measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    return () => ro.disconnect();
   }, [active]);
 
   useEffect(() => {
@@ -120,7 +112,7 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: NavCopy; lan
     </Btn>
   );
   const onPaper = !overFilm;
-  const pillOn = onPaper && pill && KEYS.includes(active as (typeof KEYS)[number]);
+  const pillOn = onPaper && pill && NAV.includes(active as (typeof NAV)[number]);
 
   return (
     <header className={styles.bar} data-over-film={overFilm || undefined}>
@@ -134,7 +126,7 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: NavCopy; lan
               data-on={pillOn || undefined}
               style={pill ? { transform: `translateX(${pill.x}px)`, width: pill.w } : undefined}
             />
-            {KEYS.map((k) => (
+            {NAV.map((k) => (
               <li key={k}>
                 <a href={`#${k}`} data-key={k} aria-current={onPaper && active === k ? "location" : undefined}>
                   <span className={styles.roll}>
@@ -185,7 +177,7 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: NavCopy; lan
               </div>
               <nav aria-label={t.label}>
                 <ul>
-                  {KEYS.map((k, i) => (
+                  {NAV.map((k, i) => (
                     <li key={k} style={{ ["--i" as string]: i }}>
                       <a href={`#${k}`} onClick={() => setOpen(false)}>
                         {t.links[k]}

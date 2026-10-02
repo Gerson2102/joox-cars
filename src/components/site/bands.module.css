@@ -149,13 +149,6 @@
   text-wrap: pretty;
 }
 
-.note {
-  max-width: var(--measure);
-  font-size: var(--text-sm);
-  font-style: italic;
-  color: var(--fg-2);
-}
-
 /* ---------- Services: the four at a glance ----------
    Rental's landscape photo beside the two portrait ones, all uncropped and one
    height (16fr : 9fr is (4/3) : (3/4)); parts, with no photo yet, runs under
@@ -435,6 +428,13 @@
   border-top: 1px solid var(--line);
 }
 
+/* The approximate time and the JOOX fee, side by side. */
+.importFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px clamp(32px, 5vw, 72px);
+}
+
 .time {
   display: grid;
   gap: 4px;
@@ -576,6 +576,13 @@
 
 .field input[aria-invalid="true"] {
   border-color: var(--error);
+}
+
+/* How a part is priced, under the request. */
+.partsPricing {
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--fg-2);
 }
 
 .fieldError {

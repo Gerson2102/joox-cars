@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import { useEffect, useRef, type KeyboardEvent, type PointerEvent } from "react";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { CloseIcon } from "@/components/icons";
 import type { Img } from "@/lib/fleet";
 import styles from "./viewer.module.css";
 
 export type Photo = Img & { caption: string };
 
-export type ViewerLabels = { close: string; prev: string; next: string; of: string; choose: string };
+export type ViewerLabels = Dictionary["viewer"];
 
 type Props = {
   title: string;

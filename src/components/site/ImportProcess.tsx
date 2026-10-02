@@ -1,13 +1,12 @@
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 import b from "./bands.module.css";
-
-type Stage = { title: string; steps: { title: string; body: string }[] };
 
 /**
  * The whole import, folded under the journey: its two stages (in the US, in Costa Rica), every step
  * numbered through. A native <details>, so the steps are in the page for search and AI crawlers
  * even while folded, and it opens without script.
  */
-export function ImportProcess({ t }: { t: { toggle: string; intro: string; stages: Stage[] } }) {
+export function ImportProcess({ t }: { t: Dictionary["import"]["process"] }) {
   return (
     <details className={b.process}>
       <summary className={b.processToggle}>

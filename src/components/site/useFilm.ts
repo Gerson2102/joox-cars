@@ -48,16 +48,15 @@ export function useFilm(base: string, { startAt = 0, phone }: FilmOptions = {}) 
       return () => cancelAnimationFrame(id);
     }
 
-    let cancelled = false;
-    let idleId = 0;
     let fallbackId = 0;
+    let cancelStart = () => {};
     const onPlaying = () => setStatus("playing");
     const onPause = () => setStatus((s) => (s === "off" ? s : "paused"));
     v.addEventListener("playing", onPlaying);
     v.addEventListener("pause", onPause);
 
     const start = () => {
-      if (cancelled || v.childElementCount) return;
+      if (v.childElementCount) return;
       setStatus("loading");
       const { at, sources } = filmFor(base, startAt, phone);
       for (const s of sources) {
@@ -70,9 +69,17 @@ export function useFilm(base: string, { startAt = 0, phone }: FilmOptions = {}) 
       v.load();
       v.play().catch(() => setStatus("paused"));
     };
+    // Whichever comes first, the load event or the fallback, schedules the start once.
     const kick = () => {
-      if (typeof window.requestIdleCallback === "function") idleId = window.requestIdleCallback(start, { timeout: 1500 });
-      else idleId = globalThis.setTimeout(start, 250) as unknown as number;
+      window.removeEventListener("load", kick);
+      window.clearTimeout(fallbackId);
+      if (typeof window.requestIdleCallback === "function") {
+        const id = window.requestIdleCallback(start, { timeout: 1500 });
+        cancelStart = () => window.cancelIdleCallback(id);
+      } else {
+        const id = window.setTimeout(start, 250);
+        cancelStart = () => window.clearTimeout(id);
+      }
     };
     if (document.readyState === "complete") kick();
     else {
@@ -92,9 +99,7 @@ export function useFilm(base: string, { startAt = 0, phone }: FilmOptions = {}) 
     io.observe(v);
 
     return () => {
-      cancelled = true;
-      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
-      globalThis.clearTimeout(idleId);
+      cancelStart();
       window.clearTimeout(fallbackId);
       window.removeEventListener("load", kick);
       v.removeEventListener("playing", onPlaying);

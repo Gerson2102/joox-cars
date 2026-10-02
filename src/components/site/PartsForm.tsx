@@ -1,22 +1,13 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { wa } from "@/lib/whatsapp";
 import { Btn } from "./Btn";
 import styles from "./bands.module.css";
 
-type Copy = {
-  make: string;
-  model: string;
-  year: string;
-  part: string;
-  partHint: string;
-  send: string;
-  message: string;
-};
-
 /** No backend: the request is written into a WhatsApp message. */
-export function PartsForm({ t }: { t: Copy }) {
+export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
   const id = useId();
   const [error, setError] = useState(false);
 

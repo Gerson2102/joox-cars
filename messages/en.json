@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Car Rental in Guápiles, Costa Rica & US Import | JOOX CARS",
-    "description": "Car rental and sales in Guápiles, Costa Rica. We import vehicles from the US and source spare parts from different platforms."
+    "description": "Car rental and sales in Guápiles, Costa Rica. We import vehicles from the US, and spare parts from Japan, China, Europe and the US."
   },
   "nav": {
     "home": "JOOX CARS, home",
@@ -46,7 +46,7 @@
       },
       "parts": {
         "name": "Spare parts",
-        "line": "We find the part your vehicle needs across different platforms."
+        "line": "We find the part your vehicle needs in Japan, China, Europe or the US."
       }
     }
   },
@@ -67,7 +67,7 @@
   },
   "rental": {
     "title": "Car rental",
-    "lead": "We offer reliable, spotless vehicles in excellent condition, so you can enjoy every trip in comfort and peace of mind.",
+    "lead": "We offer reliable, spotless vehicles in excellent condition, so you can enjoy every trip in comfort and peace of mind. We deliver and collect it at no extra cost in central Guápiles, Jiménez or Guácimo.",
     "list": "Rental fleet",
     "specs": {
       "year": "Year",
@@ -76,8 +76,7 @@
       "seats": "Seats",
       "color": "Colour"
     },
-    "price": "[PRICE]",
-    "perDay": "per day",
+    "rate": "Rates vary by season",
     "reserve": "Book on WhatsApp",
     "cars": [
       {
@@ -157,7 +156,9 @@
       }
     ],
     "time": "Approximate time",
-    "timeValue": "[X weeks]",
+    "timeValue": "A month and a half",
+    "fee": "JOOX fee",
+    "feeValue": "$500",
     "quote": "Get an import quote",
     "whatsapp": "Hi, I'd like a quote to import a vehicle.",
     "open": "See the 8 steps",
@@ -236,7 +237,7 @@
   },
   "parts": {
     "title": "Spare parts",
-    "lead": "Tell us what you need and we confirm availability and price on WhatsApp.",
+    "lead": "We import spare parts from Japan, China, Europe and the US, including for makes like BMW. Tell us what you need and we confirm availability and price on WhatsApp.",
     "form": {
       "make": "Make",
       "model": "Model",
@@ -246,7 +247,7 @@
       "send": "Ask on WhatsApp",
       "message": "Hi, I'm looking for a spare part."
     },
-    "catalog": "Placeholder: the spare-parts catalogue is coming soon.",
+    "pricing": "We charge the part's price on the platform plus 25%, and shipping to Costa Rica, which the carrier charges by weight.",
     "open": "Ask for a part"
   },
   "sales": {
@@ -267,20 +268,19 @@
       "seats": "Seats",
       "color": "Colour"
     },
-    "price": "[PRICE]",
-    "km": "[KM] km",
     "cars": [
       {
         "slug": "jeep-wrangler-unlimited",
         "brand": "Jeep",
         "model": "Wrangler Unlimited",
-        "year": "[YEAR]",
+        "year": "2012",
+        "km": 175000,
         "body": "4-door SUV",
         "color": "Black",
         "gearbox": "Automatic",
         "drive": "4x4",
         "seats": "5",
-        "ref": "black Jeep Wrangler Unlimited"
+        "ref": "black 2012 Jeep Wrangler Unlimited"
       }
     ],
     "whatsapp": "Hi, I'm interested in the {car}."
@@ -316,48 +316,68 @@
   },
   "reviews": {
     "title": "What our customers say",
+    "lead": "Rental, import and parts, in our customers' words (translated from Spanish).",
     "items": [
       {
-        "quote": "[A rental customer's review]",
-        "who": "[Name] · Rental"
+        "quote": "I rented a car to get around for a week with my family and everything went perfectly. They delivered it in Guápiles at no extra cost, clean and in excellent condition. The process was really quick and everything was very clear. Highly recommended, pura vida.",
+        "who": "Kevin Solano · Rental"
       },
       {
-        "quote": "[An import customer's review]",
-        "who": "[Name] · Import"
+        "quote": "I wasn't sure about importing my pickup on my own, and they took care of everything: paperwork, customs and registration. They kept me posted at every step and the truck arrived exactly as they showed it to me. Serious, honest people, great job.",
+        "who": "Marco Arias · Import"
       },
       {
-        "quote": "[A spare-parts customer's review]",
-        "who": "[Name] · Parts"
+        "quote": "I needed brake pads and an alternator for my Hilux and they found them for me in no time, at a good price. You can tell they know their stuff, and they gave me good advice. It's the third time I've bought from them, great service.",
+        "who": "Andrea Villalobos · Parts"
       }
-    ],
-    "placeholder": "Placeholder: real customer reviews replace these examples."
+    ]
   },
   "faq": {
     "title": "Common questions",
     "items": [
       {
-        "q": "What do I need to rent a car?",
-        "a": "[Requirements: driving licence, minimum age and deposit.]"
+        "q": "What do I need to rent a car in Guápiles?",
+        "a": "A copy of your cédula (or your passport if you're visiting from abroad) and a valid driving licence. To book we ask for a 20% advance payment; the security deposit goes on a credit card, and the rest can be paid by SINPE Móvil or in cash."
+      },
+      {
+        "q": "How much does it cost to rent a car?",
+        "a": "The rate changes with the season, for example at Christmas or Easter week (Semana Santa). Message us on WhatsApp with your dates and we'll give you the exact price."
+      },
+      {
+        "q": "Where do you deliver the rental car?",
+        "a": "We deliver and collect it at no extra cost in central Guápiles, Jiménez or Guácimo."
       },
       {
         "q": "What does the insurance cover?",
-        "a": "[Insurance details: coverage, deductible and deposit.]"
+        "a": "Every rental includes two coverages: SLI, third-party liability insurance, with a ₡150,000 deductible, and LDW, which covers the car against damage, theft or accident, with a ₡500,000 deductible (rollovers and accessories are not covered). Neither covers damage from drink-driving, driving under the influence of drugs or reckless driving, and after any accident you must tell us and the insurer straight away."
+      },
+      {
+        "q": "Do you offer a driver or a child seat?",
+        "a": "Yes. When you book you can ask for a driver, a child seat or an additional driver, and they are written into the contract."
       },
       {
         "q": "How long does an import take?",
-        "a": "About [X weeks], from purchase to delivery."
+        "a": "About a month and a half from purchase to delivery in Costa Rica. It can be less: it depends on when the shipping line loads the vehicle."
       },
       {
-        "q": "How much does it cost to import a vehicle?",
-        "a": "We give you an approximate cost from the start, but not an exact price: each stage charges case by case. The tow depends on where the vehicle is, the ship charges by its size, storage by how long it stays in the warehouse, and taxes by the vehicle's features."
+        "q": "How much does it cost to import a vehicle from the US?",
+        "a": "It depends on the vehicle's value, year and model, and on transport, taxes and customs clearance. We look at each vehicle and give you a personalised estimate before you buy: the tow depends on where the vehicle is, the ship charges by its size, storage by how long it stays in the warehouse, and taxes by the vehicle's features."
       },
       {
-        "q": "Can you find parts for my vehicle?",
-        "a": "Tell us the make, model, year and part, and we confirm availability and price on WhatsApp."
+        "q": "What is JOOX's fee for importing a vehicle?",
+        "a": "Our fee is $500. It covers choosing the vehicle, advice during the purchase, support and handling in the US, tracking the transport, and support until it arrives and is delivered in Costa Rica."
+      },
+      {
+        "q": "Can't find the part your vehicle needs?",
+        "a": "We find it for you. We work with suppliers in Japan, China, Europe and the US and look for each part by your vehicle's make, model and origin, including makes like BMW, especially parts that are hard to find or no longer sold in Costa Rica. Tell us the make, model, year and part, and we confirm availability and price on WhatsApp."
+      },
+      {
+        "q": "How much does it cost to import a spare part?",
+        "a": "The part's price on the platform plus 25%, and shipping to Costa Rica, which the carrier charges by weight."
       },
       {
         "q": "Do the vehicles for sale come with a warranty?",
-        "a": "[Warranty details for the vehicles for sale.]"
+        "a": "Yes. All our vehicles come with the warranty required by current Costa Rican law, and the specific coverage, duration and claim procedure are set out in writing when you complete the purchase. We believe transparency and trust come first, so we give you clear information about each vehicle to help you decide with confidence."
       }
     ],
     "more": "Can't find your answer?",
@@ -374,7 +394,7 @@
     "address": "Address",
     "addressValue": "Guápiles, Pococí, Limón",
     "hours": "Hours",
-    "hoursValue": "[HOURS]",
+    "hoursValue": "9 a.m. to 6 p.m.",
     "social": "Social",
     "map": "Location",
     "mapPlace": "Guápiles",
@@ -386,6 +406,7 @@
     "tagline": "Driven by eternal purpose",
     "rights": "© 2026 JOOX CARS",
     "media": "The opening video is stand-in footage until our own shoot is ready.",
+    "operator": "Rentals operated by {name}, Costa Rican company ID (cédula jurídica) {id}.",
     "credits": "Reference photos of the models, from Wikimedia Commons:",
     "adjusted": "colour adjusted",
     "pd": "public domain"

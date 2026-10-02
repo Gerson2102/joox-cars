@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-09-24T23:51:23.018Z",
         "reason": "Claude: src and srcSet come from next/image getImageProps spread inside <picture> (Next 16 art-direction pattern); the image renders"
+      },
+      {
+        "rule": "layout-transition",
+        "value": "*",
+        "files": [
+          "src/components/site/carousel.module.css"
+        ],
+        "createdAt": "2026-10-01T21:43:36.215Z",
+        "reason": "agent decision: width transition on the three 24-44px carousel progress buttons; the active one grows as the last shrinks, so the row's width is constant and nothing else reflows. A transform scale (the previous approach) left uneven gaps, the bug fixed this session."
       }
     ]
   }

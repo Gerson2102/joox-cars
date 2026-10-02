@@ -1,6 +1,7 @@
 "use client";
 
 import { getImageProps } from "next/image";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { useFilm } from "./useFilm";
 import { Btn } from "./Btn";
 import styles from "./hero.module.css";
@@ -11,13 +12,6 @@ const PHONE = "(max-width: 719px), (max-aspect-ratio: 4/5)";
 // is smaller, so the car would hide the J; the poster shows it arriving beside the whole word.
 const POSTER_TIME = { desktop: 2.711, phone: 2.085 };
 
-type Copy = {
-  title: string;
-  sub: string;
-  primary: string;
-  secondary: string;
-};
-
 /**
  * The JOOX film as the whole hero stage: the car drives through the word
  * (baked in scripts/media/v2_bake.py), the header floats over it, the copy
@@ -25,7 +19,7 @@ type Copy = {
  * and the copy sits on ink below it. The film plays on its own and pauses
  * itself offscreen; it has no controls on the page.
  */
-export function HeroStage({ t }: { t: Copy }) {
+export function HeroStage({ t }: { t: Dictionary["hero"] }) {
   const { videoRef, status } = useFilm("/media/v2/film", {
     startAt: POSTER_TIME.desktop,
     phone: { query: PHONE, base: "/media/v2/film-phone", startAt: POSTER_TIME.phone },
