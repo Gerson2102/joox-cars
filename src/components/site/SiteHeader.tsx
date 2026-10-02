@@ -8,6 +8,7 @@ import { NAV } from "@/lib/sections";
 import { wa } from "@/lib/whatsapp";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 import { Btn } from "./Btn";
+import { LangLink } from "./LangLink";
 import styles from "./header.module.css";
 
 const noop = () => () => {};
@@ -139,9 +140,9 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: Dictionary["
           </ul>
         </nav>
         <div className={styles.actions}>
-          <a className={styles.lang} href={`/${other}`} hrefLang={other} lang={other} aria-label={t.languageLabel}>
+          <LangLink to={other} className={styles.lang} lang={other} aria-label={t.languageLabel}>
             {t.language}
-          </a>
+          </LangLink>
           {whatsapp(overFilm ? "white" : "ink")}
           <button
             ref={toggleRef}
@@ -186,9 +187,9 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: Dictionary["
                   ))}
                 </ul>
               </nav>
-              <a className={styles.sheetLang} href={`/${other}`} hrefLang={other} lang={other}>
+              <LangLink to={other} className={styles.sheetLang} lang={other}>
                 {t.languageLabel}
-              </a>
+              </LangLink>
             </div>,
             document.body,
           )

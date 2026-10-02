@@ -37,7 +37,6 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 16px);
   /* No visible page scrollbar (the page still scrolls by wheel, touch and keys). */
   scrollbar-width: none;
@@ -131,9 +130,16 @@ svg {
   color: var(--ink-2);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+/* In-page links glide once the page's motion is on (ScrollFX; never under reduced motion).
+   Arriving at a #section jumps straight there instead. */
+html[data-fx="on"] {
+  scroll-behavior: smooth;
+}
+
+/* Switching language (a full page load) cross-fades instead of flashing. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
   }
 }
 

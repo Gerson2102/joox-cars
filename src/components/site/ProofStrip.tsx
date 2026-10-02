@@ -13,7 +13,8 @@ type Props = {
 };
 
 const EASE = 0.1; // how much of the remaining distance the strip covers each frame
-const RATE = 2; // pixels the strip travels per pixel scrolled
+// When scrolling carries the strip; proof.module.css lays it out under the same query.
+const SCRUB = "(pointer: fine) and (prefers-reduced-motion: no-preference)";
 
 /**
  * The client's own imports. Scrolling down the page holds the strip in view
@@ -27,6 +28,7 @@ export function ProofStrip({ t, photos, viewer }: Props) {
   const [photo, setPhoto] = useState<number | null>(null);
   const runwayRef = useRef<HTMLDivElement>(null);
   const heldRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
   const countRef = useRef<HTMLSpanElement>(null);
@@ -35,9 +37,9 @@ export function ProofStrip({ t, photos, viewer }: Props) {
   useEffect(() => {
     const runway = runwayRef.current;
     const held = heldRef.current;
+    const spacer = spacerRef.current;
     const track = trackRef.current;
-    if (!runway || !held || !track || window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
-    runway.dataset.scrub = "";
+    if (!runway || !held || !spacer || !track || !window.matchMedia(SCRUB).matches) return;
 
     const items = Array.from(track.children) as HTMLElement[];
     let travel = 0;
@@ -68,16 +70,14 @@ export function ProofStrip({ t, photos, viewer }: Props) {
       target = p * travel;
       kick();
     };
-    // The frame is held where its CSS centres it under the header, for `span` pixels of scroll;
-    // the runway is just tall enough for that, so no empty band opens above or below the strip.
+    // The frame is held where its CSS centres it under the header while the spacer (span) scrolls past.
     const measure = () => {
       travel = Math.max(0, track.scrollWidth - window.innerWidth);
-      span = Math.max(1, travel / RATE);
+      span = Math.max(1, spacer.offsetHeight);
       held.style.setProperty("--held-h", `${held.offsetHeight}px`);
       const pin = parseFloat(getComputedStyle(held).top);
       const style = getComputedStyle(runway);
       const lead = parseFloat(style.borderTopWidth) + parseFloat(style.paddingTop);
-      runway.style.height = `${lead + held.offsetHeight + span}px`;
       top = runway.getBoundingClientRect().top + window.scrollY + lead - pin;
       centres = items.map((it) => it.offsetLeft + it.offsetWidth / 2);
       read();
@@ -101,8 +101,6 @@ export function ProofStrip({ t, photos, viewer }: Props) {
       window.removeEventListener("scroll", read);
       window.removeEventListener("resize", measure);
       cancelAnimationFrame(raf);
-      delete runway.dataset.scrub;
-      runway.style.height = "";
       held.style.removeProperty("--held-h");
       track.style.transform = "";
       focusRef.current = () => {};
@@ -116,8 +114,10 @@ export function ProofStrip({ t, photos, viewer }: Props) {
     el.scrollBy({ left: d * el.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
   };
 
+  const size = { "--ratio-sum": photos.reduce((sum, p) => sum + p.width / p.height, 0), "--count": photos.length } as CSSProperties;
+
   return (
-    <div ref={runwayRef} className={styles.proof}>
+    <div ref={runwayRef} className={styles.proof} style={size}>
       <div ref={heldRef} className={styles.frame}>
         <div className={styles.head}>
           <div className={styles.text}>
@@ -161,6 +161,7 @@ export function ProofStrip({ t, photos, viewer }: Props) {
           <span ref={barRef} className={styles.progressFill} />
         </div>
       </div>
+      <div ref={spacerRef} className={styles.spacer} aria-hidden="true" />
 
       <PhotoViewer title={t.title} photos={photos} index={photo} onIndex={setPhoto} labels={viewer} />
     </div>

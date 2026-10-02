@@ -70,6 +70,15 @@ test("the rental showroom moves to the next car and opens its photos", async ({ 
   await expect(viewer).toBeHidden();
 });
 
+test("switching language keeps the section being read", async ({ page }) => {
+  await page.goto("/es");
+  await expect(page.locator("html")).toHaveAttribute("data-fx", "on"); // hydrated
+  await page.locator("#faq").evaluate((el) => el.scrollIntoView({ behavior: "instant" }));
+  await page.locator("header").getByRole("link", { name: es.nav.languageLabel }).click();
+  await expect(page).toHaveURL("/en#faq");
+  await expect(page.getByRole("heading", { level: 2, name: en.faq.title })).toBeInViewport();
+});
+
 test.describe("on a phone", () => {
   test.use({ viewport: { width: 390, height: 844 } });
 

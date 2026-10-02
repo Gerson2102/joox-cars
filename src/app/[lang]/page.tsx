@@ -19,6 +19,7 @@ import { Fold } from "@/components/site/Fold";
 import { Loop } from "@/components/site/Loop";
 import { Faq } from "@/components/site/Faq";
 import { Btn } from "@/components/site/Btn";
+import { LangLink } from "@/components/site/LangLink";
 import { ScrollFX } from "@/components/site/ScrollFX";
 import b from "@/components/site/bands.module.css";
 
@@ -392,9 +393,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               </li>
             ))}
             <li>
-              <a href={`/${other}`} hrefLang={other}>
-                {t.nav.languageLabel}
-              </a>
+              <LangLink to={other}>{t.nav.languageLabel}</LangLink>
             </li>
           </ul>
         </nav>

@@ -1,11 +1,11 @@
 /* The import strip: the client's own photos at one height, their widths from
    their own proportions, bleeding off the page edges like the showroom stage.
-   By default a strip you swipe; with the script ([data-scrub]) the page holds
-   it in view while scrolling carries it sideways (ProofStrip.tsx sets the
-   runway's height and the track's position). */
+   By default a strip you swipe; with the script, a mouse and motion allowed,
+   the page holds it in view while scrolling carries it sideways. */
 
 .proof {
   --h: clamp(300px, 30vw, 420px);
+  --gap: 14px;
   --edge: max(var(--gutter), calc(50vw - 620px)); /* the content column's left edge */
   position: relative;
   min-width: 0;
@@ -152,7 +152,7 @@
 
 .strip {
   display: flex;
-  gap: 14px;
+  gap: var(--gap);
   padding: 4px var(--edge) 12px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -201,73 +201,85 @@
   white-space: nowrap;
 }
 
-/* ---------- Carried by the scroll ---------- */
-
-.proof[data-scrub] {
-  --h: clamp(280px, min(30vw, 50svh), 460px);
-}
-
-/* Held centred in the space under the header (ProofStrip.tsx measures --held-h). */
-.proof[data-scrub] .frame {
-  position: sticky;
-  top: max(calc(var(--nav-h) + 12px), calc((100svh + var(--nav-h) - var(--held-h, 0px)) / 2));
-  gap: clamp(20px, 3.2svh, 32px);
-}
-
-.proof[data-scrub] .nav {
-  display: none;
-}
-
-.proof[data-scrub] .count {
-  display: flex;
-}
-
-.proof[data-scrub] .progress {
-  display: block;
-}
-
-.proof[data-scrub] .window {
-  overflow: clip; /* clip, not hidden: focus can never scroll it out of step */
-}
-
-.proof[data-scrub] .strip {
-  width: max-content;
-  overflow: visible;
-  scroll-snap-type: none;
-  will-change: transform;
-}
-
-/* Each photo drifts against the travel inside its frame (--shift runs about -1 to 1 across the screen). */
-.proof[data-scrub] .img {
-  transform: translate3d(calc(var(--shift, 0) * -7%), 0, 0) scale(1.16);
-  transition: none;
-}
-
-.proof[data-scrub] .shot {
-  transition: filter 0.4s var(--ease-out);
-}
-
-@media (hover: hover) {
-  .proof[data-scrub] .shot:hover {
-    filter: brightness(1.06);
-  }
-}
-
 @media (max-width: 700px) {
   .proof {
     --h: 300px;
-  }
-
-  .proof[data-scrub] {
-    --h: min(300px, 46svh);
-  }
-
-  .strip {
-    gap: 10px;
+    --gap: 10px;
   }
 
   .nav {
     display: none;
+  }
+}
+
+/* ---------- Carried by the scroll ----------
+   The frame is held while the spacer after it passes: as long as the strip's
+   travel at 2px of strip per 1px of scroll, worked out here from the photos'
+   proportions (--ratio-sum, --count), so the page has its full height from the
+   first paint. The query is ProofStrip.tsx's SCRUB; .js is set before paint. */
+
+.spacer {
+  display: none;
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :global(.js) .proof {
+    --h: clamp(280px, min(30vw, 50svh), 460px);
+  }
+
+  /* Held centred in the space under the header (ProofStrip.tsx measures --held-h). */
+  :global(.js) .frame {
+    position: sticky;
+    top: max(calc(var(--nav-h) + 12px), calc((100svh + var(--nav-h) - var(--held-h, 0px)) / 2));
+    gap: clamp(20px, 3.2svh, 32px);
+  }
+
+  :global(.js) .spacer {
+    display: block;
+    height: max(0px, calc((2 * var(--edge) + var(--h) * var(--ratio-sum) + var(--gap) * (var(--count) - 1) - 100vw) / 2));
+  }
+
+  :global(.js) .nav {
+    display: none;
+  }
+
+  :global(.js) .count {
+    display: flex;
+  }
+
+  :global(.js) .progress {
+    display: block;
+  }
+
+  :global(.js) .window {
+    overflow: clip; /* clip, not hidden: focus can never scroll it out of step */
+  }
+
+  :global(.js) .strip {
+    width: max-content;
+    overflow: visible;
+    scroll-snap-type: none;
+    will-change: transform;
+  }
+
+  /* Each photo drifts against the travel inside its frame (--shift runs about -1 to 1 across the screen). */
+  :global(.js) .img {
+    transform: translate3d(calc(var(--shift, 0) * -7%), 0, 0) scale(1.16);
+    transition: none;
+  }
+
+  :global(.js) .shot {
+    transition: filter 0.4s var(--ease-out);
+  }
+
+  :global(.js) .shot:hover {
+    filter: brightness(1.06);
+  }
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) and (max-width: 700px) {
+  :global(.js) .proof {
+    --h: min(300px, 46svh);
   }
 }
 
