@@ -7,7 +7,7 @@ import { wa } from "@/lib/whatsapp";
 import { EMAIL, MAP_URL, PHONE, RENTAL_OPERATOR, SOCIAL, mapEmbed } from "@/lib/contact";
 import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, SERVICE_PHOTOS, type PhotoId } from "@/lib/fleet";
 import { NAV } from "@/lib/sections";
-import { ArrowIcon, ExternalIcon } from "@/components/icons";
+import { ArrowIcon, ExternalIcon, HeartIcon } from "@/components/icons";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { HeroStage } from "@/components/site/HeroStage";
 import { CarCarousel, type CarSlide } from "@/components/site/CarCarousel";
@@ -24,6 +24,9 @@ import { ScrollFX } from "@/components/site/ScrollFX";
 import b from "@/components/site/bands.module.css";
 
 const SERVICES = ["rental", "sales", "import", "parts"] as const;
+
+/** The developer's signature, as on every Websites by Ger site. */
+const MAKER = { handle: "@websites_by_ger", href: "https://www.instagram.com/websites_by_ger" };
 
 type Tone = "white" | "yellow" | "black";
 const i = (n: number) => ({ ["--i" as string]: n }) as CSSProperties;
@@ -425,7 +428,19 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           ))}
           .
         </p>
-        <p className={b.footerNote}>{t.footer.rights}</p>
+        <div className={b.signoff}>
+          <p>{t.footer.rights}</p>
+          <p className={b.signature}>
+            {t.footer.madeWith}
+            <span role="img" aria-label={t.footer.love} className={b.heart}>
+              <HeartIcon className={b.heartIcon} />
+            </span>
+            {t.footer.madeBy}
+            <a href={MAKER.href} target="_blank" rel="noopener noreferrer" className={b.maker}>
+              {MAKER.handle}
+            </a>
+          </p>
+        </div>
       </footer>
     </>
   );

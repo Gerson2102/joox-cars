@@ -353,6 +353,9 @@ A list under a 3px ink rule, 1px hairlines between. Each question is a 72px trig
 ### About loop
 The logo's OO as one yellow figure-eight (16px stroke, round caps), beside the name's meaning it illustrates, drawn once in 1.6s when 40% in view; then a white dot travels it every 9s without end. Reduced motion: drawn and still, no dot.
 
+### Footer sign-off
+The footer's last line, under a hairline: the rights on the left in `ink-2` at small size, and across from them the developer's signature as on every Websites by Ger site: "Hecho con ♥ por @websites_by_ger" ("Made with ♥ by") at lead size. The heart is the logo's yellow with an ink line (yellow alone vanishes on white) and beats twice every 1.4s, then rests; the handle, linking to the Instagram profile, is expanded ExtraBold ink over a yellow underline that fills it like a highlighter on hover. On phones the two lines stack. Reduced motion: the heart stays still.
+
 ### Placeholders
 Prices are not shown: rental rates change with the season (Christmas, Semana Santa), so the rental showroom says so beside the WhatsApp button, and the car for sale is asked about on WhatsApp. Anything the client has not supplied yet goes in as bracketed copy, which stays out of the structured data. Reviews are real customers' words only, never invented ones, published with their permission (translated on the English page, which says so). Track-record numbers are written into sentences ("12 sold so far"), never set as big-number stat tiles.
 

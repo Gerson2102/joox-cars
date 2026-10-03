@@ -41,6 +41,20 @@ export function PhotosIcon({ className }: IconProps) {
   );
 }
 
+/** A heart: filled with the current fill, outlined in the current colour. */
+export function HeartIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        d="M12 20.25c-.4 0-7.75-4.6-8.9-9.6C2.3 7.2 4.35 4.5 7.35 4.5c2 0 3.6 1.2 4.65 2.85C13.05 5.7 14.65 4.5 16.65 4.5c3 0 5.05 2.7 4.25 6.15-1.15 5-8.5 9.6-8.9 9.6Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function MenuIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">

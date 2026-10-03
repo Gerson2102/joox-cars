@@ -441,7 +441,10 @@
     "operator": "Rentals operated by {name}, Costa Rican company ID (cédula jurídica) {id}.",
     "credits": "Reference photos of the models, from Wikimedia Commons:",
     "adjusted": "colour adjusted",
-    "pd": "public domain"
+    "pd": "public domain",
+    "madeWith": "Made with",
+    "love": "love",
+    "madeBy": "by"
   },
   "photos": {
     "fleet-grass": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles",

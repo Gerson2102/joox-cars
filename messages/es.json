@@ -441,7 +441,10 @@
     "operator": "Renta operada por {name}, cédula jurídica {id}.",
     "credits": "Fotos de referencia de los modelos, de Wikimedia Commons:",
     "adjusted": "color ajustado",
-    "pd": "dominio público"
+    "pd": "dominio público",
+    "madeWith": "Hecho con",
+    "love": "amor",
+    "madeBy": "por"
   },
   "photos": {
     "fleet-grass": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles",
