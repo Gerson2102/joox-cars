@@ -25,6 +25,8 @@ export type CarSlide = {
   photos: Photo[];
 };
 
+const nameOf = (c: CarSlide) => `${c.brand} ${c.model} ${c.year}`;
+
 type Props = {
   cars: CarSlide[];
   /** Which way the cars face and travel. */
@@ -141,7 +143,7 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
               >
                 <Image
                   src={c.cutout.src}
-                  alt={`${c.brand} ${c.model} ${c.year}`}
+                  alt={nameOf(c)}
                   width={c.cutout.width}
                   height={c.cutout.height}
                   sizes="(max-width: 700px) 88vw, 880px"
@@ -210,7 +212,7 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
                 type="button"
                 className={styles.dot}
                 data-active={i === index || undefined}
-                aria-label={`${labels.show} ${c.brand} ${c.model} ${c.year}`}
+                aria-label={`${labels.show} ${nameOf(c)}`}
                 aria-current={i === index || undefined}
                 onClick={() => setIndex(i)}
               />
@@ -225,7 +227,7 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
         </div>
       )}
 
-      <PhotoViewer title={`${car.brand} ${car.model} ${car.year}`} photos={car.photos} index={photo} onIndex={setPhoto} labels={viewer} />
+      <PhotoViewer title={nameOf(car)} photos={car.photos} index={photo} onIndex={setPhoto} labels={viewer} />
     </div>
   );
 }

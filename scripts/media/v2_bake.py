@@ -43,7 +43,6 @@ Environment: FFMPEG as in common.py.
 import functools
 import glob
 import hashlib
-import json
 import os
 
 import cv2
@@ -61,7 +60,7 @@ DISSOLVE = 0.3                    # seconds of the loop dissolve (empty road bot
 # before the loop comes round, so the car bursts in as soon as the film has faded in.
 POSTER_SRC_T = {"desktop": 9.5, "phone": 9.5}
 CLEAN = ((0.0, 0.3), (9.5, 10.1))  # car-free seconds for the clean plate: before the car, after the hill
-ROI_TOP = 0.40                    # the car never rises above this fraction of the frame
+ROI_TOP = 0.40                    # the car is tracked below this fraction of the frame (the palm canopy sways above)
 LOGO = os.path.join(ROOT, "references", "brand", "joox-cars-logo.png")
 LOGO_BAND = (0.24, 0.505)         # the JOOX line, as fractions of the logo's height (CARS and the tagline sit below)
 YELLOW = np.array([0xFD, 0xCD, 0x03], np.float32)
@@ -219,8 +218,8 @@ def coarse_mask(frame: np.ndarray, plate: np.ndarray, track: Tracker) -> np.ndar
 
 # ---------- licence plate ----------
 
-# The plate recess on the tailgate in the anchor frame (plate at its centre):
-# x, y, w, h in plate pixels at source second PLATE_ANCHOR_T.
+# The licence plate in the anchor frame (on the rear bumper, under the spare wheel):
+# x, y, w, h in frame pixels at source second PLATE_ANCHOR_T.
 PLATE_ANCHOR_T = 1.167
 PLATE_RECESS = (797, 754, 64, 34)
 PLATE_MIN_W = 12            # below this the plate is unreadable; stop blurring
@@ -536,7 +535,7 @@ def main() -> None:
         return word_at(name, i)[y0:y1, x0:x1, 3].max() > 0.02
 
     todo = [i for i in range(n_src) if any(needs_alpha(name, i) for name in LAYOUTS)]
-    uncached = [i for i in todo if not any(f.startswith(f"{i:04d}_") for f in os.listdir(CACHE))] if os.path.isdir(CACHE) else todo
+    uncached = [i for i in todo if not os.path.exists(_alpha_path(i, tuple(info[i]["bbox"])))]
     print("frames needing a fine matte:", len(todo), "not cached yet:", len(uncached))
     if dry:
         for name, (cx0, cw) in crops.items():
@@ -575,12 +574,9 @@ def main() -> None:
             save_webp(np.concatenate(tiles, axis=1), os.path.join(SRC, "_debug", f"v2-matte-{i:04d}.webp"))
         return
 
-    # Pass 2: composite, retime, loop.
-    widths = {name: cw for name, (_, cw) in crops.items()}
-    encs = {
-        "desktop": Encoder(os.path.join(out, "film"), W, H, f"{SRC_FPS}/1"),
-        "phone": Encoder(os.path.join(out, "film-phone"), widths["phone"], H, f"{SRC_FPS}/1"),
-    }
+    # Pass 2: composite, loop.
+    tag = {name: "" if name == "desktop" else f"-{name}" for name in LAYOUTS}  # film.*, film-phone.*; poster-*, poster-phone-*
+    encs = {name: Encoder(os.path.join(out, f"film{tag[name]}"), cw, H, f"{SRC_FPS}/1") for name, (_, cw) in crops.items()}
     lead: dict[str, list[np.ndarray]] = {k: [] for k in crops}
     poster_i = {name: round(t * SRC_FPS) for name, t in POSTER_SRC_T.items()}
     posters: dict[str, str] = {}
@@ -604,7 +600,7 @@ def main() -> None:
             comp = composite(f, word_at(name, i), a if front[name] else None)[:, cx0:cx0 + cw]
             comp8 = np.clip(comp + 0.5, 0, 255).astype(np.uint8)
             if i == poster_i[name]:
-                posters[name] = save_poster(comp8, out, "poster" if name == "desktop" else "poster-phone")
+                posters[name] = save_poster(comp8, out, f"poster{tag[name]}")
             if i < start_i:
                 lead[name].append(comp8)
                 continue
@@ -614,14 +610,10 @@ def main() -> None:
                 comp8 = (comp8.astype(np.float32) * (1 - w) + lead[name][tail_k].astype(np.float32) * w + 0.5).astype(np.uint8)
             encs[name].write(comp8)
 
-    poster_t = {name: round((pi - start_i) / SRC_FPS, 3) for name, pi in poster_i.items()}
     for name, enc in encs.items():
         print(name, enc.close(small=name == "desktop"))
-    curtain_s = {name: [round((c + OPEN[0] * SRC_FPS - start_i) / SRC_FPS, 2), round((c + CLOSE[1] * SRC_FPS - start_i) / SRC_FPS, 2)]
-                 for name, c in cross.items()}
-    with open(os.path.join(CACHE, "timing.json"), "w", encoding="utf-8") as fh:
-        json.dump({"posterTime": poster_t, "phoneX0": crops["phone"][0], "curtain_s": curtain_s}, fh)
-    print("posters", posters, "at film time", poster_t, "; phone crop x0", crops["phone"][0], "; curtain (film s)", curtain_s)
+    poster_t = {name: round((pi - start_i) / SRC_FPS, 3) for name, pi in poster_i.items()}
+    print("posters", posters, "at film time", poster_t, "(HeroStage.tsx: POSTER_TIME and the files); phone crop x0", crops["phone"][0])
 
 
 if __name__ == "__main__":

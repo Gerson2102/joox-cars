@@ -6,6 +6,8 @@ import { wa } from "@/lib/whatsapp";
 import { Btn } from "./Btn";
 import styles from "./bands.module.css";
 
+const CAR = ["make", "model", "year"] as const;
+
 /** No backend: the request is written into a WhatsApp message. */
 export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
   const id = useId();
@@ -23,8 +25,7 @@ export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
     setError(false);
     const lines = [
       t.message,
-      ...(["make", "model", "year"] as const)
-        .map((k) => [t[k], String(data.get(k) ?? "").trim()] as const)
+      ...CAR.map((k) => [t[k], String(data.get(k) ?? "").trim()] as const)
         .filter(([, v]) => v)
         .map(([label, v]) => `${label}: ${v}`),
       `${t.part}: ${part}`,
@@ -35,7 +36,7 @@ export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
       <div className={styles.fields}>
-        {(["make", "model", "year"] as const).map((k) => (
+        {CAR.map((k) => (
           <label key={k} className={styles.field}>
             <span>{t[k]}</span>
             <input name={k} type="text" inputMode={k === "year" ? "numeric" : "text"} autoComplete="off" />

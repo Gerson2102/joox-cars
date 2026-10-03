@@ -180,18 +180,28 @@
   border-radius: 14px;
   background: var(--rule);
   cursor: zoom-in;
+  transition: filter 0.9s var(--ease-out);
 }
 
+/* Hovering eases the photo a little closer and lifts its light, slowly, both ways.
+   The zoom is `scale`, apart from the scroll drift (`translate`, below), so the two
+   compose and the drift keeps following the scroll frame by frame. */
 .img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease-out);
+  transition: scale 0.9s var(--ease-out);
 }
 
 @media (hover: hover) {
+  .shot:hover {
+    filter: brightness(1.06);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .shot:hover .img {
-    transform: scale(1.035);
+    scale: 1.04;
   }
 }
 
@@ -264,27 +274,17 @@
 
   /* Each photo drifts against the travel inside its frame (--shift runs about -1 to 1 across the screen). */
   :global(.js) .img {
-    transform: translate3d(calc(var(--shift, 0) * -7%), 0, 0) scale(1.16);
-    transition: none;
+    translate: calc(var(--shift, 0) * -7%) 0;
+    scale: 1.16;
   }
 
-  :global(.js) .shot {
-    transition: filter 0.4s var(--ease-out);
-  }
-
-  :global(.js) .shot:hover {
-    filter: brightness(1.06);
+  :global(.js) .shot:hover .img {
+    scale: 1.2;
   }
 }
 
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) and (max-width: 700px) {
   :global(.js) .proof {
     --h: min(300px, 46svh);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .img {
-    transition: none;
   }
 }

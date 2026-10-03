@@ -56,16 +56,12 @@ def read_frames(path: str, w: int, h: int, start: float = 0.0, duration: float |
     args += ["-i", path, "-vf", f"scale={w}:{h}:flags=lanczos", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     size = w * h * 3
-    while True:
-        buf = proc.stdout.read(size)
-        if len(buf) < size:
-            break
-        yield np.frombuffer(buf, np.uint8).reshape(h, w, 3)
-    proc.wait()
-
-
-
-
+    try:
+        while len(buf := proc.stdout.read(size)) == size:
+            yield np.frombuffer(buf, np.uint8).reshape(h, w, 3)
+    finally:
+        proc.kill()  # a reader that stops early would leave ffmpeg writing into a closed pipe
+        proc.wait()
 
 
 class Encoder:
@@ -75,7 +71,7 @@ class Encoder:
     the same pixels.
     """
 
-    def __init__(self, out_base: str, w: int, h: int, fps: str = "24000/1001"):
+    def __init__(self, out_base: str, w: int, h: int, fps: str):
         self.out_base, self.w, self.h, self.fps = out_base, w, h, fps
         self.tmp = out_base + ".intermediate.mkv"
         self.proc = subprocess.Popen(

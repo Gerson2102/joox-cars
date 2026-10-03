@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import type { Dictionary, Locale } from "@/app/[lang]/dictionaries";
+import { otherLocale, type Dictionary, type Locale } from "@/app/[lang]/dictionaries";
 import { NAV } from "@/lib/sections";
 import { wa } from "@/lib/whatsapp";
 import { CloseIcon, MenuIcon } from "@/components/icons";
@@ -27,7 +27,7 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: Dictionary["
   const toggleRef = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const other = lang === "es" ? "en" : "es";
+  const other = otherLocale(lang);
 
   const close = useCallback(() => {
     setOpen(false);

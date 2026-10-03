@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Fragment, type CSSProperties, type ReactNode } from "react";
-import { getDictionary, hasLocale, type Dictionary } from "./dictionaries";
+import { getDictionary, hasLocale, otherLocale, type Dictionary } from "./dictionaries";
 import { businessJsonLd, faqJsonLd } from "./structured-data";
 import { wa } from "@/lib/whatsapp";
 import { EMAIL, MAP_URL, PHONE, RENTAL_OPERATOR, SOCIAL, mapEmbed } from "@/lib/contact";
@@ -97,7 +97,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   if (!hasLocale(lang)) notFound();
   const t = await getDictionary(lang);
   const [driven, eternal, purpose] = t.about.tagline;
-  const other = lang === "es" ? "en" : "es";
+  const other = otherLocale(lang);
   const r = t.rental.specs;
   const s = t.sales.specs;
   // One credit per photo: a car for rent and for sale shows the same model photo in both showrooms.

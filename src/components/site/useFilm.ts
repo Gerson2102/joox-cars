@@ -7,24 +7,20 @@ type FilmStatus = "poster" | "loading" | "playing" | "paused" | "off";
 type FilmOptions = {
   /** Start the film here (seconds), so it continues from the poster frame. */
   startAt?: number;
-  /** A separately composed film for small or portrait screens (no extension), with its own poster time. */
-  phone?: { query: string; base: string; startAt?: number };
+  /** A separately composed film for small or portrait screens (no extension). */
+  phone?: { query: string; base: string };
 };
 
 /** A composed phone film where one exists; otherwise the 1280-wide encode up to
  * 900px and 1080p above. AV1 first; browsers that cannot decode it take H.264. */
-function filmFor(base: string, startAt: number, phone?: FilmOptions["phone"]) {
+function sourcesFor(base: string, phone?: FilmOptions["phone"]) {
   let path = base;
-  let at = startAt;
-  if (phone && window.matchMedia(phone.query).matches) [path, at] = [phone.base, phone.startAt ?? startAt];
+  if (phone && window.matchMedia(phone.query).matches) path = phone.base;
   else if (window.matchMedia("(max-width: 900px)").matches) path = `${base}-720`;
-  return {
-    at,
-    sources: [
-      { src: `${path}.av1.mp4`, type: 'video/mp4; codecs="av01.0.08M.08"' },
-      { src: `${path}.mp4`, type: "video/mp4" },
-    ],
-  };
+  return [
+    { src: `${path}.av1.mp4`, type: 'video/mp4; codecs="av01.0.08M.08"' },
+    { src: `${path}.mp4`, type: "video/mp4" },
+  ];
 }
 
 type NetworkInformation = { saveData?: boolean; effectiveType?: string };
@@ -58,14 +54,13 @@ export function useFilm(base: string, { startAt = 0, phone }: FilmOptions = {}) 
     const start = () => {
       if (v.childElementCount) return;
       setStatus("loading");
-      const { at, sources } = filmFor(base, startAt, phone);
-      for (const s of sources) {
+      for (const s of sourcesFor(base, phone)) {
         const el = document.createElement("source");
         el.src = s.src;
         el.type = s.type;
         v.appendChild(el);
       }
-      if (at) v.addEventListener("loadedmetadata", () => (v.currentTime = at), { once: true });
+      if (startAt) v.addEventListener("loadedmetadata", () => (v.currentTime = startAt), { once: true });
       v.load();
       v.play().catch(() => setStatus("paused"));
     };

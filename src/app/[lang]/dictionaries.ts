@@ -11,4 +11,7 @@ export const locales = Object.keys(dictionaries) as Locale[];
 
 export const hasLocale = (locale: string): locale is Locale => locale in dictionaries;
 
+/** The language the switch leads to. */
+export const otherLocale = (locale: Locale): Locale => (locale === "es" ? "en" : "es");
+
 export const getDictionary = async (locale: Locale): Promise<Dictionary> => dictionaries[locale]();
