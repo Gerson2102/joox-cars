@@ -2,17 +2,17 @@
 
 The cars on the homepage are the client's own: the rental fleet, the car for sale and the client's imports, from photos the client sent (`public/media/photos/`, and the showroom cutouts in `public/media/fleet/`). The showroom shows each car in side profile through a Wikimedia Commons photo of its model (recoloured to the client's paint where needed), labelled "Foto del modelo" / "Model photo" and credited; the client's own photos of each car open from "Ver fotos".
 
-The hero film is a **stand-in**: free-license stock (Mixkit) used until the client's own shoot arrives. The footer says so ("El video de portada es de muestra…"); the hero itself carries no label.
+The hero film is **AI-generated** (Seedance 2.5 through the Higgsfield API), the version the client chose: a white Jeep Wrangler on a Caribbean coast road, not one of the fleet's own cars. It carries no label.
 
 The logo files in `public/brand/` are the client's own, cut from the logo raster they supplied.
 
-Sources are not committed. `scripts/media/sources.json` lists every source URL, and the scripts download them into `.media-src/` (gitignored). Each shipped raster also carries its origin in a `.webp.json` sidecar. Read it with `impeccable embed-prompt --read <file>`.
+Sources are not committed. `scripts/media/sources.json` lists every source URL, and the scripts download them into `.media-src/` (gitignored); the hero film's take has no URL, so it is copied in from where its entry says it is kept. Each shipped raster also carries its origin in a `.webp.json` sidecar. Read it with `impeccable embed-prompt --read <file>`.
 
 ## Homepage (`/es`, `/en`)
 
 | File | Size | Used in | Source (license) | How it was made | Client's real replacement |
 | --- | --- | --- | --- | --- | --- |
-| `v2/film*`, `v2/poster*.webp` | See the hero film below | Hero film and its posters | Mixkit 2025 | See below | See below |
+| `v2/film*`, `v2/poster*.webp` | See the hero film below | Hero film and its posters | Seedance 2.5 (generated) | See below | See below |
 | `../brand/joox-cars-mark.webp` (`public/brand/`) | 96 KB | Header logo | The client's logo raster (`references/brand/joox-cars-logo.png`) | White background unmixed to transparency (alpha = 1 − darkest channel), trimmed, 240 px tall | **The vector logo (SVG)** |
 | `../brand/joox-cars-mark-reversed.webp` (`public/brand/`) | 79 KB | Header logo over the hero film | The mark above | `scripts/media/brand_reversed.py`: near-black swapped for white, yellow kept, edges blended | **The vector logo's reversed version (SVG)** |
 | `../brand/joox-cars-lockup.webp` (`public/brand/`) | 121 KB | Footer logo with the tagline | Same raster | Same, with "Driven by eternal purpose", 320 px tall | The vector lockup (SVG) |
@@ -58,14 +58,14 @@ Earlier cutouts are kept, unused, in `.media-src/fleet/`: the sample cars of oth
 
 ## The hero film
 
-The plate goes through a per-shot balance, then the shared look: greens pulled toward olive, teal shadows, amber highlights, and a soft filmic curve (`LOOK` in `scripts/media/common.py`). It is graded in RGB and converted to YUV once, as tagged BT.709, so the video decodes to the same colours as its posters.
+The take plays as generated: its own colour, speed and frames, at 1920×1080, 24 fps. It is composited in RGB and converted to YUV once, as tagged BT.709, so the video decodes to the same colours as its posters.
 
 Each layout ships in two codecs, both at constant quality capped by a size budget: **AV1** (`.av1.mp4`, what Chrome, Edge, Firefox, Android and recent Safari play) and **H.264** (`.mp4`, the fallback, e.g. older iPhones). `useFilm` lists AV1 first with its codec string, so a browser that cannot decode it takes the H.264 file. The desktop layout also ships 1280 wide (`-720`) for screens up to 900 px; phones and portrait screens get their own crop.
 
 | File | Size | Used in | Source (license) | How it was made | Client's real replacement |
 | --- | --- | --- | --- | --- | --- |
-| `v2/film.av1.mp4`, `v2/film.mp4` (+ `film-720.*`, `film-phone.*`) | AV1 2.6 MB / H.264 3.3 MB (1280 wide: 1.1 / 1.4 MB; phone crop 890×1080: 1.9 / 3.2 MB) | The film with JOOX baked in: desktop layout, and a tall crop (centred on the car's crossing) for phones and portrait screens | [Mixkit 2025, SUV on a forest road](https://mixkit.co/free-stock-video/jeep-in-the-road-between-nature-2025/) (Mixkit Free License) | `scripts/media/v2_bake.py`: the car is tracked by background subtraction; while it is in front and overlaps the letters, a BiRefNet cutout is made per frame (cached). The matte actually used is steadied: the median of the neighbouring frames' cutouts, aligned on the tracked licence plate (its track smoothed), made solid (no see-through glass or haze, the gap under the car closed, only between the wheels), edge included. Without it, the letter behind the car flickered and turned see-through around it. JOOX (Archivo, provisional face) is drawn into every frame; as the car reaches it, JO and OX part like a curtain, the car turns from in front to behind inside the gap, and the letters close behind it. Played at 1.4× using every frame, 12.7 s loop that runs until the car has driven off behind the grass, then dissolves empty road into empty road. The stand-in's licence plate is tracked and blurred | **Locked-off telephoto**, 20 s: an empty road for the first 2 s, then **one of the fleet's own cars** entering close to the camera and driving away up the road. Golden hour, no other traffic, no camera shake. |
-| `v2/poster-<hash>.webp`, `v2/poster-phone-<hash>.webp` (named by content) | 438 KB / 139 KB (visitors get AVIF at the size shown, e.g. 57 KB at 1080 px) | Posters (LCP): desktop and phone crops | Same clip, frames at 5.0 s and 4.13 s (film time 2.711 s and 2.085 s; on the phone the car is still beside the word, which it would otherwise half hide) | Baked frame, word included | Rebaked from the client's shot |
+| `v2/film.av1.mp4`, `v2/film.mp4` (+ `film-720.*`, `film-phone.*`) | 1920×1080: AV1 1.9 MB / H.264 2.8 MB (1280 wide: 0.9 / 1.1 MB; phone crop 890×1080: 0.9 / 1.9 MB) | The film with JOOX baked in: desktop layout, and a tall crop (centred on the car's crossing) for phones and portrait screens | Seedance 2.5 image-to-video through the Higgsfield API (request `b53e41f0-52f6-4f61-9455-5ce8a5d5b228`), 10 s at 1080p, first and last frame the same Higgsfield Soul 2 still of a Caribbean coast road; the take and its prompt are kept in the `joox-higgsfield` project | `scripts/media/v2_bake.py`: the logo's own JOOX (cut from the logo raster, J and X white, the infinity yellow) is drawn into every frame; as the car reaches it, JO and OX part like a curtain at the infinity's crossing, the car turns from in front to behind inside the gap, and the letters close behind it. The car is tracked by background subtraction against the empty road at both ends of the take; while it is in front and overlaps the letters, its matte is the larger of a BiRefNet cutout (steadied: the median of the neighbouring frames' cutouts, aligned on the tracked licence plate, or on the car's front while the frame edge cuts it) and its own outline against the empty road, which holds when the car fills BiRefNet's crop. Below the roof the matte is filled out to the car's sides (the dark fender flares and bumper against a dark road), and on the fast close pass its edge is smeared along the car's path like the car itself, so the letters fade into its blurred front. On desktop the word stands below the copy (baseline at 80 %); on phones it stands higher (70 %), where the car crosses it smaller. 9.75 s loop at the take's own speed, from the empty road before the car to the empty road after it has gone over the hill, closed by a 0.3 s dissolve. The licence plate is tracked and blurred | **Locked-off**, 10 s: the car enters close to the camera at once, drives away up the road and goes over the hill, then 1 s of empty road. Golden hour, no other traffic, no camera shake. |
+| `v2/poster-<hash>.webp`, `v2/poster-phone-<hash>.webp` (named by content) | 214 KB / 93 KB (visitors get AVIF at the size shown) | Posters (LCP): desktop and phone crops | Same take, the frame at 9.5 s (film time 9.208 s): the empty road and the word just before the loop comes round. The film starts there, so the car bursts in as soon as it has faded in | Baked frame, word included | Rebaked from any new take |
 
 ## Placeholders that are not media
 
@@ -84,10 +84,10 @@ Homepage (`messages/es.json`, `messages/en.json`):
 # (imageio-ffmpeg bundles one). A ready environment: python -m venv work/media-venv, then pip
 # install those into it; FFMPEG=$(python -c "import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())").
 export FFMPEG=/path/to/ffmpeg
-python scripts/media/v2_bake.py        # the hero film and posters: ~40 min the first time (per-frame cutouts), minutes once cached
+python scripts/media/v2_bake.py        # the hero film and posters: a few minutes (per-frame cutouts cached in .media-src/_cache)
 python scripts/media/photos.py        # the client's photos: plates softened, people blurred, no metadata
 python scripts/media/fleet.py         # showroom cutouts: the client's photos (or a Commons model photo), plates softened, shadows
 IMPECCABLE=/path/to/impeccable python scripts/media/provenance.py
 ```
 
-Each script documents its own method. To swap in the client's footage, put it in `sources.json` under `forest`, update the times at the top of `v2_bake.py` (poster time, loop segment) and the plate's anchor position (`PLATE_RECESS`), and rerun; it works for a locked-off camera, as the shot brief above says. `WORD=...` renders another language.
+Each script documents its own method. To swap in another take, add it to `sources.json`, point `SOURCE` at the top of `v2_bake.py` to it, update the times there (the car-free `CLEAN` seconds, `START`, the poster time) and the plate's anchor position (`PLATE_RECESS`), rerun, and copy the printed poster time and file names into `HeroStage.tsx`; it works for a locked-off camera, as the shot brief above says.

@@ -1,7 +1,7 @@
 """Embed each shipped raster's origin into the file (Impeccable provenance).
 
-None of these rasters is generated: they are the client's own photos, cutouts
-of Wikimedia Commons model photos, frames of the licensed stock hero film,
+Only the hero posters are generated (frames of the AI-generated hero film); the
+rest are the client's own photos, cutouts of Wikimedia Commons model photos,
 or cutouts of the client's logo. The embedded text says where each came
 from and which script made it, so the file explains itself after it leaves
 this repo. Run after any script in this folder rewrites a raster.
@@ -16,13 +16,12 @@ import subprocess
 from common import OUT, sources
 from fleet import CARS
 from photos import PHOTOS
-
-LOOK = "graded with the shared LOOK in scripts/media/common.py"
+from v2_bake import POSTER_SRC_T, SOURCE
 
 
 def origin(key: str) -> str:
     s = sources()[key]
-    return f"{s['page']} ({s['license']})"
+    return f"{s['made']} ({s['license']})"
 
 
 def poster(stem: str) -> str:
@@ -31,8 +30,8 @@ def poster(stem: str) -> str:
 
 
 ORIGINS = {
-    poster("poster"): f"Baked frame at 5.0 s of {origin('forest')}, {LOOK}: JOOX drawn in (closed curtain), the car cut out with BiRefNet and steadied over neighbouring frames, plate blurred. Made by scripts/media/v2_bake.py.",
-    poster("poster-phone"): f"Phone crop (890x1080) of the baked V2 frame at 4.13 s of {origin('forest')}, {LOOK}. Made by scripts/media/v2_bake.py.",
+    poster("poster"): f"Baked frame at {POSTER_SRC_T['desktop']} s of the hero film, {origin(SOURCE)}: the logo's JOOX drawn in, plate blurred. Made by scripts/media/v2_bake.py.",
+    poster("poster-phone"): f"Phone crop (890x1080) of the baked frame at {POSTER_SRC_T['phone']} s of the hero film, {origin(SOURCE)}. Made by scripts/media/v2_bake.py.",
     **{
         "fleet/" + os.path.basename(glob.glob(os.path.join(OUT, "fleet", f"{slug}-side-*.webp"))[0]): (
             f"Side-profile showroom cutout of a model photo for the client's car: the Wikimedia Commons photo \"{car['commons']}\" by {car['author']} "

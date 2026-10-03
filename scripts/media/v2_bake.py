@@ -1,42 +1,43 @@
 """V2 · The car drives through the word, baked into one film.
 
 The word is drawn into every frame offline instead of being composited live in
-the browser. Far to near: forest road (plate) → the word, standing on the road
-at its baseline → the SUV while it is nearer than the word.
+the browser. Far to near: coast road (plate) → the word, standing on the road
+at its baseline → the Jeep while it is nearer than the word.
+
+The word is the logo's own JOOX, cut from the client's logo raster and reversed
+for the film: J and X white, the OO infinity in JOOX yellow.
 
 The curtain: as the car reaches the word, the letters part at the split
-(JO | OX, between the two O's of the logo's infinity) like a curtain, the car
+(JO | OX, at the crossing of the logo's infinity) like a curtain, the car
 drives through the gap, and the letters close behind it. The car turns from
 "in front" to "behind" while the gap is open, so the change is never seen.
 
 The car's cutout comes from a segmentation model (BiRefNet, via rembg), run on
 a crop around the car. The crop comes from background subtraction against the
-car-free first 1.8 s. The cutout is only needed while the car is in front and
-overlaps the letters; those alphas are cached in .media-src/_cache/v2 so re-runs
-skip the model. A single frame's cutout flickers and is soft (glass, the gap
-under the car, the antenna), which reads as the letter turning see-through
-around the car. The matte actually used is steadied: the median of the
-neighbouring frames' cutouts, aligned on the tracked licence plate (its track
-smoothed), made solid, edge included.
+car-free frames at both ends of the take. The cutout is only needed while the
+car is in front and overlaps the letters; those alphas are cached in
+.media-src/_cache/<source> so re-runs skip the model. A single frame's cutout
+flickers and is soft (glass, the gap under the car, the antenna), which reads as
+the letter turning see-through around the car. The matte actually used is
+steadied: the median of the neighbouring frames' cutouts, aligned on the tracked
+licence plate (its track smoothed), made solid, edge included.
 
-Pace: the clip plays at SPEED using every source frame (the output frame rate
-is raised instead of dropping frames). The loop runs from START to the end of
-the clip, after the car has driven out of frame, and closes with a short
-dissolve between empty road and empty road, so nothing vanishes.
+The take plays as generated: every frame, at its own speed and colour. The loop
+runs from START to the end of the take, after the car has gone over the hill,
+and closes with a short dissolve between empty road and empty road.
 
-Two layouts, one render each:
-  desktop  1920x1080, word 44% of the width, split centred on the car's path
-  phone    890x1080 crop centred on the car's crossing point, word 58% of the crop
+Two layouts, one render each (LAYOUTS):
+  desktop  1920x1080, word 44% of the width below the copy, split centred on the car's path
+  phone    890x1080 crop centred on the car's crossing point, word 58% of the crop and higher
 
 Outputs in public/media/v2/:
   film.av1.mp4/.mp4, film-720.*   desktop layout (1080p and 1280 wide)
   film-phone.av1.mp4/.mp4         phone layout
   poster-<hash>.webp, poster-phone-<hash>.webp  the frames at POSTER_SRC_T (LCP images), named by content
 
-The stand-in car's licence plate is blurred in every frame.
+The car's licence plate is blurred in every frame.
 
-Environment: FFMPEG as in common.py. WORD and SPLIT (letters before the split)
-override the word, e.g. for another language.
+Environment: FFMPEG as in common.py.
 """
 
 import functools
@@ -47,101 +48,110 @@ import os
 
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
-from common import SRC, Encoder, grade, out_dir, read_frames, save_webp, source_path
+from common import ROOT, SRC, Encoder, out_dir, read_frames, save_webp, source_path
 
+SOURCE = "hill"                   # key in sources.json
 W, H = 1920, 1080
-SRC_FPS = 24000 / 1001
-SPEED = 1.4                       # playback speed; the output keeps every source frame
-OUT_FPS = f"{round(24000 * SPEED)}/1001"
-START = 1.2                       # source second the loop starts at (road still empty)
-DISSOLVE = 0.35                   # output seconds of the loop dissolve (empty road both sides)
-# Source second of each poster: the car in front of the word; on the phone, where the word is smaller and
-# the car would hide the J, the car arriving beside the whole word.
-POSTER_SRC_T = {"desktop": 5.0, "phone": 4.13}
-BG_RANGE = (0.0, 1.8)             # car-free seconds for the clean plate
-ROI_TOP = 0.46                    # the car never rises above this fraction of the frame
-BASELINE = 0.8                    # the word's baseline, fraction of the frame height
-WORD = os.environ.get("WORD", "JOOX")
-SPLIT = int(os.environ.get("SPLIT", "2"))
-BONE = np.array([0xF1, 0xEC, 0xE3], np.float32)
-# Provisional face, close to the logo's heavy JOOX; re-bake when the site's display face is chosen.
-FONT = os.path.join(SRC, "Archivo.ttf")
-FONT_URL = "https://github.com/google/fonts/raw/main/ofl/archivo/Archivo%5Bwdth,wght%5D.ttf"
-FONT_AXES = [800, 100]            # Weight, Width
-CACHE = os.path.join(SRC, "_cache", "v2")
+SRC_FPS = 24
+START = 0.3                       # source second the loop starts at (road still empty)
+DISSOLVE = 0.3                    # seconds of the loop dissolve (empty road both sides)
+# Source second of each poster, where the film also starts playing: the empty road just
+# before the loop comes round, so the car bursts in as soon as the film has faded in.
+POSTER_SRC_T = {"desktop": 9.5, "phone": 9.5}
+CLEAN = ((0.0, 0.3), (9.5, 10.1))  # car-free seconds for the clean plate: before the car, after the hill
+ROI_TOP = 0.40                    # the car never rises above this fraction of the frame
+LOGO = os.path.join(ROOT, "references", "brand", "joox-cars-logo.png")
+LOGO_BAND = (0.24, 0.505)         # the JOOX line, as fractions of the logo's height (CARS and the tagline sit below)
+YELLOW = np.array([0xFD, 0xCD, 0x03], np.float32)
+WHITE = np.array([0xFF, 0xFF, 0xFF], np.float32)
+CACHE = os.path.join(SRC, "_cache", SOURCE)
 PHONE_W = 890
 MARGIN = 0.03                     # min distance from the frame edge, fraction of the layout width
 
 TEMPORAL = 2                      # the car matte is the median of the cutouts this many frames either side
+HOLD = 2                          # the gap holds the car this many frames either side of the crossing
 
 # Curtain timing, source seconds relative to the car crossing the word's baseline.
-OPEN = (-1.3, -0.35)
-CLOSE = (0.7, 1.7)
+OPEN = (-0.6, -0.15)
+CLOSE = (0.6, 1.5)
 
-# name: word ink width as a fraction of the layout width
-LAYOUT_WORD = {"desktop": 0.44, "phone": 0.58}
+# name: (word ink width as a fraction of the layout width, baseline as a fraction of the height).
+# On desktop the word stands below the copy; on phones the copy sits under the film, so the word
+# can stand higher, where the car crosses it smaller.
+LAYOUTS = {"desktop": (0.44, 0.8), "phone": (0.58, 0.7)}
 
 
 # ---------- the word ----------
 
-def _font(size: float) -> ImageFont.FreeTypeFont:
-    if not os.path.exists(FONT):
-        import urllib.request
-
-        os.makedirs(SRC, exist_ok=True)
-        urllib.request.urlretrieve(FONT_URL, FONT)
-    f = ImageFont.truetype(FONT, max(1, int(round(size))))
-    f.set_variation_by_axes(FONT_AXES)
-    return f
-
-
-def _ink_x(mask: np.ndarray) -> tuple[int, int]:
-    cols = np.nonzero(mask.max(axis=0) > 0.02)[0]
+def _ink_x(alpha: np.ndarray) -> tuple[int, int]:
+    cols = np.nonzero(alpha.max(axis=0) > 0.02)[0]
     return int(cols.min()), int(cols.max()) + 1
 
 
+def _ink_rows(alpha: np.ndarray) -> tuple[int, int]:
+    rows = np.nonzero(alpha.max(axis=1) > 0.02)[0]
+    return int(rows.min()), int(rows.max()) + 1
+
+
+@functools.cache
+def logo_word() -> tuple[np.ndarray, float]:
+    """The logo's JOOX as premultiplied RGBA (colour 0-255, alpha 0-1), trimmed to its ink, and
+    the x of the infinity's crossing. On the white logo the J and X are near-black: each pixel's
+    coverage is unmixed from the paper (yellow keeps red and green high and drops blue; black
+    darkens all three), then the black share is drawn white."""
+    rgb = np.asarray(Image.open(LOGO).convert("RGB")).astype(np.float32) / 255
+    h = rgb.shape[0]
+    band = rgb[int(h * LOGO_BAND[0]): int(h * LOGO_BAND[1])]
+    r, g, b = band[..., 0], band[..., 1], band[..., 2]
+    yellow = np.clip((np.minimum(r, g) - b - 0.25) / 0.45, 0, 1)
+    dark = np.clip((0.92 - band.max(axis=2)) / 0.75, 0, 1) * (1 - yellow)
+    alpha = np.maximum(yellow, dark)
+    ys, xs = np.nonzero(alpha > 0.5)
+    y0, y1 = max(0, ys.min() - 4), min(alpha.shape[0], ys.max() + 5)
+    x0, x1 = max(0, xs.min() - 4), min(alpha.shape[1], xs.max() + 5)
+    alpha, yellow = alpha[y0:y1, x0:x1], yellow[y0:y1, x0:x1]
+    share = (yellow / np.maximum(alpha, 1e-6))[..., None]
+    colour = WHITE * (1 - share) + YELLOW * share
+    cols = np.nonzero((yellow > 0.5).any(axis=0))[0]
+    return np.dstack([colour * alpha[..., None], alpha]).astype(np.float32), float(cols.min() + cols.max()) / 2
+
+
 class Word:
-    """The word as two groups (before and after the split), each a coverage
-    mask over the plate at rest, with measured ink edges in plate pixels."""
+    """The word as two halves (before and after the split), each premultiplied RGBA
+    over the plate at rest, with measured ink edges in plate pixels."""
 
-    def __init__(self, ink_w: float, anchor_x: float, lo: float, hi: float, ss: int = 3):
-        # Size from a measured render so the ink (not the advance) is ink_w wide.
-        probe = _font(400)
-        img = Image.new("L", (int(probe.getlength(WORD)) + 400, 600), 0)
-        ImageDraw.Draw(img).text((100, 500), WORD, font=probe, fill=255, anchor="ls")
-        x0, x1 = _ink_x(np.asarray(img) / 255)
-        size = 400 * ink_w / (x1 - x0)
-        big = _font(size * ss)
-        left, right = WORD[:SPLIT], WORD[SPLIT:]
-        adv = big.getlength(left)
-        base = BASELINE * H * ss
-
-        def render(text: str, pen_x: float) -> np.ndarray:
-            c = Image.new("L", (W * ss, H * ss), 0)
-            ImageDraw.Draw(c).text((pen_x, base), text, font=big, fill=255, anchor="ls")
-            return np.asarray(c.resize((W, H), Image.Resampling.BOX)).astype(np.float32) / 255
-
-        # Render at pen 0 to measure, then place the split centre on anchor_x,
-        # clamped so the whole word stays inside [lo, hi].
-        L, R = render(left, 0), render(right, adv)
-        l0, l1 = _ink_x(L)
-        r0, r1 = _ink_x(R)
-        split_c = (l1 + r0) / 2
-        shift = anchor_x - split_c
-        shift = min(max(shift, lo - l0), hi - r1)
-        self.L = render(left, shift * ss)
-        self.R = render(right, adv + shift * ss)
-        self.l0, self.l1 = _ink_x(self.L)
-        self.r0, self.r1 = _ink_x(self.R)
+    def __init__(self, ink_w: float, baseline: float, anchor_x: float, lo: float, hi: float):
+        word, split = logo_word()
+        x0, x1 = _ink_x(word[..., 3])
+        s = ink_w / (x1 - x0)
+        word = cv2.resize(word, (round(word.shape[1] * s), round(word.shape[0] * s)), interpolation=cv2.INTER_AREA)
+        cut = round(split * s)
+        left, right = word.copy(), word.copy()
+        left[:, cut:] = 0
+        right[:, :cut] = 0
+        # Place the split on anchor_x, clamped so the whole word stays inside [lo, hi];
+        # the ink's bottom stands on the baseline.
+        x = min(max(anchor_x - cut, lo - x0 * s), hi - x1 * s)
+        y = baseline * H - _ink_rows(word[..., 3])[1]
+        place = np.float32([[1, 0, x], [0, 1, y]])
+        self.L = cv2.warpAffine(left, place, (W, H), flags=cv2.INTER_LINEAR)
+        self.R = cv2.warpAffine(right, place, (W, H), flags=cv2.INTER_LINEAR)
+        self.l0, self.l1 = _ink_x(self.L[..., 3])
+        self.r0, self.r1 = _ink_x(self.R[..., 3])
 
     def at(self, dx_l: float, dx_r: float) -> np.ndarray:
-        if dx_l == 0 and dx_r == 0:
-            return np.maximum(self.L, self.R)
-        m_l = cv2.warpAffine(self.L, np.float32([[1, 0, dx_l], [0, 1, 0]]), (W, H), flags=cv2.INTER_LINEAR)
-        m_r = cv2.warpAffine(self.R, np.float32([[1, 0, dx_r], [0, 1, 0]]), (W, H), flags=cv2.INTER_LINEAR)
-        return np.maximum(m_l, m_r)
+        """The word's RGBA with the left half moved by dx_l and the right half by dx_r."""
+        move = lambda m, dx: m if dx == 0 else cv2.warpAffine(m, np.float32([[1, 0, dx], [0, 1, 0]]), (W, H), flags=cv2.INTER_LINEAR)
+        return move(self.L, dx_l) + move(self.R, dx_r)
+
+
+def composite(frame: np.ndarray, word: np.ndarray, car: np.ndarray | None = None) -> np.ndarray:
+    """The word over a float RGB frame, under the car where its matte is given."""
+    if car is not None:
+        word = word * (1 - car)[..., None]
+    return frame * (1 - word[..., 3:]) + word[..., :3]
 
 
 def ease(t: float) -> float:
@@ -163,8 +173,8 @@ def curtain(i: int, cross: int) -> float:
 
 # ---------- background subtraction (coarse car mask, bbox, road contact) ----------
 
-def clean_plate(src: str, vf: str) -> np.ndarray:
-    frames = list(read_frames(src, vf, W, H, start=BG_RANGE[0], duration=BG_RANGE[1] - BG_RANGE[0]))
+def clean_plate(src: str) -> np.ndarray:
+    frames = [f for a, b in CLEAN for f in read_frames(src, W, H, start=a, duration=b - a)]
     return np.median(np.stack(frames), axis=0).astype(np.float32)
 
 
@@ -211,18 +221,18 @@ def coarse_mask(frame: np.ndarray, plate: np.ndarray, track: Tracker) -> np.ndar
 
 # The plate recess on the tailgate in the anchor frame (plate at its centre):
 # x, y, w, h in plate pixels at source second PLATE_ANCHOR_T.
-PLATE_ANCHOR_T = 5.0
-PLATE_RECESS = (965, 797, 99, 39)
+PLATE_ANCHOR_T = 1.167
+PLATE_RECESS = (797, 754, 64, 34)
 PLATE_MIN_W = 12            # below this the plate is unreadable; stop blurring
 
 
-def track_plate(src: str, vf: str, first: int, last: int) -> dict[int, tuple[float, float, float]]:
+def track_plate(src: str, first: int, last: int) -> dict[int, tuple[float, float, float]]:
     """Follow the plate recess from the anchor frame forwards and backwards by
     multi-scale template matching. Returns frame -> (centre x, centre y, scale)."""
     anchor = round(PLATE_ANCHOR_T * SRC_FPS)
     x, y, w, h = PLATE_RECESS
     grays: dict[int, np.ndarray] = {}
-    for i, fr in enumerate(read_frames(src, vf, W, H, start=0, duration=(last + 1) / SRC_FPS)):
+    for i, fr in enumerate(read_frames(src, W, H, start=0, duration=(last + 1) / SRC_FPS)):
         if i >= first:
             grays[i] = cv2.cvtColor(fr, cv2.COLOR_RGB2GRAY)
     templ = grays[anchor][y:y + h, x:x + w].astype(np.float32)
@@ -345,15 +355,31 @@ def cached_alpha(idx: int, bbox: tuple[int, int, int, int]) -> np.ndarray:
 
 def _align(i: int, j: int, info: list[dict], plates: dict) -> np.ndarray:
     """Similarity transform carrying frame j's car onto frame i's: the tracked
-    plate where both frames have it, else the box's bottom centre and width."""
+    plate where both frames have it, else the box's bottom centre and width. A box
+    cut by the frame's left edge (the close pass) has no meaningful centre or width:
+    there the fronts are aligned, at the same scale."""
     if i in plates and j in plates:
         (cxi, cyi, si), (cxj, cyj, sj) = plates[i], plates[j]
+    elif min(info[i]["box"][0], info[j]["box"][0]) == 0:
+        return np.float32([[1, 0, info[i]["box"][2] - info[j]["box"][2]], [0, 1, 0]])
     else:
         bi, bj = info[i]["box"], info[j]["box"]
         cxi, cyi, si = (bi[0] + bi[2]) / 2, bi[3], bi[2] - bi[0]
         cxj, cyj, sj = (bj[0] + bj[2]) / 2, bj[3], bj[2] - bj[0]
     s = si / sj
     return np.float32([[s, 0, cxi - s * cxj], [0, s, cyi - s * cyj]])
+
+
+def key_matte(d: dict) -> np.ndarray:
+    """The car from its difference against the locked-off plate (pass 1's silhouette), softened
+    a pixel. BiRefNet loses a car that fills its crop: on the close pass its cutout comes back
+    holed or empty and the letters show through the door. The car's own outline against the
+    empty road does not, so car_matte takes the larger of the two."""
+    x0, y0, x1, y1 = d["bbox"]
+    k = np.unpackbits(d["key"], count=(y1 - y0) * (x1 - x0)).reshape(y1 - y0, x1 - x0)
+    a = np.zeros((H, W), np.float32)
+    a[y0:y1, x0:x1] = cv2.GaussianBlur(k.astype(np.float32), (0, 0), 1.5)
+    return a
 
 
 def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndarray:
@@ -373,7 +399,7 @@ def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndar
         else cv2.warpAffine(cached_alpha(j, tuple(info[j]["bbox"])), _align(i, j, info, plates), (W, H), flags=cv2.INTER_LINEAR)
         for j in range(i - TEMPORAL, i + TEMPORAL + 1) if j in have
     ]
-    med = np.median(np.stack(stack), axis=0)
+    med = np.maximum(np.median(np.stack(stack), axis=0), key_matte(info[i]))
     ys, xs = np.nonzero(med > 0.5)
     out = np.zeros((H, W), np.float32)
     if not len(xs):
@@ -392,17 +418,12 @@ def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndar
     reach = np.zeros((pad.shape[0] + 2, pad.shape[1] + 2), np.uint8)
     cv2.floodFill(pad, reach, (0, 0), 1)
     b = b | (reach[2:-2, 2:-2] == 0).astype(np.uint8)
-    # Under the car: close horizontal gaps in the lower part (between the wheels).
-    # Padded with background first: erosion counts pixels beyond the border as set,
-    # so an unpadded close filled whole rows out to the mirrors' width and cut
-    # notches in the letters beside the bumper.
-    rows = np.nonzero(b.any(axis=1))[0]
-    cols = np.nonzero(b.any(axis=0))[0]
-    if len(rows) and len(cols):
-        low = int(rows.min() + 0.6 * (rows.max() - rows.min()))
-        width = int(cols.max() - cols.min()) + 1
-        lowp = cv2.copyMakeBorder(b[low:], 0, 0, width, width, cv2.BORDER_CONSTANT, value=0)
-        b[low:] = cv2.morphologyEx(lowp, cv2.MORPH_CLOSE, np.ones((1, width), np.uint8))[:, width:-width]
+    # Below the roof the Jeep is a box: fill its lower three quarters between the box's
+    # sides (pass 1's extent, from the car's well-lit upper body). That closes the gap
+    # under the car between the wheels, and the dark front (fender flares, grille,
+    # bumper), which neither the cutout nor the plate difference holds against a dark road.
+    bx0, by0, bx1, by1 = info[i]["box"]
+    b[max(0, int(by0 + 0.25 * (by1 - by0)) - y0): max(0, by1 + 1 - y0), max(0, bx0 - x0): max(0, bx1 + 1 - x0)] = 1
     disc = lambda r: cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1,) * 2)
     # Filled-in parts (holes, the gap under the car) are opaque to their edge.
     # The aligned shape can drift a pixel or two far from the plate (the roof), so
@@ -411,7 +432,15 @@ def car_matte(i: int, info: list[dict], plates: dict, have: set[int]) -> np.ndar
     near = cv2.dilate(b, disc(5)) > 0
     edge = np.clip((med[y0:y1, x0:x1] - 0.1) / 0.8, 0, 1)
     out[y0:y1, x0:x1] = np.where(inside, 1.0, np.where(near, edge, 0.0))
-    return out
+    # Fast past the camera, the car is smeared along its path by the shutter: smear the matte's
+    # edge the same way (half its front's travel per frame), so the letters fade into the blurred
+    # front rather than a ragged cut flickering beside it. Grown by half the smear first, so the
+    # smear lies outside the car and the car itself stays solid.
+    near_i = [j for j in (i - 1, i + 1) if info[j]["car"]] or [i]
+    smear = int(abs(info[near_i[-1]]["box"][2] - info[near_i[0]]["box"][2]) / max(1, near_i[-1] - near_i[0]) / 2)
+    if smear < 3:
+        return out
+    return cv2.blur(cv2.dilate(out, np.ones((1, smear // 2 * 2 + 1), np.uint8)), (smear, 1))
 
 
 def save_poster(frame: np.ndarray, out: str, stem: str) -> str:
@@ -426,46 +455,58 @@ def save_poster(frame: np.ndarray, out: str, stem: str) -> str:
 
 def main() -> None:
     out = out_dir("v2")
-    src = source_path("forest")
-    vf = grade("forest")
+    src = source_path(SOURCE)
     dry = bool(os.environ.get("DRY"))
 
     # Pass 1: track the car (box, padded crop box, road contact).
-    plate = clean_plate(src, vf)
+    plate = clean_plate(src)
     track = Tracker()
     info: list[dict] = []
-    for i, fr in enumerate(read_frames(src, vf, W, H, start=0)):
-        m = coarse_mask(fr, plate, track) if i / SRC_FPS >= BG_RANGE[1] else None
+    for i, fr in enumerate(read_frames(src, W, H, start=0)):
+        m = None if any(a <= i / SRC_FPS < b for a, b in CLEAN) else coarse_mask(fr, plate, track)
         if m is None:
             info.append({"car": False})
             continue
         ys, xs = np.nonzero(m)
-        x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
+        y0, y1 = ys.min(), ys.max()
+        # x from the car's upper body, and the road contact inside those columns: the low sun
+        # smears the car's shadow along the road beside it. (Upper 60%: on the close pass the
+        # car's top is cut at ROI_TOP, and three quarters of what is left reached the shadow.)
+        upper = ys <= y0 + 0.6 * (y1 - y0)
+        x0, x1 = xs[upper].min(), xs[upper].max()
+        y1 = ys[(xs >= x0) & (xs <= x1)].max()
         pad = int(0.18 * max(x1 - x0, y1 - y0)) + 8
         bbox = (max(0, x0 - pad), max(0, y0 - pad), min(W, x1 + pad), min(H, y1 + pad))
-        info.append({"car": True, "box": [int(x0), int(y0), int(x1), int(y1)], "bbox": [int(v) for v in bbox], "contact": float(y1) / H})
+        # The car's silhouette against the plate, holes filled, inside the box's columns.
+        key = np.zeros_like(m)
+        cv2.drawContours(key, cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0], -1, 1, thickness=cv2.FILLED)
+        key[:, :x0] = 0
+        key[:, x1 + 1:] = 0
+        info.append({"car": True, "box": [int(x0), int(y0), int(x1), int(y1)], "bbox": [int(v) for v in bbox], "contact": float(y1) / H,
+                     "key": np.packbits(key[bbox[1]:bbox[3], bbox[0]:bbox[2]])})
     n_src = len(info)
+    first_car = next(i for i, d in enumerate(info) if d["car"])
     last_car = max(i for i, d in enumerate(info) if d["car"])
 
-    entered = next(i for i, d in enumerate(info) if d["car"] and d["contact"] > BASELINE)
-    cross = next(i for i in range(entered, n_src) if info[i]["car"] and info[i]["contact"] <= BASELINE)
-
-    # The gap must hold the car around the crossing, where it turns from in front
-    # of the word to behind it; before and after, the occlusion is simply correct.
-    hold = [i for i in range(cross - 3, cross + 4) if info[i]["car"]]
-    car_l = min(info[i]["box"][0] for i in hold)
-    car_r = max(info[i]["box"][2] for i in hold)
-    pad = 0.1 * (car_r - car_l)
-    gap_l, gap_r = car_l - pad, car_r + pad
-    anchor = (gap_l + gap_r) / 2
-
-    phone_x0 = int(min(max(anchor - PHONE_W / 2, 0), W - PHONE_W))
-    crops = {"desktop": (0, W), "phone": (phone_x0, PHONE_W)}
+    # Per layout: the frame the car's road contact rises past the baseline, where it turns from
+    # in front of the word to behind it. The gap must hold the car around that frame; before
+    # and after, the occlusion is simply correct.
+    cross: dict[str, int] = {}
+    crops: dict[str, tuple[int, int]] = {}
     words: dict[str, Word] = {}
     open_dx: dict[str, tuple[float, float]] = {}
-    for name, (cx0, cw) in crops.items():
+    for name, (ink_w, baseline) in LAYOUTS.items():
+        entered = next(i for i, d in enumerate(info) if d["car"] and d["contact"] > baseline)
+        c = cross[name] = next(i for i in range(entered, n_src) if info[i]["car"] and info[i]["contact"] <= baseline)
+        hold = [i for i in range(c - HOLD, c + HOLD + 1) if info[i]["car"]]
+        car_l = min(info[i]["box"][0] for i in hold)
+        car_r = max(info[i]["box"][2] for i in hold)
+        pad = 0.1 * (car_r - car_l)
+        gap_l, gap_r = car_l - pad, car_r + pad
+        anchor = (gap_l + gap_r) / 2
+        cx0, cw = crops[name] = (0, W) if name == "desktop" else (int(min(max(anchor - PHONE_W / 2, 0), W - PHONE_W)), PHONE_W)
         lo, hi = cx0 + MARGIN * cw, cx0 + cw - MARGIN * cw
-        wd = Word(LAYOUT_WORD[name] * cw, anchor, lo, hi)
+        wd = Word(ink_w * cw, baseline, anchor, lo, hi)
         dx_l = min(0.0, gap_l - wd.l1)
         dx_r = max(0.0, gap_r - wd.r0)
         # Keep both halves in frame (the word is sized so the gap still fits).
@@ -473,39 +514,37 @@ def main() -> None:
         dx_l = max(dx_l, lo - wd.l0)
         fits = wd.l1 + dx_l <= car_l and wd.r0 + dx_r >= car_r
         words[name], open_dx[name] = wd, (dx_l, dx_r)
-        print(f"{name}: word ink {wd.l0}-{wd.r1}, split {wd.l1}|{wd.r0}; car in hold {car_l}-{car_r}; "
-              f"curtain dx {dx_l:.0f}/{dx_r:.0f}; car fits the gap: {fits}")
+        print(f"{name}: crosses {c / SRC_FPS:.2f} s, curtain opens from {c / SRC_FPS + OPEN[0]:.2f} s; word ink {wd.l0}-{wd.r1}, "
+              f"split {wd.l1}|{wd.r0}; car in hold {car_l}-{car_r}; curtain dx {dx_l:.0f}/{dx_r:.0f}; car fits the gap: {fits}")
 
     start_i, end_i = round(START * SRC_FPS), n_src
-    dissolve_n = round(DISSOLVE * SPEED * SRC_FPS)
+    dissolve_n = round(DISSOLVE * SRC_FPS)
     lead_i = start_i - dissolve_n
-    print(f"entered {entered / SRC_FPS:.2f} s; crosses {cross / SRC_FPS:.2f} s; last car frame {last_car / SRC_FPS:.2f} s; "
-          f"dissolve from {(end_i - dissolve_n) / SRC_FPS:.2f} s (the car is behind the grass on the left by ~18 s); "
-          f"loop {(end_i - start_i) / (SRC_FPS * SPEED):.2f} s")
+    print(f"car from {first_car / SRC_FPS:.2f} s to {last_car / SRC_FPS:.2f} s; loop starts {START} s, "
+          f"dissolve from {(end_i - dissolve_n) / SRC_FPS:.2f} s; loop {(end_i - start_i) / SRC_FPS:.2f} s")
 
     def word_at(name: str, i: int) -> np.ndarray:
-        p = curtain(i, cross)
+        p = curtain(i, cross[name])
         dx_l, dx_r = open_dx[name]
         return words[name].at(p * dx_l, p * dx_r)
 
-    def needs_alpha(i: int) -> bool:
+    def needs_alpha(name: str, i: int) -> bool:
         d = info[i]
-        if not d["car"] or i >= cross:
+        if not d["car"] or i >= cross[name]:
             return False
         x0, y0, x1, y1 = d["bbox"]
-        return any(word_at(name, i)[y0:y1, x0:x1].max() > 0.02 for name in crops)
+        return word_at(name, i)[y0:y1, x0:x1, 3].max() > 0.02
 
-    todo = [i for i in range(n_src) if needs_alpha(i)]
+    todo = [i for i in range(n_src) if any(needs_alpha(name, i) for name in LAYOUTS)]
     uncached = [i for i in todo if not any(f.startswith(f"{i:04d}_") for f in os.listdir(CACHE))] if os.path.isdir(CACHE) else todo
     print("frames needing a fine matte:", len(todo), "not cached yet:", len(uncached))
     if dry:
-        fr = next(read_frames(src, vf, W, H, start=cross / SRC_FPS, duration=0.1)).astype(np.float32)
         for name, (cx0, cw) in crops.items():
-            wm = word_at(name, cross)[..., None]
-            comp = (fr * (1 - wm) + BONE * wm)[:, cx0:cx0 + cw]
+            fr = next(read_frames(src, W, H, start=cross[name] / SRC_FPS, duration=0.1)).astype(np.float32)
+            comp = composite(fr, word_at(name, cross[name]))[:, cx0:cx0 + cw]
             save_webp(np.clip(comp, 0, 255).astype(np.uint8), os.path.join(SRC, "_debug", f"v2-curtain-{name}.webp"))
         return
-    plates = smooth_track(track_plate(src, vf, entered, n_src - 1))
+    plates = smooth_track(track_plate(src, first_car, n_src - 1))
     print("plate tracked in", len(plates), "frames:", min(plates), "to", max(plates))
 
     # Cutouts for every frame that needs a matte and its neighbours (the median's window).
@@ -513,17 +552,17 @@ def main() -> None:
     missing = {j for j in need if not os.path.exists(_alpha_path(j, tuple(info[j]["bbox"])))}
     print("cutouts in the median windows:", len(need), "to compute:", len(missing))
     if missing:
-        for j, fr in enumerate(read_frames(src, vf, W, H, start=0, duration=(max(missing) + 1) / SRC_FPS)):
+        for j, fr in enumerate(read_frames(src, W, H, start=0, duration=(max(missing) + 1) / SRC_FPS)):
             if j in missing:
                 fine_alpha(fr, tuple(info[j]["bbox"]), j)
     have = set(need)
 
     check = os.environ.get("CHECK")
     if check:
-        # Before/after crops of the listed frames: per-frame cutout vs steadied matte.
+        # Before/after crops of the listed frames: per-frame cutout vs the matte used.
         lo_i, hi_i = (int(v) for v in check.split("-"))
         todo_set = set(todo)
-        for i, fr in enumerate(read_frames(src, vf, W, H, start=lo_i / SRC_FPS, duration=(hi_i - lo_i + 1) / SRC_FPS), start=lo_i):
+        for i, fr in enumerate(read_frames(src, W, H, start=lo_i / SRC_FPS, duration=(hi_i - lo_i + 1) / SRC_FPS), start=lo_i):
             if i > hi_i or i not in todo_set:
                 continue
             x0, y0, x1, y1 = info[i]["bbox"]
@@ -532,28 +571,28 @@ def main() -> None:
             f = fr.astype(np.float32)
             tiles = []
             for a in (cached_alpha(i, tuple(info[i]["bbox"])), car_matte(i, info, plates, have)):
-                c = cover * (1 - a)
-                tiles.append(np.clip(f * (1 - c[..., None]) + BONE * c[..., None], 0, 255).astype(np.uint8)[y0:y1, x0:x1])
+                tiles.append(np.clip(composite(f, cover, a), 0, 255).astype(np.uint8)[y0:y1, x0:x1])
             save_webp(np.concatenate(tiles, axis=1), os.path.join(SRC, "_debug", f"v2-matte-{i:04d}.webp"))
         return
 
     # Pass 2: composite, retime, loop.
     widths = {name: cw for name, (_, cw) in crops.items()}
     encs = {
-        "desktop": Encoder(os.path.join(out, "film"), W, H, OUT_FPS),
-        "phone": Encoder(os.path.join(out, "film-phone"), widths["phone"], H, OUT_FPS),
+        "desktop": Encoder(os.path.join(out, "film"), W, H, f"{SRC_FPS}/1"),
+        "phone": Encoder(os.path.join(out, "film-phone"), widths["phone"], H, f"{SRC_FPS}/1"),
     }
     lead: dict[str, list[np.ndarray]] = {k: [] for k in crops}
     poster_i = {name: round(t * SRC_FPS) for name, t in POSTER_SRC_T.items()}
     posters: dict[str, str] = {}
     done = 0
-    for i, fr in enumerate(read_frames(src, vf, W, H, start=0)):
+    for i, fr in enumerate(read_frames(src, W, H, start=0)):
         if i < lead_i:
             continue
         if i >= end_i:
             break
+        front = {name: needs_alpha(name, i) for name in LAYOUTS}
         a = None
-        if needs_alpha(i):
+        if any(front.values()):
             a = car_matte(i, info, plates, have)
             done += 1
             if done % 20 == 0:
@@ -562,10 +601,7 @@ def main() -> None:
             fr = blur_plate(fr, plates[i])
         f = fr.astype(np.float32)
         for name, (cx0, cw) in crops.items():
-            cover = word_at(name, i)
-            if a is not None:
-                cover = cover * (1 - a)
-            comp = (f * (1 - cover[..., None]) + BONE * cover[..., None])[:, cx0:cx0 + cw]
+            comp = composite(f, word_at(name, i), a if front[name] else None)[:, cx0:cx0 + cw]
             comp8 = np.clip(comp + 0.5, 0, 255).astype(np.uint8)
             if i == poster_i[name]:
                 posters[name] = save_poster(comp8, out, "poster" if name == "desktop" else "poster-phone")
@@ -574,18 +610,18 @@ def main() -> None:
                 continue
             tail_k = i - (end_i - dissolve_n)
             if 0 <= tail_k < dissolve_n:
-                w = (tail_k + 1) / (dissolve_n + 1)
+                w = (tail_k + 1) / dissolve_n   # the last frame is all lead: the frame just before the loop's first
                 comp8 = (comp8.astype(np.float32) * (1 - w) + lead[name][tail_k].astype(np.float32) * w + 0.5).astype(np.uint8)
             encs[name].write(comp8)
 
-    poster_t = {name: round((pi - start_i) / (SRC_FPS * SPEED), 3) for name, pi in poster_i.items()}
+    poster_t = {name: round((pi - start_i) / SRC_FPS, 3) for name, pi in poster_i.items()}
     for name, enc in encs.items():
         print(name, enc.close(small=name == "desktop"))
+    curtain_s = {name: [round((c + OPEN[0] * SRC_FPS - start_i) / SRC_FPS, 2), round((c + CLOSE[1] * SRC_FPS - start_i) / SRC_FPS, 2)]
+                 for name, c in cross.items()}
     with open(os.path.join(CACHE, "timing.json"), "w", encoding="utf-8") as fh:
-        json.dump({"posterTime": poster_t, "phoneX0": phone_x0,
-                   "curtain_out_s": [round((cross + OPEN[0] * SRC_FPS - start_i) / (SRC_FPS * SPEED), 2),
-                                     round((cross + CLOSE[1] * SRC_FPS - start_i) / (SRC_FPS * SPEED), 2)]}, fh)
-    print("posters", posters, "at film time", poster_t, "; phone crop x0", phone_x0)
+        json.dump({"posterTime": poster_t, "phoneX0": crops["phone"][0], "curtain_s": curtain_s}, fh)
+    print("posters", posters, "at film time", poster_t, "; phone crop x0", crops["phone"][0], "; curtain (film s)", curtain_s)
 
 
 if __name__ == "__main__":

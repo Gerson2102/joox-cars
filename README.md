@@ -81,7 +81,7 @@ The page moves as you scroll. Coloured bands open from their centre like the JOO
 
 - **WhatsApp number:** set to the client's phone (+506 8716 3308), to be confirmed as its WhatsApp.
 - **Content in brackets:** rental prices, the Jeep's year, mileage and price, import time, hours, reviews, and the FAQ answers that need the client (requirements, insurance, warranty) (`[PRECIO]`, `[X semanas]` and so on).
-- **Photos:** the showroom cars are Wikimedia Commons side views of the same models, recoloured to the client's paint where needed, labelled "Model photo" and credited; the client's own photos (plates softened) are in each car's viewer, the fleet photo and the import strip. The hero film is still stock, labelled on the page.
+- **Photos:** the showroom cars are Wikimedia Commons side views of the same models, recoloured to the client's paint where needed, labelled "Model photo" and credited; the client's own photos (plates softened) are in each car's viewer, the fleet photo and the import strip. The hero film is AI-generated, the version the client chose.
 - **Logo:** cut from the logo raster (plus a reversed version for the header over the film) until the vector logo arrives.
 
 `ASSETS.md` lists each one and what replaces it.

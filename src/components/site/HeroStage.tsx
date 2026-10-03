@@ -8,9 +8,9 @@ import styles from "./hero.module.css";
 
 // Phones and portrait screens get the film composed for a tall frame.
 const PHONE = "(max-width: 719px), (max-aspect-ratio: 4/5)";
-// Film time and file of each poster (scripts/media/v2_bake.py prints them). The phone's is earlier: its word
-// is smaller, so the car would hide the J; the poster shows it arriving beside the whole word.
-const POSTER_TIME = { desktop: 2.711, phone: 2.085 };
+// Film time of both posters (scripts/media/v2_bake.py prints it, with their files): the empty road just
+// before the loop comes round, so the film starts there and the car bursts in as soon as it has faded in.
+const POSTER_TIME = 9.208;
 
 /**
  * The JOOX film as the whole hero stage: the car drives through the word
@@ -21,17 +21,17 @@ const POSTER_TIME = { desktop: 2.711, phone: 2.085 };
  */
 export function HeroStage({ t }: { t: Dictionary["hero"] }) {
   const { videoRef, status } = useFilm("/media/v2/film", {
-    startAt: POSTER_TIME.desktop,
-    phone: { query: PHONE, base: "/media/v2/film-phone", startAt: POSTER_TIME.phone },
+    startAt: POSTER_TIME,
+    phone: { query: PHONE, base: "/media/v2/film-phone" },
   });
 
   const common = { alt: "", sizes: "100vw", quality: 78, loading: "eager" } as const;
   const {
     props: { srcSet: desktop },
-  } = getImageProps({ ...common, src: "/media/v2/poster-3314e489.webp", width: 1920, height: 1080 });
+  } = getImageProps({ ...common, src: "/media/v2/poster-4d93bffe.webp", width: 1920, height: 1080 });
   const {
     props: { srcSet: phone, ...img },
-  } = getImageProps({ ...common, src: "/media/v2/poster-phone-99f74524.webp", width: 890, height: 1080 });
+  } = getImageProps({ ...common, src: "/media/v2/poster-phone-84a567e0.webp", width: 890, height: 1080 });
 
   return (
     <section className={styles.stage} aria-labelledby="hero-title" data-hero="">

@@ -1,7 +1,4 @@
-"""Shared helpers for the hero film (v2_bake.py).
-
-The plate goes through two steps: a per-shot balance (exposure and white
-balance) and the shared LOOK (the grade).
+"""Shared helpers for the media scripts: sources, frames, encoding.
 
 Environment:
   FFMPEG     path to ffmpeg (default: "ffmpeg")
@@ -20,24 +17,6 @@ FFMPEG = os.environ.get("FFMPEG", "ffmpeg")
 SRC = os.environ.get("MEDIA_SRC", os.path.join(ROOT, ".media-src"))
 OUT = os.path.join(ROOT, "public", "media")
 
-# The one grade: greens pulled to olive, teal shadows, amber highlights, a soft
-# filmic curve with lifted blacks and rolled-off whites.
-LOOK = (
-    "huesaturation=hue=-14:saturation=-0.42:colors=g+y,"
-    "eq=saturation=0.84,"
-    "colorbalance=rs=-0.07:gs=0.0:bs=0.07:rm=0.015:gm=-0.01:bm=-0.015:rh=0.08:gh=0.03:bh=-0.07,"
-    "curves=master='0/0.025 0.25/0.215 0.5/0.49 0.78/0.8 1/0.965'"
-)
-
-# Per-shot balance, applied before LOOK.
-BALANCE = {
-    "forest": "eq=gamma=0.82:contrast=1.05,colortemperature=temperature=5600",
-}
-
-
-def grade(shot: str) -> str:
-    return f"{BALANCE[shot]},{LOOK}"
-
 
 def sources() -> dict:
     with open(os.path.join(os.path.dirname(__file__), "sources.json"), encoding="utf-8") as f:
@@ -45,10 +24,13 @@ def sources() -> dict:
 
 
 def source_path(key: str) -> str:
-    """Return the local path of a source, downloading it once if missing."""
+    """Return the local path of a source, downloading it once if missing (generated sources
+    have no download: copy them into SRC from where `made` says they are kept)."""
     entry = sources()[key]
     path = os.path.join(SRC, entry["file"])
     if not os.path.exists(path):
+        if "download" not in entry:
+            raise SystemExit(f"Missing {path}: {entry['made']}")
         os.makedirs(SRC, exist_ok=True)
         req = urllib.request.Request(entry["download"], headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req) as r, open(path, "wb") as f:
@@ -66,12 +48,12 @@ def ff(*args: str) -> None:
     subprocess.run([FFMPEG, "-loglevel", "error", "-y", *args], check=True)
 
 
-def read_frames(path: str, vf: str, w: int, h: int, start: float = 0.0, duration: float | None = None):
-    """Yield graded RGB frames (uint8, HxWx3) from a video."""
+def read_frames(path: str, w: int, h: int, start: float = 0.0, duration: float | None = None):
+    """Yield RGB frames (uint8, HxWx3) from a video."""
     args = [FFMPEG, "-loglevel", "error", "-ss", str(start)]
     if duration is not None:
         args += ["-t", str(duration)]
-    args += ["-i", path, "-vf", f"{vf},scale={w}:{h}:flags=lanczos", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+    args += ["-i", path, "-vf", f"scale={w}:{h}:flags=lanczos", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     size = w * h * 3
     while True:
@@ -126,10 +108,10 @@ def _encode(tmp: str, out_base: str, duration: float, max_mb: float, width: int 
     kbps = int(min(max_mb * 8 * 1024 / duration * 0.92, 3200))
     scale = f"scale={width}:-2:flags=lanczos:out_color_matrix=bt709:out_range=tv" if width else "scale=out_color_matrix=bt709:out_range=tv"
     common = ["-vf", f"{scale},format=yuv420p", *BT709, "-movflags", "+faststart", "-an"]
-    ff("-i", tmp, "-c:v", "libaom-av1", "-crf", "30", "-b:v", f"{int(kbps * 0.6)}k",
+    ff("-i", tmp, "-c:v", "libaom-av1", "-crf", "24", "-b:v", f"{int(kbps * 0.8)}k",
        "-cpu-used", "4", "-row-mt", "1", "-tiles", "2x2", *common, out_base + ".av1.mp4")
     ff("-i", tmp, "-c:v", "libx264", "-preset", "slower", "-profile:v", "high", "-level", "4.2",
-       "-crf", "22", "-maxrate", f"{kbps}k", "-bufsize", f"{kbps * 2}k", *common, out_base + ".mp4")
+       "-crf", "19", "-maxrate", f"{kbps}k", "-bufsize", f"{kbps * 2}k", *common, out_base + ".mp4")
     return {k: round(os.path.getsize(out_base + ext) / 1048576, 2) for k, ext in (("av1_mb", ".av1.mp4"), ("mp4_mb", ".mp4"))}
 
 

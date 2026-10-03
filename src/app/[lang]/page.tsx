@@ -410,7 +410,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </li>
         </ul>
-        <p className={b.footerNote}>{t.footer.media}</p>
         <p className={b.footerNote}>{t.footer.operator.replace("{name}", RENTAL_OPERATOR.name).replace("{id}", RENTAL_OPERATOR.id)}</p>
         <p className={b.footerNote}>
           {t.footer.credits}{" "}
