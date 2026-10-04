@@ -30,7 +30,14 @@ export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
         .map(([label, v]) => `${label}: ${v}`),
       `${t.part}: ${part}`,
     ];
-    window.open(wa(lines.join("\n")), "_blank", "noopener,noreferrer");
+    // Anchor click instead of window.open: phones and in-app browsers block scripted pop-ups.
+    const link = document.createElement("a");
+    link.href = wa(lines.join("\n"));
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   return (
