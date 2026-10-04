@@ -75,7 +75,7 @@ Homepage (`messages/es.json`, `messages/en.json`):
 
 - Contact details are real (`src/lib/contact.ts` and `src/lib/whatsapp.ts`): phone 8716-3308, also the business WhatsApp number (+506 8716 3308, confirmed by the client), the email, Guápiles, Pococí, Limón, and the Facebook, Instagram and TikTok profiles. The map link opens Guápiles itself; the client wants no exact address or pin.
 - No content is left in brackets: prices, times, hours, requirements, insurance, warranty and the three reviews are all the client's. Rates and the Jeep's price are not shown on purpose.
-- Not on the page until the client has them: the rental cars' drive (4x2 or 4x4), a family photo for About, and the spare-parts catalogue (its section keeps a one-line "Placeholder" note).
+- Not on the page until the client has them: the rental cars' drive (4x2 or 4x4), a family photo for About, and the spare-parts catalogue (meanwhile the parts section takes requests through its WhatsApp form).
 - The favicon (`src/app/icon.svg`) is a neutral horizon mark, and it is final.
 
 ## Rebuilding the media
