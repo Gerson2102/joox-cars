@@ -181,6 +181,7 @@ collections:
             label: Teléfono
             widget: string
             i18n: duplicate
+            hint: "Ocho números. En el sitio se muestra como +506 8716-3308 y lleva a WhatsApp."
             pattern: ['^\d{4}-?\d{4}$', "Ocho números, por ejemplo 8716-3308"]
           - name: whatsapp
             label: Número de WhatsApp

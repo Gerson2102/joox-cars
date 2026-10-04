@@ -142,8 +142,10 @@ export const getContact = cache((lang: Locale): Contact => {
   const data = read<ContactFile>("contact.json");
   const c = data.es;
   const digits = c.phone.replace(/\D/g, "");
+  // Costa Rica numbers are 8 digits: shown with the country code, as +506 XXXX-XXXX.
+  const label = digits.length === 8 ? `+506 ${digits.slice(0, 4)}-${digits.slice(4)}` : c.phone;
   return {
-    phone: { label: c.phone, href: `tel:+${digits.length === 8 ? `506${digits}` : digits}` },
+    phone: { label, href: `tel:+${digits.length === 8 ? `506${digits}` : digits}` },
     whatsapp: c.whatsapp.replace(/\D/g, ""),
     email: c.email,
     hours: pick(data, lang, "hours"),
