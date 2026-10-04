@@ -13,10 +13,10 @@ Sources are not committed. `scripts/media/sources.json` lists every source URL, 
 | File | Size | Used in | Source (license) | How it was made | Client's real replacement |
 | --- | --- | --- | --- | --- | --- |
 | `v2/film*`, `v2/poster*.webp` | See the hero film below | Hero film and its posters | Seedance 2.5 (generated) | See below | See below |
-| `../brand/joox-cars-mark.webp` (`public/brand/`) | 96 KB | Header logo | The client's logo raster (`references/brand/joox-cars-logo.png`) | White background unmixed to transparency (alpha = 1 − darkest channel), trimmed, 240 px tall | **The vector logo (SVG)** |
-| `../brand/joox-cars-mark-reversed.webp` (`public/brand/`) | 79 KB | Header logo over the hero film | The mark above | `scripts/media/brand_reversed.py`: near-black swapped for white, yellow kept, edges blended | **The vector logo's reversed version (SVG)** |
-| `../brand/joox-cars-lockup.webp` (`public/brand/`) | 121 KB | Footer logo with the tagline | Same raster | Same, with "Driven by eternal purpose", 320 px tall | The vector lockup (SVG) |
-| `src/app/[lang]/opengraph-image.jpg` | 55 KB | Link previews (WhatsApp, Facebook, X) | Same raster | Trimmed, centred on its own white at 66 % of the height, 1200 × 630, JPEG q90 | A card from the vector lockup |
+| `../brand/joox-cars-mark.webp` (`public/brand/`) | 96 KB | Header logo | The client's logo raster (`references/brand/joox-cars-logo.png`) | White background unmixed to transparency (alpha = 1 − darkest channel), trimmed, 240 px tall | None: final (no vector logo is coming) |
+| `../brand/joox-cars-mark-reversed.webp` (`public/brand/`) | 79 KB | Header logo over the hero film | The mark above | `scripts/media/brand_reversed.py`: near-black swapped for white, yellow kept, edges blended | None: final |
+| `../brand/joox-cars-lockup.webp` (`public/brand/`) | 121 KB | Footer logo with the tagline | Same raster | Same, with "Driven by eternal purpose", 320 px tall | None: final |
+| `src/app/[lang]/opengraph-image.jpg` | 55 KB | Link previews (WhatsApp, Facebook, X) | Same raster | Trimmed, centred on its own white at 66 % of the height, 1200 × 630, JPEG q90 | None: final |
 
 The logos are lossless WebP. The homepage uses no grain overlay; the film keeps the look it was baked with, full-bleed as the hero.
 
@@ -69,14 +69,14 @@ Each layout ships in two codecs, both at constant quality capped by a size budge
 | `v2/film.av1.mp4`, `v2/film.mp4` (+ `film-720.*`, `film-phone.*`) | 1920×1080: AV1 1.9 MB / H.264 2.8 MB (1280 wide: 0.9 / 1.1 MB; phone crop 890×1080: 0.9 / 1.9 MB) | The film with JOOX baked in: desktop layout, and a tall crop (centred on the car's crossing) for phones and portrait screens | Seedance 2.5 image-to-video through the Higgsfield API (request `b53e41f0-52f6-4f61-9455-5ce8a5d5b228`), 10 s at 1080p, first and last frame the same Higgsfield Soul 2 still of a Caribbean coast road; the take and its prompt are kept in the `joox-higgsfield` project | `scripts/media/v2_bake.py`: the logo's own JOOX (cut from the logo raster, J and X white, the infinity yellow) is drawn into every frame; as the car reaches it, JO and OX part like a curtain at the infinity's crossing, the car turns from in front to behind inside the gap, and the letters close behind it. The car is tracked by background subtraction against the empty road at both ends of the take; while it is in front and overlaps the letters, its matte is the larger of a BiRefNet cutout (steadied: the median of the neighbouring frames' cutouts, aligned on the tracked licence plate, or on the car's front while the frame edge cuts it) and its own outline against the empty road, which holds when the car fills BiRefNet's crop. Below the roof the matte is filled out to the car's sides (the dark fender flares and bumper against a dark road), and on the fast close pass its edge is smeared along the car's path like the car itself, so the letters fade into its blurred front. On desktop the word stands below the copy (baseline at 80 %); on phones it stands higher (70 %), where the car crosses it smaller. 9.75 s loop at the take's own speed, from the empty road before the car to the empty road after it has gone over the hill, closed by a 0.3 s dissolve. The licence plate is tracked and blurred | **Locked-off**, 10 s: the car enters close to the camera at once, drives away up the road and goes over the hill, then 1 s of empty road. Golden hour, no other traffic, no camera shake. |
 | `v2/poster-<hash>.webp`, `v2/poster-phone-<hash>.webp` (named by content) | 214 KB / 93 KB (visitors get AVIF at the size shown) | Posters (LCP): desktop and phone crops | Same take, the frame at 9.5 s (film time 9.208 s): the empty road and the word just before the loop comes round. The film starts there, so the car bursts in as soon as it has faded in | Baked frame, word included | Rebaked from any new take |
 
-## Placeholders that are not media
+## Other stand-ins and open items
 
 Homepage (`messages/es.json`, `messages/en.json`):
 
-- Contact details are real (`src/lib/contact.ts` and `src/lib/whatsapp.ts`): phone 8716-3308, also used as the WhatsApp number (+506 8716 3308, to be confirmed), the email, Guápiles, Pococí, Limón, and the Facebook, Instagram and TikTok profiles. The map link opens Guápiles itself until there is an exact address or pin.
-- In brackets: `[PRECIO]` (rental per day and the Jeep), the Jeep's `[AÑO]` and `[KM]`, `[X semanas]` (import time), `[HORARIO]`, the rental requirements, insurance and warranty answers in the FAQ, and the three reviews. The English file mirrors each one.
+- Contact details are real (`src/lib/contact.ts` and `src/lib/whatsapp.ts`): phone 8716-3308, also the business WhatsApp number (+506 8716 3308, confirmed by the client), the email, Guápiles, Pococí, Limón, and the Facebook, Instagram and TikTok profiles. The map link opens Guápiles itself; the client wants no exact address or pin.
+- No content is left in brackets: prices, times, hours, requirements, insurance, warranty and the three reviews are all the client's. Rates and the Jeep's price are not shown on purpose.
 - Not on the page until the client has them: the rental cars' drive (4x2 or 4x4), a family photo for About, and the spare-parts catalogue (its section keeps a one-line "Placeholder" note).
-- The favicon (`src/app/icon.svg`) is a neutral horizon mark until the vector logo exists.
+- The favicon (`src/app/icon.svg`) is a neutral horizon mark, and it is final.
 
 ## Rebuilding the media
 
