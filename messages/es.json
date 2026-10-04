@@ -171,7 +171,7 @@
     "time": "Tiempo aproximado",
     "timeValue": "Mes y medio",
     "fee": "Comisión JOOX",
-    "feeValue": "$500",
+    "feeValue": "$1000",
     "quote": "Cotizar importación",
     "whatsapp": "Hola, quiero cotizar la importación de un vehículo.",
     "open": "Ver los 8 pasos",
@@ -373,8 +373,8 @@
         "a": "Una copia de tu cédula (o tu pasaporte, si nos visitás desde otro país) y tu licencia de conducir vigente. Para reservar pedimos un adelanto del 20%; el depósito de garantía se hace con tarjeta de crédito y el resto se paga por SINPE Móvil o en efectivo."
       },
       {
-        "q": "¿Cuánto cuesta rentar un carro?",
-        "a": "La tarifa cambia según la temporada, por ejemplo en Navidad o Semana Santa. Escribinos por WhatsApp con tus fechas y te damos el precio exacto."
+        "q": "¿Cuánto cuesta alquilar un vehículo?",
+        "a": "Nuestras tarifas parten desde ₡40.000 por día. Sin embargo, el precio puede mejorar según la cantidad de días de alquiler. Consultá por nuestras tarifas especiales para alquileres de varios días y encontrá la opción que mejor se adapte a tus necesidades. Si querés más información o detalles, escribinos por WhatsApp."
       },
       {
         "q": "¿Dónde entregan el carro de renta?",
@@ -383,10 +383,6 @@
       {
         "q": "¿Qué incluye el seguro?",
         "a": "Toda renta incluye dos coberturas: SLI, el seguro de responsabilidad civil por daños a terceros, con un deducible de ₡150.000, y LDW, que cubre el carro en caso de daño, robo o accidente, con un deducible de ₡500.000 (no cubre vuelco ni accesorios). Ninguna cubre daños por manejar ebrio, bajo efectos de drogas o de forma temeraria, y ante cualquier accidente hay que avisarnos de inmediato a nosotros y a la aseguradora."
-      },
-      {
-        "q": "¿Ofrecen chofer o silla de bebé?",
-        "a": "Sí. Al reservar podés pedir chofer, silla de bebé o un conductor adicional, y quedan anotados en el contrato."
       },
       {
         "q": "¿Cuánto tarda una importación?",
@@ -398,7 +394,7 @@
       },
       {
         "q": "¿Cuál es la comisión de JOOX por importar un vehículo?",
-        "a": "Nuestra comisión es de $500. Incluye la selección del vehículo, la asesoría durante la compra, el acompañamiento y la gestión en Estados Unidos, el seguimiento del transporte y el acompañamiento hasta su llegada y entrega en Costa Rica."
+        "a": "Nuestra comisión es de $1000. Incluye la selección del vehículo, la asesoría durante la compra, el acompañamiento y la gestión en Estados Unidos, el seguimiento del transporte y el acompañamiento hasta su llegada y entrega en Costa Rica."
       },
       {
         "q": "¿No encontrás el repuesto que necesita tu vehículo?",
