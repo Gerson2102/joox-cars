@@ -33,7 +33,7 @@
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.45s var(--ease-out), border-color 0.45s var(--ease-out), transform 0.25s var(--ease-out);
+  transition: color var(--hover-time) var(--ease-hover), border-color var(--hover-time) var(--ease-hover), transform 0.25s var(--ease-out);
 }
 
 /* The flood: the capsule's colour, clipped to the capsule at rest. */
@@ -44,7 +44,7 @@
   z-index: -1;
   background: var(--cap-bg);
   clip-path: circle(calc(var(--cap) / 2) at calc(100% - var(--h) / 2) 50%);
-  transition: clip-path 0.6s var(--ease-out);
+  transition: clip-path var(--hover-time) var(--ease-hover);
 }
 
 .btn:hover::before {
@@ -75,7 +75,7 @@
 .roll {
   display: flex;
   flex-direction: column;
-  transition: transform 0.55s var(--ease-out);
+  transition: transform var(--hover-time) var(--ease-hover);
 }
 
 .btn:hover .roll {
@@ -95,7 +95,7 @@
 .icon {
   width: 20px;
   height: 20px;
-  transition: transform 0.45s var(--ease-out);
+  transition: transform var(--hover-time) var(--ease-hover);
 }
 
 .btn:hover .icon {
