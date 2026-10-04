@@ -7,7 +7,7 @@ export const EMAIL = "joox.joy.1813@gmail.com";
 /** The company the rental contract is with: JOOX's rentals are operated by it. */
 export const RENTAL_OPERATOR = { name: "GAMA Car Rental", id: "3-101-842761" };
 
-/** Guápiles centre until the client shares an exact address or a pin. */
+/** Central Guápiles: the client wants no exact address or pin. */
 const PLACE = encodeURIComponent("Guápiles, Pococí, Limón, Costa Rica");
 export const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${PLACE}`;
 /** The same place as an embedded map (no API key needed), labelled in the page's language. */

@@ -57,7 +57,7 @@ Premium. The website itself is the sales pitch, so it should feel like a high-en
 ## Brand Commitments
 
 - **Name:** JOOX CARS.
-- **Logo:** `references/brand/joox-cars-logo.png` (raster, 1254×1254 on white). A heavy black "JOOX" whose "OO" is drawn as a yellow infinity sign; "CARS" below, between two yellow arrow triangles. A vector original is needed for production use.
+- **Logo:** `references/brand/joox-cars-logo.png` (raster, 1254×1254 on white). A heavy black "JOOX" whose "OO" is drawn as a yellow infinity sign; "CARS" below, between two yellow arrow triangles. The raster, cut for the site, is final; no vector original is coming.
 - **Tagline:** "Driven by eternal purpose" (the logo sets ETERNAL in yellow).
 - **Brand colours (from the logo):** yellow ≈ #FDCD03, near-black ≈ #131313, on white.
 - **Light site (binding, from the client):** the new homepage is a light design, not dark.
@@ -73,19 +73,17 @@ Premium. The website itself is the sales pitch, so it should feel like a high-en
 
 In the project: the logo (raster), the name, the tagline, the four services, and (from 2026-09-25):
 
-- **Contact:** phone 8716-3308 (taken to be the WhatsApp number too, unconfirmed), joox.joy.1813@gmail.com, Guápiles, Pococí, Limón; Facebook, Instagram (@joox6287) and TikTok (@joox7731).
+- **Contact:** phone 8716-3308 (confirmed as the business WhatsApp number), joox.joy.1813@gmail.com, Guápiles, Pococí, Limón; Facebook, Instagram (@joox6287) and TikTok (@joox7731).
 - **Track record:** 20 cars imported, 12 sold.
-- **Rental fleet (three cars, all automatic):** Mitsubishi Outlander Sport 2015 black (2000 cc), Mitsubishi Outlander Sport 2020 orange (2000 cc), Kia Sportage 2020 black (2400 cc). The client wrote "Outlander"; the photos show the compact Outlander Sport, confirmed by the user.
-- **For sale:** one black Jeep Wrangler Unlimited (automatic, 4x4); year, mileage and price not given.
+- **Rental fleet (four cars, all automatic):** Mitsubishi Outlander Sport 2015 black (2000 cc), Mitsubishi Outlander Sport 2020 orange (2000 cc), Kia Sportage 2020 black (2400 cc), and a white Mitsubishi Outlander 2016 (2400 cc, seven seats, coming soon, also for sale). The client wrote "Outlander"; the photos show the compact Outlander Sport, confirmed by the user.
+- **For sale:** a black Jeep Wrangler Unlimited 2012 (automatic, 4x4, 175,000 km) and the white Outlander 2016 above; no prices are shown.
 - **Photos:** the client's own phone photos (1280 px, sent through a chat app) of the rental fleet at home in Guápiles, the car for sale, and its imports (lots, a tow truck, containers, papers). Front three-quarter views, no side profiles. See `ASSETS.md`.
 - **Mission, vision, DNA, the name's meaning and the full import process** (above).
 
 Still missing; use placeholders and never make anything up:
 
-- A vector version of the logo
 - Real footage for the hero film
-- Rental prices, the rental cars' drive (4x2 or 4x4), rental requirements, insurance details
-- The Jeep's year, mileage and price; the import time in weeks; opening hours; an exact address or map pin
+- The rental cars' drive (4x2 or 4x4)
 
 We have no testimonials, tax figures or parts catalogue. Don't create any.
 
