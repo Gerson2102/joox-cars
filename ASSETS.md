@@ -6,7 +6,7 @@ The hero film is **AI-generated** (Seedance 2.5 through the Higgsfield API), the
 
 The logo files in `public/brand/` are the client's own, cut from the logo raster they supplied.
 
-Sources are not committed. `scripts/media/sources.json` lists every source URL, and the scripts download them into `.media-src/` (gitignored); the hero film's take has no URL, so it is copied in from where its entry says it is kept. Each shipped raster also carries its origin in a `.webp.json` sidecar. Read it with `impeccable embed-prompt --read <file>`.
+Sources are not committed. `scripts/media/sources.json` lists every source URL, and the scripts download them into `.media-src/` (gitignored); the hero film's take has no URL, so it is copied in from where its entry says it is kept. Each shipped raster's origin is recorded in `scripts/media/provenance/`: a `.webp.json` per file, at its path under `public/`, kept outside `public/` so the site doesn't serve it.
 
 ## Homepage (`/es`, `/en`)
 
@@ -16,13 +16,13 @@ Sources are not committed. `scripts/media/sources.json` lists every source URL, 
 | `../brand/joox-cars-mark.webp` (`public/brand/`) | 96 KB | Header logo | The client's logo raster (`references/brand/joox-cars-logo.png`) | White background unmixed to transparency (alpha = 1 − darkest channel), trimmed, 240 px tall | None: final (no vector logo is coming) |
 | `../brand/joox-cars-mark-reversed.webp` (`public/brand/`) | 79 KB | Header logo over the hero film | The mark above | `scripts/media/brand_reversed.py`: near-black swapped for white, yellow kept, edges blended | None: final |
 | `../brand/joox-cars-lockup.webp` (`public/brand/`) | 121 KB | Footer logo with the tagline | Same raster | Same, with "Driven by eternal purpose", 320 px tall | None: final |
-| `src/app/[lang]/opengraph-image.jpg` | 55 KB | Link previews (WhatsApp, Facebook, X) | Same raster | Trimmed, centred on its own white at 66 % of the height, 1200 × 630, JPEG q90 | None: final |
+| `../brand/joox-cars-preview.jpg` (`public/brand/`) | 55 KB | Link previews on every page (WhatsApp, Facebook, X), set in `src/app/[lang]/metadata.ts` | Same raster | Trimmed, centred on its own white at 66 % of the height, 1200 × 630, JPEG q90 | None: final |
 
 The logos are lossless WebP. The homepage uses no grain overlay; the film keeps the look it was baked with, full-bleed as the hero.
 
 ### The client's photos
 
-The client sent its photos through a chat app, already reduced to 1280 px on the long side, into three folders at the project root: `cars-to-rent/` (the rental fleet), `cars-to-export/` (its imports: lots, a tow truck, containers, papers, keys) and `cars-ready-to-sell/` (the car for sale). `scripts/media/photos.py` prepares the ones the page uses (`public/media/photos/<id>.jpg`, ids in `src/lib/fleet.ts`, captions in both dictionaries under `photos`):
+The client sent its photos through a chat app, already reduced to 1280 px on the long side, into three folders at the project root: `cars-to-rent/` (the rental fleet), `cars-to-export/` (its imports: lots, a tow truck, containers, papers, keys) and `cars-ready-to-sell/` (the car for sale). `scripts/media/photos.py` prepares the ones the page uses (`public/media/photos/<id>.webp`, ids in `src/lib/fleet.ts`, captions in both dictionaries under `photos`):
 
 - **Plates** are softened into blank plates, and **a child** standing in a doorway behind the orange Outlander Sport is blurred.
 - The backlit carport photo of the black Outlander Sport 2015 has its shadows lifted.
@@ -72,7 +72,7 @@ Each layout ships in two codecs, both at constant quality capped by a size budge
 Homepage (`messages/es.json`, `messages/en.json`):
 
 - Contact details are real (`src/lib/contact.ts` and `src/lib/whatsapp.ts`): phone 8716-3308, also the business WhatsApp number (+506 8716 3308, confirmed by the client), the email, Guápiles, Pococí, Limón, and the Facebook, Instagram and TikTok profiles. The map link opens Guápiles itself; the client wants no exact address or pin.
-- No content is left in brackets: prices, times, hours, requirements, insurance, warranty and the three reviews are all the client's. Rates and the Jeep's price are not shown on purpose.
+- No content is left in brackets: prices, times, hours, requirements, insurance, warranty and the three reviews are all the client's. The showrooms show no prices on purpose (rates change with the season; the cars for sale are asked about on WhatsApp); the questions give the rental's starting rate and the import fee.
 - Not on the page until the client has them: the rental cars' drive (4x2 or 4x4), a family photo for About, and the spare-parts catalogue (meanwhile the parts section takes requests through its WhatsApp form).
 - The favicon (`src/app/icon.svg`) is a neutral horizon mark, and it is final.
 

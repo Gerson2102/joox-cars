@@ -105,6 +105,11 @@
   padding-top: clamp(64px, 7vw, 104px);
 }
 
+/* A service page opens on its band, under the floating header: no film above it, so no curtain either. */
+.pageHead {
+  padding-top: calc(var(--nav-h) + clamp(56px, 8vw, 120px));
+}
+
 .title {
   max-width: 15em;
   font-size: var(--display-2);
@@ -446,23 +451,16 @@
   font-size: var(--display-3);
 }
 
-/* The full process, folded under the journey (ImportProcess.tsx): two stages side by side, numbered through. */
-.processToggle {
-  list-style: none;
-}
-
-.processToggle::-webkit-details-marker {
-  display: none;
-}
-
-.process[open] .foldChevron {
-  transform: rotate(-135deg) translateY(-2px);
-}
-
+/* The full process, on the import page under the journey (ImportProcess.tsx): two stages side by side, numbered through. */
 .processBody {
   display: grid;
   gap: 32px;
   padding-top: 32px;
+}
+
+/* On the homepage, the journey leads to the import page for the full process. */
+.processLink {
+  justify-self: start;
 }
 
 .stages {
@@ -596,10 +594,10 @@
   display: contents;
 }
 
-/* The pill toggles: the phone folds (below) and the full import process. */
-.foldToggle,
-.processToggle {
-  display: inline-flex;
+/* The pill toggle that unfolds a band on phones (below); hidden until then. */
+.foldToggle {
+  display: none;
+  justify-self: start;
   align-items: center;
   gap: 14px;
   min-height: 52px;
@@ -610,11 +608,6 @@
   color: var(--fg);
   font-weight: 600;
   cursor: pointer;
-}
-
-.foldToggle {
-  display: none;
-  justify-self: start;
 }
 
 .foldChevron {
@@ -1092,6 +1085,10 @@
   .band {
     padding-top: 72px;
     padding-bottom: 80px;
+  }
+
+  .pageHead {
+    padding-top: calc(var(--nav-h) + 48px);
   }
 
   .continues {

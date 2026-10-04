@@ -1,7 +1,30 @@
 {
   "meta": {
-    "title": "Car Rental in Guápiles, Costa Rica & US Import | JOOX CARS",
-    "description": "Car rental and sales in Guápiles, Costa Rica. We import vehicles from the US, and spare parts from Japan, China, Europe and the US."
+    "title": "JOOX CARS | Car Rental and US Import in Guápiles, Costa Rica",
+    "description": "JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica. We also source spare parts from Japan, China, Europe and the US.",
+    "priceRange": "Rental from ₡40,000 per day"
+  },
+  "pages": {
+    "rental": {
+      "title": "Car Rental in Guápiles, Costa Rica | JOOX CARS",
+      "description": "Automatic SUV rental in Guápiles from ₡40,000 per day, with free delivery and pick-up in central Guápiles, Jiménez and Guácimo. Book on WhatsApp.",
+      "h1": "Car rental in Guápiles, Costa Rica"
+    },
+    "sales": {
+      "title": "Vehicles for Sale in Guápiles, Costa Rica | JOOX CARS",
+      "description": "Local and imported vehicles for sale in Guápiles, Costa Rica, with the warranty required by law. Ask about any of them on WhatsApp.",
+      "h1": "Vehicles for sale in Guápiles"
+    },
+    "import": {
+      "title": "Import a Car from the US to Costa Rica | JOOX CARS",
+      "description": "We import your vehicle from the US: search, purchase, transport, DEKRA inspection, taxes and delivery in Costa Rica in about a month and a half. JOOX fee: $1000.",
+      "h1": "Vehicle import from the US to Costa Rica"
+    },
+    "parts": {
+      "title": "Imported Spare Parts in Guápiles, Costa Rica | JOOX CARS",
+      "description": "We source spare parts from Japan, China, Europe and the US, including for makes like BMW. Platform price plus 25%, plus shipping by weight. Ask on WhatsApp.",
+      "h1": "Imported spare parts for your vehicle"
+    }
   },
   "nav": {
     "home": "JOOX CARS, home",
@@ -25,7 +48,7 @@
   },
   "hero": {
     "title": "Your vehicle. Our experience.",
-    "sub": "From Guápiles, Costa Rica, JOOX CARS rents and sells vehicles, imports from the US and sources spare parts from different platforms.",
+    "sub": "JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica. We also find your spare parts.",
     "primary": "See vehicles",
     "secondary": "Get an import quote"
   },
@@ -324,6 +347,7 @@
       "eternal",
       "purpose"
     ],
+    "lead": "JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica. We also source spare parts from Japan, China, Europe and the US.",
     "mission": {
       "title": "Mission",
       "body": "To provide complete automotive solutions that make it easier to buy, import, sell and rent vehicles, and to find and import spare parts, standing by our customers at every stage with advice, transparency and support."
@@ -369,42 +393,52 @@
     "title": "Common questions",
     "items": [
       {
+        "service": "rental",
         "q": "What do I need to rent a car in Guápiles?",
         "a": "A copy of your cédula (or your passport if you're visiting from abroad) and a valid driving licence. To book we ask for a 20% advance payment; the security deposit goes on a credit card, and the rest can be paid by SINPE Móvil or in cash."
       },
       {
+        "service": "rental",
         "q": "How much does it cost to rent a vehicle?",
         "a": "Our rates start at ₡40,000 per day, and the price can get better the more days you rent. Ask about our special rates for multi-day rentals and find the option that best fits your needs. For more information or details, message us on WhatsApp."
       },
       {
+        "service": "rental",
         "q": "Where do you deliver the rental car?",
         "a": "We deliver and collect it at no extra cost in central Guápiles, Jiménez or Guácimo."
       },
       {
+        "service": "rental",
         "q": "What does the insurance cover?",
         "a": "Every rental includes two coverages: SLI, third-party liability insurance, with a ₡150,000 deductible, and LDW, which covers the car against damage, theft or accident, with a ₡500,000 deductible (rollovers and accessories are not covered). Neither covers damage from drink-driving, driving under the influence of drugs or reckless driving, and after any accident you must tell us and the insurer straight away."
       },
       {
+        "service": "import",
         "q": "How long does an import take?",
         "a": "About a month and a half from purchase to delivery in Costa Rica. It can be less: it depends on when the shipping line loads the vehicle."
       },
       {
+        "service": "import",
         "q": "How much does it cost to import a vehicle from the US?",
         "a": "It depends on the vehicle's value, year and model, and on transport, taxes and customs clearance. We look at each vehicle and give you a personalised estimate before you buy: the tow depends on where the vehicle is, the ship charges by its size, storage by how long it stays in the warehouse, and taxes by the vehicle's features."
       },
       {
+        "service": "import",
         "q": "What is JOOX's fee for importing a vehicle?",
         "a": "Our fee is $1000. It covers choosing the vehicle, advice during the purchase, support and handling in the US, tracking the transport, and support until it arrives and is delivered in Costa Rica."
       },
       {
+        "service": "parts",
         "q": "Can't find the part your vehicle needs?",
         "a": "We find it for you. We work with suppliers in Japan, China, Europe and the US and look for each part by your vehicle's make, model and origin, including makes like BMW, especially parts that are hard to find or no longer sold in Costa Rica. Tell us the make, model, year and part, and we confirm availability and price on WhatsApp."
       },
       {
+        "service": "parts",
         "q": "How much does it cost to import a spare part?",
         "a": "The part's price on the platform plus 25%, and shipping to Costa Rica, which the carrier charges by weight."
       },
       {
+        "service": "sales",
         "q": "Do the vehicles for sale come with a warranty?",
         "a": "Yes. All our vehicles come with the warranty required by current Costa Rican law, and the specific coverage, duration and claim procedure are set out in writing when you complete the purchase. We believe transparency and trust come first, so we give you clear information about each vehicle to help you decide with confidence."
       }
@@ -423,7 +457,7 @@
     "address": "Address",
     "addressValue": "Guápiles, Pococí, Limón",
     "hours": "Hours",
-    "hoursValue": "9 a.m. to 6 p.m.",
+    "hoursValue": "Monday to Saturday, 9 a.m. to 6 p.m.",
     "social": "Social",
     "map": "Location",
     "mapPlace": "Guápiles",

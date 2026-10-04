@@ -1,10 +1,12 @@
-"""Embed each shipped raster's origin into the file (Impeccable provenance).
+"""Record each shipped raster's origin (Impeccable provenance).
 
 Only the hero posters are generated (frames of the AI-generated hero film); the
 rest are the client's own photos, cutouts of Wikimedia Commons model photos,
-or cutouts of the client's logo. The embedded text says where each came
-from and which script made it, so the file explains itself after it leaves
-this repo. Run after any script in this folder rewrites a raster.
+or cutouts of the client's logo. The record says where each came from and
+which script made it. `impeccable embed-prompt` writes it as a .json sidecar
+beside the image; it is moved to provenance/ here, at the image's path under
+public/, so the site never serves it. Run after any script in this folder
+rewrites a raster.
 
 Environment: IMPECCABLE = path to the impeccable launcher.
 """
@@ -50,20 +52,25 @@ ORIGINS = {
         for pid, (src, plates, people, amount) in PHOTOS.items()
     },
     "../brand/joox-cars-mark.webp": "JOOX CARS mark (JOOX and CARS, no tagline) cut from the client's logo raster (references/brand/joox-cars-logo.png): "
-    "white background unmixed to transparency (alpha = 1 - darkest channel), trimmed, 240 px tall. A stand-in until the vector logo arrives.",
+    "white background unmixed to transparency (alpha = 1 - darkest channel), trimmed, 240 px tall.",
     "../brand/joox-cars-mark-reversed.webp": "Reversed JOOX CARS mark for the header over the hero film: the mark cutout (public/brand/joox-cars-mark.webp, from the client's logo raster) with its near-black ink swapped for white and the yellow kept, each pixel read as a yellow/black mix from its red channel. Made by scripts/media/brand_reversed.py.",
     "../brand/joox-cars-lockup.webp": "JOOX CARS lockup with the tagline 'Driven by eternal purpose', cut from the client's logo raster (references/brand/joox-cars-logo.png): "
-    "white background unmixed to transparency (alpha = 1 - darkest channel), trimmed, 320 px tall. A stand-in until the vector logo arrives.",
+    "white background unmixed to transparency (alpha = 1 - darkest channel), trimmed, 320 px tall.",
 }
+
+
+PUBLIC = os.path.dirname(OUT)
+KEPT = os.path.join(os.path.dirname(__file__), "provenance")
 
 
 def main() -> None:
     launcher = os.environ.get("IMPECCABLE", "impeccable")
     for rel, text in ORIGINS.items():
-        path = os.path.join(OUT, rel)
+        path = os.path.normpath(os.path.join(OUT, rel))
         subprocess.run([launcher, "embed-prompt", path, "--prompt", text], check=True)
-    subprocess.run([launcher, "embed-prompt", "--scan", OUT], check=False)
-    subprocess.run([launcher, "embed-prompt", "--scan", os.path.join(OUT, "..", "brand")], check=False)
+        kept = os.path.join(KEPT, os.path.relpath(path, PUBLIC) + ".json")
+        os.makedirs(os.path.dirname(kept), exist_ok=True)
+        os.replace(path + ".json", kept)
 
 
 if __name__ == "__main__":
