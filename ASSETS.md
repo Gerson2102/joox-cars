@@ -22,7 +22,7 @@ The logos are lossless WebP. The homepage uses no grain overlay; the film keeps 
 
 ### The client's photos
 
-The client sent its photos through a chat app, already reduced to 1280 px on the long side, into three folders at the project root: `cars-to-rent/` (the rental fleet), `cars-to-export/` (its imports: lots, a tow truck, containers, papers, keys) and `cars-ready-to-sell/` (the car for sale). `scripts/media/photos.py` prepares the ones the page uses (`public/media/photos/<id>.jpg`, ids in `src/lib/fleet.ts`, captions in both dictionaries under `photos`):
+The client sent its photos through a chat app, already reduced to 1280 px on the long side, into three folders at the project root: `cars-to-rent/` (the rental fleet), `cars-to-export/` (its imports: lots, a tow truck, containers, papers, keys) and `cars-ready-to-sell/` (the car for sale). `scripts/media/photos.py` prepared the ones the page uses (`public/media/photos/<id>.webp`). The cars' photos and captions are now listed in each car's file in `content/` and edited in the panel; the fleet photo, the service photos and the import strip keep their ids in `src/lib/fleet.ts` and captions in both dictionaries under `photos`:
 
 - **Plates** are softened into blank plates, and **a child** standing in a doorway behind the orange Outlander Sport is blurred.
 - The backlit carport photo of the black Outlander Sport 2015 has its shadows lifted.
@@ -35,6 +35,8 @@ The client sent its photos through a chat app, already reduced to 1280 px on the
 | `wrangler-front`, `-rear`, `-back`, `-cabin`, `-key` | The Jeep's photo viewer (sales) |
 | `outlander-2016`, `outlander-2016-front` (the white Outlander at the lot, sent 2 October, in `cars-to-rent/`) | Its photo viewer, in both showrooms (it is for rent and for sale) |
 | `import-*` (10) | The import strip, in the order `IMPORTS` lists them |
+
+**Photos added in the panel** (`/admin`, `docs/CMS.md`) land in the same folder, named after the car (`<make>-<model>-<year>-<id>.webp`). The panel converts them to WebP at 1600 px at most, quality 82, and strips their metadata (GPS included), all in the browser. It can't soften plates or blur people, so those are the client's to do before uploading. These photos have no `.webp.json` sidecar: their record is the commit that added them.
 
 Not used yet: the other 18 import photos (more cars on the lots, a white Corolla with a young man beside it, an office). Captions stay neutral (the car, or what is happening) because who is in each photo and where it was taken has not been confirmed; the one place named, Houston, is lettered on the tow truck itself.
 

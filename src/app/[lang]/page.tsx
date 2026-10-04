@@ -4,8 +4,9 @@ import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { getDictionary, hasLocale, otherLocale, type Dictionary } from "./dictionaries";
 import { businessJsonLd, faqJsonLd } from "./structured-data";
 import { wa } from "@/lib/whatsapp";
-import { EMAIL, MAP_URL, PHONE, RENTAL_OPERATOR, SOCIAL, mapEmbed } from "@/lib/contact";
-import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, SERVICE_PHOTOS, type PhotoId } from "@/lib/fleet";
+import { MAP_URL, RENTAL_OPERATOR, mapEmbed } from "@/lib/contact";
+import { getCars, getContact, getFaq, getImport, getReviews, type Car, type Kind } from "@/lib/content";
+import { CUTOUTS, FLEET_TOGETHER, IMPORTS, PHOTOS, SERVICE_PHOTOS, type PhotoId } from "@/lib/fleet";
 import { NAV } from "@/lib/sections";
 import { ArrowIcon, ExternalIcon, HeartIcon } from "@/components/icons";
 import { SiteHeader } from "@/components/site/SiteHeader";
@@ -32,18 +33,38 @@ type Tone = "white" | "yellow" | "black";
 const i = (n: number) => ({ ["--i" as string]: n }) as CSSProperties;
 
 /** A photo with its caption (also its alt text) in the page's language. */
-const photo = (t: Dictionary, id: PhotoId) => ({ ...PHOTOS[id], caption: t.photos[id] });
+const photo = (t: Dictionary, id: PhotoId & keyof Dictionary["photos"]) => ({ ...PHOTOS[id], caption: t.photos[id] });
 
 /** JSON-LD for a script tag, with "<" escaped so the data can never close the tag. */
 const ld = (data: object) => ({ __html: JSON.stringify(data).replace(/</g, "\\u003c") });
 
-type CarCopy = { slug: string; brand: string; model: string; year: string; body: string; ref: string };
-
-/** A dictionary car joined with its images; a car without images is left out rather than breaking the page. */
-function slides<C extends CarCopy>(t: Dictionary, cars: C[], message: string, specs: (c: C) => CarSlide["specs"]): CarSlide[] {
+/** A car from the CMS joined with its showroom cutout, if one has been made; a car with neither a cutout nor
+ *  a photo is left out rather than breaking the page. Its WhatsApp message names it ("…the orange 2020
+ *  Mitsubishi Outlander Sport"), and a spec without a value is left out. */
+function slides(t: Dictionary, kind: Kind, cars: Car[], whatsapp: string, specs: (c: Car) => { label: string; value?: string }[]): CarSlide[] {
+  const message = kind === "rental" ? t.rental.whatsapp : t.sales.whatsapp;
   return cars.flatMap((c) => {
-    const f = FLEET[c.slug];
-    return f ? [{ ...c, specs: specs(c), message: message.replace("{car}", c.ref), cutout: f.cutout, photos: f.photos.map((id) => photo(t, id)) }] : [];
+    const cutout = CUTOUTS[kind][c.slug];
+    if (!cutout && !c.photos.length) return [];
+    const ref = t.carousel.ref
+      .replace("{brand}", c.brand)
+      .replace("{model}", c.model)
+      .replace("{year}", c.year)
+      .replace("{color}", c.color.toLowerCase());
+    return [
+      {
+        slug: c.slug,
+        brand: c.brand,
+        model: c.model,
+        year: c.year,
+        body: c.body,
+        status: c.status,
+        specs: specs(c).flatMap((s) => (s.value ? [{ label: s.label, value: s.value }] : [])),
+        whatsapp: wa(whatsapp, message.replace("{car}", ref)),
+        cutout,
+        photos: c.photos,
+      },
+    ];
   });
 }
 
@@ -103,14 +124,37 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   const other = otherLocale(lang);
   const r = t.rental.specs;
   const s = t.sales.specs;
+  // What the client edits in the CMS: the cars, contact details, import time and fee, FAQ and reviews.
+  const [rentalCars, salesCars] = await Promise.all([getCars("rental", lang), getCars("sales", lang)]);
+  const contact = getContact(lang);
+  const importFacts = getImport(lang);
+  const faq = getFaq(lang);
+  const reviews = getReviews(lang);
+  const chat = (text: string) => wa(contact.whatsapp, text);
+  const gearbox = (c: Car) => t.carousel.gearbox[c.gearbox];
+  const rental = slides(t, "rental", rentalCars, contact.whatsapp, (c) => [
+    { label: r.year, value: c.year },
+    { label: r.engine, value: c.engine },
+    { label: r.gearbox, value: gearbox(c) },
+    { label: r.seats, value: c.seats },
+    { label: r.color, value: c.color },
+  ]);
+  const sales = slides(t, "sales", salesCars, contact.whatsapp, (c) => [
+    { label: s.year, value: c.year },
+    { label: s.mileage, value: c.mileage ? `${new Intl.NumberFormat(lang).format(c.mileage)} ${t.sales.units[c.unit ?? "km"]}` : undefined },
+    { label: s.gearbox, value: gearbox(c) },
+    { label: s.drive, value: c.drive },
+    { label: s.seats, value: c.seats },
+    { label: s.color, value: c.color },
+  ]);
   // One credit per photo: a car for rent and for sale shows the same model photo in both showrooms.
-  const credits = [...new Set([...t.rental.cars, ...t.sales.cars].flatMap((c) => FLEET[c.slug]?.cutout.credit ?? []))];
+  const credits = [...new Set([...rental, ...sales].flatMap((c) => c.cutout?.credit ?? []))];
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={ld(businessJsonLd(t, lang))} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={ld(faqJsonLd(t))} />
-      <SiteHeader t={t.nav} lang={lang} whatsappText={t.whatsapp.general} tagline={t.about.tagline} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(businessJsonLd(t, lang, { contact, rental: rentalCars, sales: salesCars }))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(faqJsonLd(faq))} />
+      <SiteHeader t={t.nav} lang={lang} whatsappHref={chat(t.whatsapp.general)} tagline={t.about.tagline} />
       <ScrollFX />
       <main>
         <HeroStage t={t.hero} />
@@ -152,20 +196,17 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* Yellow: the rental showroom, then the whole fleet together at home. */}
         <Band id="rental" tone="yellow" title={t.rental.title} lead={t.rental.lead} className={b.showroomBand}>
           <div className={b.showroom}>
-            <CarCarousel
-              travel="left"
-              labels={{ ...t.carousel, list: t.rental.list }}
-              viewer={t.viewer}
-              rate={t.rental.rate}
-              action={{ label: t.rental.reserve, variant: "ink" }}
-              cars={slides(t, t.rental.cars, t.rental.whatsapp, (c) => [
-                { label: r.year, value: c.year },
-                { label: r.engine, value: c.engine },
-                { label: r.gearbox, value: c.gearbox },
-                { label: r.seats, value: c.seats },
-                { label: r.color, value: c.color },
-              ])}
-            />
+            {/* The client can hide or remove every car in the panel; an empty showroom simply isn't drawn. */}
+            {rental.length ? (
+              <CarCarousel
+                travel="left"
+                labels={{ ...t.carousel, list: t.rental.list }}
+                viewer={t.viewer}
+                rate={t.rental.rate}
+                action={{ label: t.rental.reserve, variant: "ink" }}
+                cars={rental}
+              />
+            ) : null}
             <figure className={b.together} data-reveal="rise">
               <div className={b.togetherFrame}>
                 <Image
@@ -187,20 +228,15 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* White: the cars for sale, facing right; a car on its own simply stands. */}
         <Band id="sales" tone="white" title={t.sales.title} lead={t.sales.lead} className={b.showroomBand}>
           <div className={b.showroom}>
-            <CarCarousel
-              travel="right"
-              labels={{ ...t.carousel, list: t.sales.list }}
-              viewer={t.viewer}
-              action={{ label: t.sales.ask, variant: "yellow" }}
-              cars={slides(t, t.sales.cars, t.sales.whatsapp, (c) => [
-                { label: s.year, value: c.year },
-                { label: s.mileage, value: `${new Intl.NumberFormat(lang).format(c.mileage)} ${t.sales.units[c.unit as keyof typeof t.sales.units]}` },
-                { label: s.gearbox, value: c.gearbox },
-                { label: s.drive, value: c.drive },
-                { label: s.seats, value: c.seats },
-                { label: s.color, value: c.color },
-              ])}
-            />
+            {sales.length ? (
+              <CarCarousel
+                travel="right"
+                labels={{ ...t.carousel, list: t.sales.list }}
+                viewer={t.viewer}
+                action={{ label: t.sales.ask, variant: "yellow" }}
+                cars={sales}
+              />
+            ) : null}
             <div className={b.salesMore} data-reveal="rise">
               <div className={b.salesMoreText}>
                 <p className={b.salesMoreTitle}>{t.sales.more.title}</p>
@@ -225,14 +261,14 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             <dl className={b.importFacts}>
               <div className={b.time}>
                 <dt className="map-label">{t.import.time}</dt>
-                <dd className={b.timeValue}>{t.import.timeValue}</dd>
+                <dd className={b.timeValue}>{importFacts.time}</dd>
               </div>
               <div className={b.time}>
                 <dt className="map-label">{t.import.fee}</dt>
-                <dd className={b.timeValue}>{t.import.feeValue}</dd>
+                <dd className={b.timeValue}>{importFacts.fee}</dd>
               </div>
             </dl>
-            <Btn variant="yellow" icon="whatsapp" href={wa(t.import.whatsapp)} external>
+            <Btn variant="yellow" icon="whatsapp" href={chat(t.import.whatsapp)} external>
               {t.import.quote}
             </Btn>
           </div>
@@ -251,7 +287,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             </div>
             <div className={b.splitAside} data-reveal="rise">
               <Fold id="parts" openLabel={t.parts.open} closeLabel={t.fold.close}>
-                <PartsForm t={t.parts.form} />
+                <PartsForm t={t.parts.form} whatsapp={contact.whatsapp} />
                 <p className={b.partsPricing}>{t.parts.pricing}</p>
               </Fold>
             </div>
@@ -297,14 +333,14 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* White: what customers say. */}
         <Band id="reviews" tone="white" title={t.reviews.title} lead={t.reviews.lead}>
           <ul className={b.reviews} data-reveal="stagger">
-            {t.reviews.items.map((rv, n) => (
-              <li key={rv.who} style={i(n)}>
+            {reviews.map((rv, n) => (
+              <li key={rv.name} style={i(n)}>
                 <figure className={b.review}>
                   <span className={b.quoteMark} aria-hidden="true">
                     “
                   </span>
                   <blockquote>{rv.quote}</blockquote>
-                  <figcaption className="map-label">{rv.who}</figcaption>
+                  <figcaption className="map-label">{`${rv.name} · ${t.nav.links[rv.service]}`}</figcaption>
                 </figure>
               </li>
             ))}
@@ -314,11 +350,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* White, continued: the common questions, and a way out beside them. */}
         <Band id="faq" tone="white" title={t.faq.title} lead={t.faq.lead} className={`${b.continues} ${b.faqBand}`}>
           <div className={b.faqGrid}>
-            <Faq items={t.faq.items} />
+            <Faq items={faq} />
             <aside className={b.faqPanel} data-reveal="rise">
               <p className={b.faqPanelTitle}>{t.faq.more}</p>
               <p className={b.faqPanelBody}>{t.faq.moreBody}</p>
-              <Btn variant="yellow" icon="whatsapp" href={wa(t.whatsapp.general)} external>
+              <Btn variant="yellow" icon="whatsapp" href={chat(t.whatsapp.general)} external>
                 {t.faq.ask}
               </Btn>
             </aside>
@@ -335,20 +371,20 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               <p className={b.lead} data-reveal="rise">
                 {t.contact.lead}
               </p>
-              <Btn variant="yellow" size="lg" icon="whatsapp" href={wa(t.whatsapp.general)} external>
+              <Btn variant="yellow" size="lg" icon="whatsapp" href={chat(t.whatsapp.general)} external>
                 {t.contact.whatsapp}
               </Btn>
               <dl className={b.contactList}>
                 <div>
                   <dt className="map-label">{t.contact.phone}</dt>
                   <dd>
-                    <a href={PHONE.href}>{PHONE.label}</a>
+                    <a href={contact.phone.href}>{contact.phone.label}</a>
                   </dd>
                 </div>
                 <div>
                   <dt className="map-label">{t.contact.email}</dt>
                   <dd>
-                    <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+                    <a href={`mailto:${contact.email}`}>{contact.email}</a>
                   </dd>
                 </div>
                 <div>
@@ -357,12 +393,12 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 </div>
                 <div>
                   <dt className="map-label">{t.contact.hours}</dt>
-                  <dd>{t.contact.hoursValue}</dd>
+                  <dd>{contact.hours}</dd>
                 </div>
                 <div className={b.contactWide}>
                   <dt className="map-label">{t.contact.social}</dt>
                   <dd className={b.social}>
-                    {SOCIAL.map((n) => (
+                    {contact.social.map((n) => (
                       <a key={n.name} href={n.href} target="_blank" rel="noopener noreferrer">
                         {n.name}
                         <ExternalIcon className={b.socialIcon} />
@@ -402,7 +438,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </ul>
         </nav>
         <ul className={b.footerSocial}>
-          {SOCIAL.map((n) => (
+          {contact.social.map((n) => (
             <li key={n.name}>
               <a href={n.href} target="_blank" rel="noopener noreferrer">
                 {n.name}
@@ -410,7 +446,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             </li>
           ))}
           <li>
-            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
           </li>
         </ul>
         <p className={b.footerNote}>{t.footer.operator.replace("{name}", RENTAL_OPERATOR.name).replace("{id}", RENTAL_OPERATOR.id)}</p>

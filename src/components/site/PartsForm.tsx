@@ -8,8 +8,8 @@ import styles from "./bands.module.css";
 
 const CAR = ["make", "model", "year"] as const;
 
-/** No backend: the request is written into a WhatsApp message. */
-export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
+/** No backend: the request is written into a WhatsApp message to `whatsapp` (the business number, digits only). */
+export function PartsForm({ t, whatsapp }: { t: Dictionary["parts"]["form"]; whatsapp: string }) {
   const id = useId();
   const [error, setError] = useState(false);
 
@@ -30,7 +30,7 @@ export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
         .map(([label, v]) => `${label}: ${v}`),
       `${t.part}: ${part}`,
     ];
-    window.open(wa(lines.join("\n")), "_blank", "noopener,noreferrer");
+    window.open(wa(whatsapp, lines.join("\n")), "_blank", "noopener,noreferrer");
   };
 
   return (

@@ -5,7 +5,6 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExter
 import { createPortal } from "react-dom";
 import { otherLocale, type Dictionary, type Locale } from "@/app/[lang]/dictionaries";
 import { NAV } from "@/lib/sections";
-import { wa } from "@/lib/whatsapp";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 import { Btn } from "./Btn";
 import { LangLink } from "./LangLink";
@@ -18,7 +17,7 @@ const noop = () => () => {};
  * Past the film it becomes a floating white capsule, and a yellow pill slides
  * under the link of the section being read. WhatsApp is one tap away everywhere.
  */
-export function SiteHeader({ t, lang, whatsappText, tagline }: { t: Dictionary["nav"]; lang: Locale; whatsappText: string; tagline: string[] }) {
+export function SiteHeader({ t, lang, whatsappHref, tagline }: { t: Dictionary["nav"]; lang: Locale; whatsappHref: string; tagline: string[] }) {
   const [open, setOpen] = useState(false);
   const [overFilm, setOverFilm] = useState(true);
   const [active, setActive] = useState<string | null>(null);
@@ -108,7 +107,7 @@ export function SiteHeader({ t, lang, whatsappText, tagline }: { t: Dictionary["
     </a>
   );
   const whatsapp = (variant: "ink" | "white") => (
-    <Btn variant={variant} size="sm" icon="whatsapp" href={wa(whatsappText)} external ariaLabel={t.whatsappLabel} className={styles.wa}>
+    <Btn variant={variant} size="sm" icon="whatsapp" href={whatsappHref} external ariaLabel={t.whatsappLabel} className={styles.wa}>
       {t.whatsapp}
     </Btn>
   );

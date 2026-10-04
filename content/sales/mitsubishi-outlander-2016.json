@@ -1,0 +1,52 @@
+{
+  "es": {
+    "brand": "Mitsubishi",
+    "model": "Outlander",
+    "year": "2016",
+    "body": "SUV",
+    "color": "Blanco",
+    "mileage": 85000,
+    "unit": "mi",
+    "gearbox": "automatic",
+    "drive": "4x4",
+    "seats": 7,
+    "photos": [
+      {
+        "image": "/media/photos/outlander-2016.webp",
+        "caption": "Mitsubishi Outlander 2016 blanco"
+      },
+      {
+        "image": "/media/photos/outlander-2016-front.webp",
+        "caption": "De frente"
+      }
+    ],
+    "status": "En preparación: disponible pronto. También está en renta.",
+    "visible": true,
+    "order": 2
+  },
+  "en": {
+    "brand": "Mitsubishi",
+    "model": "Outlander",
+    "year": "2016",
+    "body": "SUV",
+    "color": "White",
+    "mileage": 85000,
+    "unit": "mi",
+    "gearbox": "automatic",
+    "drive": "4x4",
+    "seats": 7,
+    "photos": [
+      {
+        "image": "/media/photos/outlander-2016.webp",
+        "caption": "White 2016 Mitsubishi Outlander"
+      },
+      {
+        "image": "/media/photos/outlander-2016-front.webp",
+        "caption": "From the front"
+      }
+    ],
+    "status": "Being prepared: available soon. Also for rent.",
+    "visible": true,
+    "order": 2
+  }
+}

@@ -29,6 +29,15 @@
         ],
         "createdAt": "2026-10-01T21:43:36.215Z",
         "reason": "agent decision: width transition on the three 24-44px carousel progress buttons; the active one grows as the last shrinks, so the row's width is constant and nothing else reflows. A transform scale (the previous approach) left uneven gaps, the bug fixed this session."
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/lib/content.ts"
+        ],
+        "createdAt": "2026-10-04T02:05:57.786Z",
+        "reason": "Claude: false positive; L33 is a TypeScript function named image() in a server data loader, there is no <img> element in this file"
       }
     ]
   }

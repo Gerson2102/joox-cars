@@ -1,0 +1,265 @@
+# Sveltia CMS: the panel at jooxcars.com/admin where JOOX edits its cars and business
+# details. Free and open source. Every save is a commit to this GitHub repo, and Vercel
+# redeploys the site with it (about a minute). How it's set up: docs/CMS.md.
+# Docs: https://sveltiacms.app/en/docs
+
+backend:
+  name: github
+  repo: Gerson2102/joox-cars
+  branch: master
+  # Sign-in goes through this site's own GitHub OAuth routes (src/app/api/auth, /api/callback).
+  base_url: https://jooxcars.com
+  auth_endpoint: api/auth
+  auth_methods: [oauth]
+
+site_url: https://jooxcars.com
+logo:
+  src: /brand/joox-cars-mark.webp
+
+# Spanish first, English beside it. Each file holds both languages: { "es": {...}, "en": {...} }.
+# Fields marked `duplicate` are the same in both and are only edited in Spanish.
+i18n:
+  structure: single_file
+  locales: [es, en]
+  default_locale: es
+
+# The client's own photos (public/media/photos, as in ASSETS.md); new ones are named after
+# the car. They're shrunk to 1600px and converted to WebP in the browser before upload
+# (iPhone HEIC photos too), and their camera data (EXIF, GPS) is removed.
+media_folder: public/media/photos
+public_folder: /media/photos
+media_libraries:
+  all:
+    slugify_filename: true
+    transformations:
+      raster_image:
+        format: webp
+        quality: 82
+        width: 1600
+        height: 1600
+  # No stock photos: every car shown is the client's own.
+  stock_assets: false
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  # The fields both showrooms share are defined here once (&name) and reused in sales (*name).
+  # In templates, {{year}} is the current date's year: the car's own year is {{fields.year}}.
+  - name: rental
+    label: Carros de renta
+    label_singular: carro de renta
+    description: "Los carros del showroom de renta (la banda amarilla)."
+    folder: content/rental
+    extension: json
+    format: json
+    create: true
+    delete: true
+    i18n: true
+    slug: "{{brand}}-{{model}}-{{fields.year}}"
+    summary: "{{brand}} {{model}} {{fields.year}}"
+    sortable_fields: { fields: [order, brand, year], default: { field: order, direction: ascending } }
+    editor: { preview: false }
+    fields:
+      - &brand { name: brand, label: Marca, widget: string, i18n: duplicate, hint: "Ej.: Mitsubishi" }
+      - &model { name: model, label: Modelo, widget: string, i18n: duplicate, hint: "Ej.: Outlander Sport" }
+      - &year
+        name: year
+        label: Año
+        widget: string
+        i18n: duplicate
+        pattern: ['^(19|20)\d{2}$', "Escribí el año con 4 números, por ejemplo 2020"]
+      - &body { name: body, label: Tipo, widget: string, i18n: true, required: [es], hint: "Ej.: SUV, Sedán, Pickup" }
+      - &color { name: color, label: Color, widget: string, i18n: true, required: [es], hint: "Ej.: Blanco" }
+      - { name: engine, label: Motor, widget: string, i18n: duplicate, required: false, hint: "Ej.: 2000 cc" }
+      - &gearbox
+        name: gearbox
+        label: Transmisión
+        widget: select
+        i18n: duplicate
+        default: automatic
+        options:
+          - { label: Automática, value: automatic }
+          - { label: Manual, value: manual }
+      - &seats { name: seats, label: Asientos, widget: number, value_type: int, min: 2, max: 15, i18n: duplicate }
+      - &photos
+        name: photos
+        label: Fotos
+        label_singular: foto
+        widget: list
+        i18n: duplicate
+        min: 1
+        summary: "{{fields.caption}}"
+        hint: >-
+          La primera es la principal: si el carro no tiene foto de showroom, es la que se ve en el sitio.
+          Antes de subir una foto, tapá o difuminá la placa.
+        fields:
+          - name: image
+            label: Foto
+            widget: image
+            choose_url: false
+            media_libraries:
+              default:
+                config:
+                  filename_template: "{{slug}}-{{uuid_short}}"
+          - { name: caption, label: Descripción, widget: string, i18n: true, required: false, hint: "Corta. Ej.: De frente, La cabina" }
+      - &status
+        name: status
+        label: Aviso
+        widget: string
+        i18n: true
+        required: false
+        hint: "Opcional: una línea en negrita bajo el carro. Ej.: En preparación: disponible pronto."
+      - &visible
+        name: visible
+        label: Mostrar en el sitio
+        widget: boolean
+        default: true
+        i18n: duplicate
+        hint: "Apagalo para esconder el carro sin borrarlo."
+      - &order
+        name: order
+        label: Posición
+        widget: number
+        value_type: int
+        min: 1
+        default: 99
+        required: false
+        i18n: duplicate
+        hint: "1 = el primero del showroom."
+
+  - name: sales
+    label: Carros en venta
+    label_singular: carro en venta
+    description: "Los carros del showroom de venta (la banda blanca)."
+    folder: content/sales
+    extension: json
+    format: json
+    create: true
+    delete: true
+    i18n: true
+    slug: "{{brand}}-{{model}}-{{fields.year}}"
+    summary: "{{brand}} {{model}} {{fields.year}}"
+    sortable_fields: { fields: [order, brand, year], default: { field: order, direction: ascending } }
+    editor: { preview: false }
+    fields:
+      - *brand
+      - *model
+      - *year
+      - *body
+      - *color
+      - { name: mileage, label: Kilometraje, widget: number, value_type: int, min: 0, i18n: duplicate, required: false }
+      - name: unit
+        label: Unidad
+        widget: select
+        i18n: duplicate
+        default: km
+        options:
+          - { label: Kilómetros, value: km }
+          - { label: Millas, value: mi }
+      - *gearbox
+      - { name: drive, label: Tracción, widget: string, i18n: duplicate, required: false, hint: "Ej.: 4x4, 4x2" }
+      - *seats
+      - *photos
+      - *status
+      - *visible
+      - *order
+
+  - name: business
+    label: Datos del negocio
+    description: "Contacto, importación, preguntas frecuentes y reseñas. Se actualizan en todo el sitio."
+    i18n: true
+    editor: { preview: false }
+    files:
+      - name: contact
+        label: Contacto y redes
+        file: content/contact.json
+        i18n: true
+        fields:
+          - name: phone
+            label: Teléfono
+            widget: string
+            i18n: duplicate
+            pattern: ['^\d{4}-?\d{4}$', "Ocho números, por ejemplo 8716-3308"]
+          - name: whatsapp
+            label: Número de WhatsApp
+            widget: string
+            i18n: duplicate
+            hint: "Con el código del país adelante, solo números: 50687163308"
+            pattern: ['^\d{10,15}$', "Solo números, con el 506 adelante"]
+          - name: email
+            label: Correo
+            widget: string
+            i18n: duplicate
+            pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Revisá el correo"]
+          - { name: hours, label: Horario, widget: string, i18n: true, required: [es], hint: "Ej.: 9:00 a. m. a 6:00 p. m." }
+          - name: facebook
+            label: Facebook (enlace completo)
+            widget: string
+            i18n: duplicate
+            required: false
+            hint: "Vacío = no se muestra"
+            pattern: ['^https://', "El enlace empieza con https://"]
+          - name: instagram
+            label: Instagram (enlace completo)
+            widget: string
+            i18n: duplicate
+            required: false
+            hint: "Vacío = no se muestra"
+            pattern: ['^https://', "El enlace empieza con https://"]
+          - name: tiktok
+            label: TikTok (enlace completo)
+            widget: string
+            i18n: duplicate
+            required: false
+            hint: "Vacío = no se muestra"
+            pattern: ['^https://', "El enlace empieza con https://"]
+
+      - name: import
+        label: Importación (tiempo y comisión)
+        file: content/import.json
+        i18n: true
+        fields:
+          - { name: time, label: Tiempo aproximado, widget: string, i18n: true, required: [es], hint: "Ej.: Mes y medio" }
+          - { name: fee, label: Comisión JOOX, widget: string, i18n: duplicate, hint: "Ej.: $500" }
+
+      - name: faq
+        label: Preguntas frecuentes
+        file: content/faq.json
+        i18n: true
+        fields:
+          - name: items
+            label: Preguntas
+            label_singular: pregunta
+            widget: list
+            i18n: duplicate
+            summary: "{{fields.q}}"
+            hint: "Agregá, quitá y ordená las preguntas en español; la traducción va en la columna de inglés."
+            fields:
+              - { name: q, label: Pregunta, widget: string, i18n: true, required: [es] }
+              - { name: a, label: Respuesta, widget: text, i18n: true, required: [es] }
+
+      - name: reviews
+        label: Reseñas
+        file: content/reviews.json
+        i18n: true
+        fields:
+          - name: items
+            label: Reseñas
+            label_singular: reseña
+            widget: list
+            i18n: duplicate
+            summary: "{{fields.name}}"
+            hint: "Solo palabras reales de clientes, publicadas con su permiso."
+            fields:
+              - { name: name, label: Cliente, widget: string }
+              - name: service
+                label: Servicio
+                widget: select
+                options:
+                  - { label: Renta, value: rental }
+                  - { label: Venta, value: sales }
+                  - { label: Importación, value: import }
+                  - { label: Repuestos, value: parts }
+              - { name: quote, label: Reseña, widget: text, i18n: true, required: [es] }

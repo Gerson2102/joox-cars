@@ -6,6 +6,8 @@ The website of JOOX CARS, a Costa Rican business that rents cars from its own fl
 | --- | --- |
 | `/` | Redirects to `/en` when the browser's first language is English, to `/es` otherwise (`src/proxy.ts`) |
 | `/es`, `/en` | The homepage |
+| `/admin` | The content panel where JOOX edits its cars and business details (Sveltia CMS; see `docs/CMS.md`). A 404 until opened once with the secret link |
+| `/api/auth`, `/api/callback` | The panel's GitHub sign-in |
 | Any other URL | A 404 in Spanish and English with the way home in each (`src/app/global-not-found.tsx`) |
 
 ## Run it
@@ -18,7 +20,7 @@ npm run build && npm start
 
 ### Test
 
-End-to-end checks in `e2e/` (Playwright, Chromium) build the site, serve it on port 3100 and walk it: the language redirect, both homepages, the 404, every car and the full import process in the HTML crawlers get, the parts form's WhatsApp message, the showroom and its photos, and the phone menu. They read their text from `messages/`, so copy edits don't break them.
+End-to-end checks in `e2e/` (Playwright, Chromium) build the site, serve it on port 3100 and walk it: the language redirect, both homepages, the 404, every car and the full import process in the HTML crawlers get, the parts form's WhatsApp message, the showroom and its photos, and the phone menu. They read their text from `messages/` and the cars, FAQ and WhatsApp number from `content/`, so copy and panel edits don't break them. Two more check that `/admin` gets its own security policy and that the sign-in callback refuses a forged state.
 
 ```bash
 npx playwright install chromium   # once per machine
@@ -27,7 +29,7 @@ npm test
 
 ### Deploy
 
-On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). No environment variables. Every page is prerendered; `src/proxy.ts` runs as a function for the `/` redirect. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).
+On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). The content panel needs three environment variables, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` and `CMS_ADMIN_KEY` (`.env.example`; setup in `docs/CMS.md`); the site itself builds without them. Every page is prerendered, so a save in the panel (a commit) redeploys the site; `src/proxy.ts` runs as a function for the `/` redirect and the `/admin` gate, and `/api/auth` and `/api/callback` for the panel's sign-in. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).
 
 Next.js 16 (App Router), React 19 and plain CSS modules. The homepage is set in Archivo (with its width axis, `font-stretch: 125%` for display type), loaded with `next/font`. No animation library: motion is CSS, plus a few small scripts.
 
@@ -49,12 +51,13 @@ The page moves as you scroll. Coloured bands open from their centre like the JOO
 
 ### Where things live
 
+- What the client edits in the panel (`/admin`): `content/` (the rental and sales cars, contact details, import time and fee, FAQ, reviews), each file with both languages, read by `src/lib/content.ts`. The panel itself: `public/admin/` (`config.yml` holds its fields). See `docs/CMS.md`.
 - Copy: `messages/es.json` and `messages/en.json` (same shape; the `Dictionary` type comes from the Spanish file).
 - Routing and the page: `src/app/[lang]/` (`layout.tsx`, `page.tsx`, `dictionaries.ts`, `site.css` with the colour and type tokens) and `src/proxy.ts`.
 - Homepage components: `src/components/site/`.
   - `SiteHeader`: fixed header with the logo, section links, the language switch, WhatsApp, and the phone menu. Transparent over the hero film; past it, a floating white capsule with a yellow pill under the section being read.
   - `HeroStage`: the full-bleed hero: film and poster, the scrims behind the header and the copy, and the copy. `useFilm` loads the film (poster first; AV1, or H.264 where AV1 cannot play).
-  - `CarCarousel`: the showroom carousel (rental and sales; a single car stands without arrows). The car copy is in the dictionaries; the side-view cutouts with their credits, and the client's photos, in `src/lib/fleet.ts`.
+  - `CarCarousel`: the showroom carousel (rental and sales; a single car stands without arrows). The cars and their photos are in `content/`; the side-view cutouts with their credits in `src/lib/fleet.ts` (`CUTOUTS`). A car added in the panel, with no cutout yet, stands its first photo in a frame.
   - `PhotoViewer`: the client's photos full screen on ink (a native modal dialog: arrows, swipe, keys, thumbnails).
   - `ProofStrip`: the import band's strip of the client's own import photos, carried sideways by the scroll.
   - `Journey`: the import steps, their road running through them in a loop while on screen.
@@ -65,7 +68,7 @@ The page moves as you scroll. Coloured bands open from their centre like the JOO
   - `Loop`: the About band's infinity loop.
   - `PartsForm`: the spare-parts request.
   - `Fold`: on phones, import and parts fold to their title and lead until opened (arriving by their link opens them).
-- WhatsApp links: `src/lib/whatsapp.ts`. Phone, email, social profiles and the map link: `src/lib/contact.ts`.
+- WhatsApp links: `src/lib/whatsapp.ts` (the number is in `content/contact.json`). The site URL, rental operator and map link: `src/lib/contact.ts`.
 - Media and the source of every asset: `scripts/media/`, documented in `ASSETS.md`.
 
 ### Behaviour
@@ -79,7 +82,7 @@ The page moves as you scroll. Coloured bands open from their centre like the JOO
 
 ### Placeholders
 
-- **WhatsApp number:** set to the client's phone (+506 8716 3308), to be confirmed as its WhatsApp.
+- **WhatsApp number:** set to the client's phone (+506 8716 3308), to be confirmed as its WhatsApp; the client can change it in the panel.
 - **Content in brackets:** rental prices, the Jeep's year, mileage and price, import time, hours, reviews, and the FAQ answers that need the client (requirements, insurance, warranty) (`[PRECIO]`, `[X semanas]` and so on).
 - **Photos:** the showroom cars are Wikimedia Commons side views of the same models, recoloured to the client's paint where needed, labelled "Model photo" and credited; the client's own photos (plates softened) are in each car's viewer, the fleet photo and the import strip. The hero film is AI-generated, the version the client chose.
 - **Logo:** cut from the logo raster (plus a reversed version for the header over the film) until the vector logo arrives.

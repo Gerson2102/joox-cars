@@ -1,6 +1,7 @@
-// Images for the showrooms, the photo viewer and the import strip. Copy (brand,
-// model, specs, photo captions) lives in messages/es.json and messages/en.json,
-// keyed by the same slugs and photo ids.
+// Images the client doesn't edit: the showroom cutouts, the fleet photo, the service
+// photos and the import strip. The cars themselves (copy and the client's own photos)
+// are edited in the CMS and live in content/rental/ and content/sales/; see
+// src/lib/content.ts. The captions below are in messages/*.json under `photos`.
 //
 // The showroom shows each car in side profile, like a configurator: a Wikimedia
 // Commons photo of the same model and generation, cut out by
@@ -8,28 +9,20 @@
 // that colour exists ("adjusted"). The page labels them model photos and credits
 // them; the client's own photos of each car open from "See photos". Those are
 // prepared by scripts/media/photos.py (plates softened, metadata removed).
+//
+// A car added in the CMS has no cutout until one is made for it: the showroom then
+// stands its first photo in a frame instead (see CarCarousel).
 
 export type Img = { src: string; width: number; height: number };
 export type Credit = { author: string; license: string; page: string; adjusted?: boolean };
-/** A car in the showroom: its side-profile model photo and the client's own photos of it. */
-type Car = { cutout: Img & { credit?: Credit }; photos: PhotoId[] };
+export type Cutout = Img & { credit?: Credit };
 
 const commons = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;
 
 export const PHOTOS = {
   "fleet-grass": { src: "/media/photos/fleet-grass.webp", width: 1280, height: 960 },
   "fleet-row": { src: "/media/photos/fleet-row.webp", width: 1280, height: 960 },
-  "fleet-doors": { src: "/media/photos/fleet-doors.webp", width: 960, height: 1280 },
-  "outlander-sport-2020": { src: "/media/photos/outlander-sport-2020.webp", width: 960, height: 1280 },
-  "outlander-sport-2015": { src: "/media/photos/outlander-sport-2015.webp", width: 960, height: 1280 },
-  "sportage-2020": { src: "/media/photos/sportage-2020.webp", width: 960, height: 1280 },
   "wrangler-front": { src: "/media/photos/wrangler-front.webp", width: 960, height: 1280 },
-  "wrangler-rear": { src: "/media/photos/wrangler-rear.webp", width: 960, height: 1280 },
-  "wrangler-key": { src: "/media/photos/wrangler-key.webp", width: 960, height: 1280 },
-  "wrangler-cabin": { src: "/media/photos/wrangler-cabin.webp", width: 960, height: 1280 },
-  "wrangler-back": { src: "/media/photos/wrangler-back.webp", width: 960, height: 1280 },
-  "outlander-2016": { src: "/media/photos/outlander-2016.webp", width: 720, height: 1280 },
-  "outlander-2016-front": { src: "/media/photos/outlander-2016-front.webp", width: 963, height: 1280 },
   "import-lot": { src: "/media/photos/import-lot.webp", width: 960, height: 1280 },
   "import-rubicon": { src: "/media/photos/import-rubicon.webp", width: 960, height: 1280 },
   "import-tow": { src: "/media/photos/import-tow.webp", width: 1280, height: 960 },
@@ -44,56 +37,41 @@ export const PHOTOS = {
 
 export type PhotoId = keyof typeof PHOTOS;
 
-/** The three rental cars together, shown with every rental car's own photos. */
-const TOGETHER: PhotoId[] = ["fleet-grass", "fleet-row", "fleet-doors"];
-
 /** The white Outlander is for rent and for sale: one model photo, facing each showroom's way. */
-const OUTLANDER_2016 = {
-  credit: { author: "Retired electrician", license: "CC0", page: commons("Moscow, Mitsubishi Outlander (third generation, 2018) Aug 2025 01.jpg") },
-  photos: ["outlander-2016", "outlander-2016-front"] as PhotoId[],
+const OUTLANDER_2016: Credit = {
+  author: "Retired electrician",
+  license: "CC0",
+  page: commons("Moscow, Mitsubishi Outlander (third generation, 2018) Aug 2025 01.jpg"),
 };
 
-export const FLEET: Record<string, Car> = {
-  "mitsubishi-outlander-sport-2020": {
-    cutout: {
+/** Each showroom's cutouts, by the car's file name in content/rental/ or content/sales/. */
+export const CUTOUTS: Record<"rental" | "sales", Record<string, Cutout>> = {
+  rental: {
+    "mitsubishi-outlander-sport-2020": {
       src: "/media/fleet/mitsubishi-outlander-sport-2020-side-b1e0b8e1.webp", width: 1760, height: 671,
       credit: { author: "RL GNZLZ", license: "CC BY-SA 4.0", page: commons("Mitsubishi ASX 1.6 GLS 2024.jpg"), adjusted: true },
     },
-    photos: ["outlander-sport-2020", ...TOGETHER],
-  },
-  "kia-sportage-2020": {
-    cutout: {
+    "kia-sportage-2020": {
       src: "/media/fleet/kia-sportage-2020-side-c62a84bc.webp", width: 1760, height: 658,
       credit: { author: "Retired electrician", license: "CC0", page: commons("Moscow, Kia Sportage, May 2026 01.jpg"), adjusted: true },
     },
-    photos: ["sportage-2020", ...TOGETHER],
-  },
-  "mitsubishi-outlander-sport-2015": {
-    cutout: {
+    "mitsubishi-outlander-sport-2015": {
       src: "/media/fleet/mitsubishi-outlander-sport-2015-side-6399850e.webp", width: 1760, height: 662,
       credit: { author: "ГП", license: "CC BY-SA 4.0", page: commons("Mitsubishi ASX(1).jpg"), adjusted: true },
     },
-    photos: ["outlander-sport-2015", ...TOGETHER],
+    "mitsubishi-outlander-2016": { src: "/media/fleet/mitsubishi-outlander-2016-side-dc7e6d89.webp", width: 1760, height: 675, credit: OUTLANDER_2016 },
   },
-  "jeep-wrangler-unlimited": {
-    cutout: {
+  sales: {
+    "jeep-wrangler-unlimited": {
       src: "/media/fleet/jeep-wrangler-unlimited-side-14ffba6d.webp", width: 1760, height: 735,
       credit: { author: "Albert Jankowski", license: "Public domain", page: commons("Cars 003.JPG") },
     },
-    photos: ["wrangler-front", "wrangler-rear", "wrangler-back", "wrangler-cabin", "wrangler-key"],
-  },
-  "mitsubishi-outlander-2016": {
-    cutout: { src: "/media/fleet/mitsubishi-outlander-2016-side-dc7e6d89.webp", width: 1760, height: 675, credit: OUTLANDER_2016.credit },
-    photos: OUTLANDER_2016.photos,
-  },
-  "mitsubishi-outlander-2016-sale": {
-    cutout: { src: "/media/fleet/mitsubishi-outlander-2016-sale-side-11a483b8.webp", width: 1760, height: 675, credit: OUTLANDER_2016.credit },
-    photos: OUTLANDER_2016.photos,
+    "mitsubishi-outlander-2016": { src: "/media/fleet/mitsubishi-outlander-2016-sale-side-11a483b8.webp", width: 1760, height: 675, credit: OUTLANDER_2016 },
   },
 };
 
 /** The rental band closes on the three cars together at home in Guápiles. */
-export const FLEET_TOGETHER: PhotoId = "fleet-grass";
+export const FLEET_TOGETHER = "fleet-grass" satisfies PhotoId;
 
 /** The services overview: each service's own photo, whole on wide screens (rental's is landscape, the others
  *  portrait). Parts has none yet; its tile is a yellow panel. */
@@ -104,7 +82,7 @@ export const SERVICE_PHOTOS: Partial<Record<"rental" | "sales" | "import" | "par
 };
 
 /** The import strip, in order. */
-export const IMPORTS: PhotoId[] = [
+export const IMPORTS = [
   "import-lot",
   "import-rubicon",
   "import-tow",
@@ -115,4 +93,4 @@ export const IMPORTS: PhotoId[] = [
   "import-containers",
   "import-rebel",
   "import-keys",
-];
+] as const satisfies readonly PhotoId[];
