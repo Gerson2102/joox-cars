@@ -82,10 +82,9 @@ In the project: the logo (raster), the name, the tagline, the four services, and
 
 Still missing; use placeholders and never make anything up:
 
-- Real footage for the hero film
 - The rental cars' drive (4x2 or 4x4)
 
-We have no testimonials, tax figures or parts catalogue. Don't create any.
+The three reviews are the client's own customers' words. Never add invented ones. We have no tax figures or parts catalogue; don't create any.
 
 ## Product Principles
 
