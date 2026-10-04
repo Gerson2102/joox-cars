@@ -342,7 +342,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 <div>
                   <dt className="map-label">{t.contact.phone}</dt>
                   <dd>
-                    <a href={PHONE.href}>{PHONE.label}</a>
+                    <a href={wa(t.whatsapp.general)} target="_blank" rel="noopener noreferrer">
+                      {PHONE.label}
+                    </a>
                   </dd>
                 </div>
                 <div>
