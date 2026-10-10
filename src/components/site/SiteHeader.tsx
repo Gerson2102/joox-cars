@@ -4,22 +4,25 @@ import Image from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { otherLocale, type Dictionary, type Locale } from "@/app/[lang]/dictionaries";
-import { NAV } from "@/lib/sections";
+import { NAV, navHref } from "@/lib/sections";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 import { Btn } from "./Btn";
-import { LangLink } from "./LangLink";
+import { LangLink, useService } from "./LangLink";
 import styles from "./header.module.css";
 
 const noop = () => () => {};
 
 /**
- * Over the hero film the header is transparent (reversed logo, white type).
- * Past the film it becomes a floating white capsule, and a yellow pill slides
- * under the link of the section being read. WhatsApp is one tap away everywhere.
+ * Over the homepage's hero film the header is transparent (reversed logo, white
+ * type). Past the film, and on the service pages, it is a floating white capsule,
+ * and a yellow pill slides under the link of the section being read. WhatsApp is
+ * one tap away everywhere.
  */
 export function SiteHeader({ t, lang, whatsappHref, tagline }: { t: Dictionary["nav"]; lang: Locale; whatsappHref: string; tagline: string[] }) {
+  const service = useService(lang);
   const [open, setOpen] = useState(false);
-  const [overFilm, setOverFilm] = useState(true);
+  // Only the homepage opens on the film.
+  const [overFilm, setOverFilm] = useState(!service);
   const [active, setActive] = useState<string | null>(null);
   const [pill, setPill] = useState<{ x: number; w: number } | null>(null);
   const mounted = useSyncExternalStore(noop, () => true, () => false);
@@ -128,7 +131,7 @@ export function SiteHeader({ t, lang, whatsappHref, tagline }: { t: Dictionary["
             />
             {NAV.map((k) => (
               <li key={k}>
-                <a href={`#${k}`} data-key={k} aria-current={onPaper && active === k ? "location" : undefined}>
+                <a href={navHref(lang, k)} data-key={k} aria-current={onPaper && active === k ? "location" : undefined}>
                   <span className={styles.roll}>
                     <span>{t.links[k]}</span>
                     <span aria-hidden="true">{t.links[k]}</span>
@@ -179,7 +182,7 @@ export function SiteHeader({ t, lang, whatsappHref, tagline }: { t: Dictionary["
                 <ul>
                   {NAV.map((k, i) => (
                     <li key={k} style={{ ["--i" as string]: i }}>
-                      <a href={`#${k}`} onClick={() => setOpen(false)}>
+                      <a href={navHref(lang, k)} onClick={() => setOpen(false)}>
                         {t.links[k]}
                       </a>
                     </li>

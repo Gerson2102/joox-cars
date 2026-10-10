@@ -116,7 +116,7 @@
 
 .roll > span {
   display: block;
-  transition: transform 0.5s var(--ease-out);
+  transition: transform var(--hover-time) var(--ease-hover);
 }
 
 @media (hover: hover) {

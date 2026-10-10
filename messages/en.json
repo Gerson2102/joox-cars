@@ -1,7 +1,30 @@
 {
   "meta": {
-    "title": "Car Rental in Guápiles, Costa Rica & US Import | JOOX CARS",
-    "description": "Car rental and sales in Guápiles, Costa Rica. We import vehicles from the US, and spare parts from Japan, China, Europe and the US."
+    "title": "JOOX CARS | Car Rental and US Import in Guápiles, Costa Rica",
+    "description": "JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica. We also source spare parts from Japan, China, Europe and the US.",
+    "priceRange": "Rental from ₡40,000 per day"
+  },
+  "pages": {
+    "rental": {
+      "title": "Car Rental in Guápiles, Costa Rica | JOOX CARS",
+      "description": "Automatic SUV rental in Guápiles from ₡40,000 per day, with free delivery and pick-up in central Guápiles, Jiménez and Guácimo. Book on WhatsApp.",
+      "h1": "Car rental in Guápiles, Costa Rica"
+    },
+    "sales": {
+      "title": "Vehicles for Sale in Guápiles, Costa Rica | JOOX CARS",
+      "description": "Local and imported vehicles for sale in Guápiles, Costa Rica, with the warranty required by law. Ask about any of them on WhatsApp.",
+      "h1": "Vehicles for sale in Guápiles"
+    },
+    "import": {
+      "title": "Import a Car from the US to Costa Rica | JOOX CARS",
+      "description": "We import your vehicle from the US: search, purchase, transport, DEKRA inspection, taxes and delivery in Costa Rica in about a month and a half. JOOX fee: $1000.",
+      "h1": "Vehicle import from the US to Costa Rica"
+    },
+    "parts": {
+      "title": "Imported Spare Parts in Guápiles, Costa Rica | JOOX CARS",
+      "description": "We source spare parts from Japan, China, Europe and the US, including for makes like BMW. Platform price plus 25%, plus shipping by weight. Ask on WhatsApp.",
+      "h1": "Imported spare parts for your vehicle"
+    }
   },
   "nav": {
     "home": "JOOX CARS, home",
@@ -25,7 +48,7 @@
   },
   "hero": {
     "title": "Your vehicle. Our experience.",
-    "sub": "From Guápiles, Costa Rica, JOOX CARS rents and sells vehicles, imports from the US and sources spare parts from different platforms.",
+    "sub": "JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica. We also find your spare parts.",
     "primary": "See vehicles",
     "secondary": "Get an import quote"
   },
@@ -245,6 +268,7 @@
       "eternal",
       "purpose"
     ],
+    "lead": "JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica. We also source spare parts from Japan, China, Europe and the US.",
     "mission": {
       "title": "Mission",
       "body": "To provide complete automotive solutions that make it easier to buy, import, sell and rent vehicles, and to find and import spare parts, standing by our customers at every stage with advice, transparency and support."

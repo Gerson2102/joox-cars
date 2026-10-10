@@ -73,7 +73,8 @@ Premium. The website itself is the sales pitch, so it should feel like a high-en
 
 In the project: the logo (raster), the name, the tagline, the four services, and (from 2026-09-25):
 
-- **Contact:** phone 8716-3308 (confirmed as the business WhatsApp number), joox.joy.1813@gmail.com, Guápiles, Pococí, Limón; Facebook, Instagram (@joox6287) and TikTok (@joox7731).
+- **Contact:** phone 8716-3308 (confirmed as the business WhatsApp number), joox.joy.1813@gmail.com, Guápiles, Pococí, Limón; open Monday to Saturday, 9 a.m. to 6 p.m.; Facebook, Instagram (@joox6287) and TikTok (@joox7731).
+- **Prices the client gave:** rental from ₡40,000 a day; JOOX's import fee $1000; parts at the platform's price plus 25%, plus shipping by weight.
 - **Track record:** 20 cars imported, 12 sold.
 - **Rental fleet (four cars, all automatic):** Mitsubishi Outlander Sport 2015 black (2000 cc), Mitsubishi Outlander Sport 2020 orange (2000 cc), Kia Sportage 2020 black (2400 cc), and a white Mitsubishi Outlander 2016 (2400 cc, seven seats, coming soon, also for sale). The client wrote "Outlander"; the photos show the compact Outlander Sport, confirmed by the user.
 - **For sale:** a black Jeep Wrangler Unlimited 2012 (automatic, 4x4, 175,000 km) and the white Outlander 2016 above; no prices are shown.

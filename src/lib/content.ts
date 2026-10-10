@@ -13,6 +13,7 @@ import { cache } from "react";
 import sharp from "sharp";
 import type { Locale } from "@/app/[lang]/dictionaries";
 import type { Img } from "./fleet";
+import type { Service } from "./sections";
 
 const CONTENT = join(process.cwd(), "content");
 const PUBLIC = join(process.cwd(), "public");
@@ -166,15 +167,15 @@ export const getImport = cache((lang: Locale) => {
 // Both are one list in the CMS for the two languages: the items are added, removed and
 // ordered in Spanish, and their texts are translated beside it.
 
-type Faq = { q: string; a: string };
+type Faq = { q: string; a: string; service?: Service };
 
 export const getFaq = cache((lang: Locale): Faq[] => {
   const data = read<{ items: Faq[] }>("faq.json");
   const en = lang === "en" ? data.en?.items : undefined;
-  return data.es.items.map((f, n) => ({ q: en?.[n]?.q || f.q, a: en?.[n]?.a || f.a }));
+  return data.es.items.map((f, n) => ({ ...f, q: en?.[n]?.q || f.q, a: en?.[n]?.a || f.a }));
 });
 
-export type Review = { name: string; service: "rental" | "sales" | "import" | "parts"; quote: string };
+export type Review = { name: string; service: Service; quote: string };
 
 export const getReviews = cache((lang: Locale): Review[] => {
   const data = read<{ items: Review[] }>("reviews.json");

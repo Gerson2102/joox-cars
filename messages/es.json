@@ -1,7 +1,30 @@
 {
   "meta": {
-    "title": "Renta de carros en Guápiles e importación | JOOX CARS",
-    "description": "Renta y venta de vehículos en Guápiles, Limón. Importamos vehículos desde EE. UU. y repuestos desde Japón, China, Europa y EE. UU."
+    "title": "JOOX CARS | Renta e importación de vehículos en Guápiles",
+    "description": "JOOX CARS es una empresa de renta, venta e importación de vehículos en Guápiles, Costa Rica. También conseguimos repuestos de Japón, China, Europa y EE. UU.",
+    "priceRange": "Renta desde ₡40.000 por día"
+  },
+  "pages": {
+    "rental": {
+      "title": "Renta de carros en Guápiles, Costa Rica | JOOX CARS",
+      "description": "Renta de SUV automáticos en Guápiles desde ₡40.000 por día, con entrega y recogida sin costo en Guápiles centro, Jiménez y Guácimo. Reservá por WhatsApp.",
+      "h1": "Renta de carros en Guápiles"
+    },
+    "sales": {
+      "title": "Venta de vehículos en Guápiles, Costa Rica | JOOX CARS",
+      "description": "Vehículos nacionales e importados en venta en Guápiles, Costa Rica, con la garantía que establece la ley. Consultá por cualquiera de ellos por WhatsApp.",
+      "h1": "Venta de vehículos en Guápiles"
+    },
+    "import": {
+      "title": "Importar un carro de EE. UU. a Costa Rica | JOOX CARS",
+      "description": "Importamos tu vehículo desde EE. UU.: búsqueda, compra, transporte, inspección DEKRA, impuestos y entrega en Costa Rica en mes y medio. Comisión JOOX: $1000.",
+      "h1": "Importación de vehículos desde EE. UU. a Costa Rica"
+    },
+    "parts": {
+      "title": "Repuestos importados en Guápiles, Costa Rica | JOOX CARS",
+      "description": "Conseguimos repuestos en Japón, China, Europa y EE. UU., también para marcas como BMW. Precio en la plataforma más 25% y envío según el peso. Pedilo por WhatsApp.",
+      "h1": "Repuestos importados para tu vehículo"
+    }
   },
   "nav": {
     "home": "JOOX CARS, inicio",
@@ -25,7 +48,7 @@
   },
   "hero": {
     "title": "Tu vehículo. Nuestra experiencia.",
-    "sub": "Desde Guápiles, Limón, JOOX CARS renta, vende vehículos, importa desde EE. UU. y consigue repuestos de diferentes plataformas.",
+    "sub": "JOOX CARS es una empresa de renta, venta e importación de vehículos en Guápiles, Costa Rica. También conseguimos tus repuestos.",
     "primary": "Ver vehículos",
     "secondary": "Cotizar importación"
   },
@@ -245,6 +268,7 @@
       "eternal",
       "purpose"
     ],
+    "lead": "JOOX CARS es una empresa de renta, venta e importación de vehículos en Guápiles, Costa Rica. También conseguimos repuestos de Japón, China, Europa y EE. UU.",
     "mission": {
       "title": "Misión",
       "body": "Brindar soluciones automotrices integrales que faciliten la compra, importación, venta y renta de vehículos, así como la búsqueda e importación de repuestos, acompañando a nuestros clientes en cada etapa con asesoría, transparencia y respaldo."

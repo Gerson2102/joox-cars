@@ -194,7 +194,7 @@ collections:
             widget: string
             i18n: duplicate
             pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Revisá el correo"]
-          - { name: hours, label: Horario, widget: string, i18n: true, required: [es], hint: "Ej.: 9:00 a. m. a 6:00 p. m." }
+          - { name: hours, label: Horario, widget: string, i18n: true, required: [es], hint: "Ej.: Lunes a sábado, 9:00 a. m. a 6:00 p. m." }
           - name: facebook
             label: Facebook (enlace completo)
             widget: string
@@ -223,7 +223,7 @@ collections:
         i18n: true
         fields:
           - { name: time, label: Tiempo aproximado, widget: string, i18n: true, required: [es], hint: "Ej.: Mes y medio" }
-          - { name: fee, label: Comisión JOOX, widget: string, i18n: duplicate, hint: "Ej.: $500" }
+          - { name: fee, label: Comisión JOOX, widget: string, i18n: duplicate, hint: "Ej.: $1000" }
 
       - name: faq
         label: Preguntas frecuentes
@@ -240,6 +240,17 @@ collections:
             fields:
               - { name: q, label: Pregunta, widget: string, i18n: true, required: [es] }
               - { name: a, label: Respuesta, widget: text, i18n: true, required: [es] }
+              - name: service
+                label: Página
+                widget: select
+                i18n: duplicate
+                required: false
+                hint: "Además de en el inicio, la pregunta sale en la página de este servicio. Si la dejás vacía, solo sale en el inicio."
+                options:
+                  - { label: Renta, value: rental }
+                  - { label: Venta, value: sales }
+                  - { label: Importación, value: import }
+                  - { label: Repuestos, value: parts }
 
       - name: reviews
         label: Reseñas

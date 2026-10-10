@@ -17,10 +17,14 @@ client at /admin ──save──▶ commit to GitHub (content/*.json, public/me
 | Carros en venta | `content/sales/<car>.json` | The sales showroom (white band) |
 | Datos del negocio › Contacto y redes | `content/contact.json` | Phone, WhatsApp number (every WhatsApp button), email, hours, Facebook / Instagram / TikTok; also the structured data |
 | Datos del negocio › Importación | `content/import.json` | The approximate time and the JOOX fee under the import steps |
-| Datos del negocio › Preguntas frecuentes | `content/faq.json` | The FAQ (and its structured data) |
+| Datos del negocio › Preguntas frecuentes | `content/faq.json` | The FAQ on the homepage and on the service pages (and its structured data) |
 | Datos del negocio › Reseñas | `content/reviews.json` | The reviews |
 
 For each car the client sets the make, model, year, type, colour, engine or mileage, gearbox, drive, seats and photos. Two more fields are optional: a bold notice line ("En preparación: disponible pronto."), and a **Posición** number that sets its place in the showroom. **Mostrar en el sitio** hides a car without deleting it.
+
+The cars, contact details, hours and FAQ show on the service pages too (`/es/renta`, `/es/venta`, `/es/importacion`, `/es/repuestos`), not only on the homepage. Each FAQ question has an optional **Página** field (Renta, Venta, Importación or Repuestos): the question then also shows on that service's page. Every question always shows on the homepage; one with no page shows only there.
+
+**Hours.** Search engines read the hours from `HOURS` in `src/lib/contact.ts`, not from the panel. If the client changes the hours text, update `HOURS` to match (and the Google Business Profile hours).
 
 Everything else stays in code: the hero, About, the import steps, button labels and the layout (`messages/*.json`, components). Prices are not a field: as DESIGN.md says, rates change with the season and cars are asked about on WhatsApp.
 
