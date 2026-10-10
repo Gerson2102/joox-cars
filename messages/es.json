@@ -79,7 +79,12 @@
     "of": "de",
     "show": "Ver",
     "photos": "Ver fotos",
-    "modelNote": "Foto de referencia del modelo. Las fotos del carro, en «Ver fotos»."
+    "modelNote": "Foto de referencia del modelo. Las fotos del carro, en «Ver fotos».",
+    "gearbox": {
+      "automatic": "Automática",
+      "manual": "Manual"
+    },
+    "ref": "{brand} {model} {year} {color}"
   },
   "viewer": {
     "close": "Cerrar",
@@ -101,57 +106,6 @@
     },
     "rate": "Tarifa según la temporada",
     "reserve": "Reservar por WhatsApp",
-    "cars": [
-      {
-        "slug": "mitsubishi-outlander-sport-2020",
-        "brand": "Mitsubishi",
-        "model": "Outlander Sport",
-        "year": "2020",
-        "body": "SUV",
-        "color": "Naranja",
-        "engine": "2000 cc",
-        "gearbox": "Automática",
-        "seats": "5",
-        "ref": "Mitsubishi Outlander Sport 2020 naranja"
-      },
-      {
-        "slug": "kia-sportage-2020",
-        "brand": "Kia",
-        "model": "Sportage",
-        "year": "2020",
-        "body": "SUV",
-        "color": "Negro",
-        "engine": "2400 cc",
-        "gearbox": "Automática",
-        "seats": "5",
-        "ref": "Kia Sportage 2020 negro"
-      },
-      {
-        "slug": "mitsubishi-outlander-sport-2015",
-        "brand": "Mitsubishi",
-        "model": "Outlander Sport",
-        "year": "2015",
-        "body": "SUV",
-        "color": "Negro",
-        "engine": "2000 cc",
-        "gearbox": "Automática",
-        "seats": "5",
-        "ref": "Mitsubishi Outlander Sport 2015 negro"
-      },
-      {
-        "slug": "mitsubishi-outlander-2016",
-        "brand": "Mitsubishi",
-        "model": "Outlander",
-        "year": "2016",
-        "body": "SUV",
-        "color": "Blanco",
-        "engine": "2400 cc",
-        "gearbox": "Automática",
-        "seats": "7",
-        "ref": "Mitsubishi Outlander 2016 blanco",
-        "status": "En preparación: disponible pronto. También está en venta."
-      }
-    ],
     "whatsapp": "Hola, quiero rentar el {car}."
   },
   "import": {
@@ -192,9 +146,7 @@
       }
     ],
     "time": "Tiempo aproximado",
-    "timeValue": "Mes y medio",
     "fee": "Comisión JOOX",
-    "feeValue": "$1000",
     "quote": "Cotizar importación",
     "whatsapp": "Hola, quiero cotizar la importación de un vehículo.",
     "open": "Ver los 8 pasos",
@@ -308,37 +260,6 @@
       "km": "km",
       "mi": "millas"
     },
-    "cars": [
-      {
-        "slug": "jeep-wrangler-unlimited",
-        "brand": "Jeep",
-        "model": "Wrangler Unlimited",
-        "year": "2012",
-        "mileage": 175000,
-        "unit": "km",
-        "body": "SUV de 4 puertas",
-        "color": "Negro",
-        "gearbox": "Automática",
-        "drive": "4x4",
-        "seats": "5",
-        "ref": "Jeep Wrangler Unlimited 2012 negro"
-      },
-      {
-        "slug": "mitsubishi-outlander-2016-sale",
-        "brand": "Mitsubishi",
-        "model": "Outlander",
-        "year": "2016",
-        "mileage": 85000,
-        "unit": "mi",
-        "body": "SUV",
-        "color": "Blanco",
-        "gearbox": "Automática",
-        "drive": "4x4",
-        "seats": "7",
-        "ref": "Mitsubishi Outlander 2016 blanco",
-        "status": "En preparación: disponible pronto. También está en renta."
-      }
-    ],
     "whatsapp": "Hola, me interesa el {car}."
   },
   "about": {
@@ -373,76 +294,10 @@
   },
   "reviews": {
     "title": "Lo que dicen nuestros clientes",
-    "lead": "Renta, importación y repuestos, en palabras de nuestros clientes.",
-    "items": [
-      {
-        "quote": "Alquilé un carro para pasear una semana con la familia y todo salió de lo mejor. Me lo entregaron en Guápiles sin costo extra, limpio y en excelente estado. El proceso fue rapidísimo y todo muy claro. Súper recomendado, pura vida.",
-        "who": "Kevin Solano · Renta"
-      },
-      {
-        "quote": "Diay, yo andaba con la duda de importar mi pickup por mi cuenta y ellos se encargaron de todo: trámites, aduana e inscripción. Me fueron avisando en cada paso y el carro llegó tal cual me lo mostraron. Gente seria y honesta, mae, buena nota.",
-        "who": "Marco Arias · Importación"
-      },
-      {
-        "quote": "Necesitaba unas pastillas y un alternador para mi Hilux y me los consiguieron al toque, a buen precio. Se nota que saben del tema y me aconsejaron bien. Ya es la tercera vez que les compro, tuanis el servicio.",
-        "who": "Andrea Villalobos · Repuestos"
-      }
-    ]
+    "lead": "Renta, importación y repuestos, en palabras de nuestros clientes."
   },
   "faq": {
     "title": "Preguntas frecuentes",
-    "items": [
-      {
-        "service": "rental",
-        "q": "¿Qué necesito para rentar un carro en Guápiles?",
-        "a": "Una copia de tu cédula (o tu pasaporte, si nos visitás desde otro país) y tu licencia de conducir vigente. Para reservar pedimos un adelanto del 20%; el depósito de garantía se hace con tarjeta de crédito y el resto se paga por SINPE Móvil o en efectivo."
-      },
-      {
-        "service": "rental",
-        "q": "¿Cuánto cuesta alquilar un vehículo?",
-        "a": "Nuestras tarifas parten desde ₡40.000 por día. Sin embargo, el precio puede mejorar según la cantidad de días de alquiler. Consultá por nuestras tarifas especiales para alquileres de varios días y encontrá la opción que mejor se adapte a tus necesidades. Si querés más información o detalles, escribinos por WhatsApp."
-      },
-      {
-        "service": "rental",
-        "q": "¿Dónde entregan el carro de renta?",
-        "a": "Lo entregamos y lo recogemos sin costo adicional en Guápiles centro, Jiménez o Guácimo."
-      },
-      {
-        "service": "rental",
-        "q": "¿Qué incluye el seguro?",
-        "a": "Toda renta incluye dos coberturas: SLI, el seguro de responsabilidad civil por daños a terceros, con un deducible de ₡150.000, y LDW, que cubre el carro en caso de daño, robo o accidente, con un deducible de ₡500.000 (no cubre vuelco ni accesorios). Ninguna cubre daños por manejar ebrio, bajo efectos de drogas o de forma temeraria, y ante cualquier accidente hay que avisarnos de inmediato a nosotros y a la aseguradora."
-      },
-      {
-        "service": "import",
-        "q": "¿Cuánto tarda una importación?",
-        "a": "Alrededor de mes y medio desde la compra hasta la entrega en Costa Rica. Puede ser menos: depende de cuándo embarque la naviera."
-      },
-      {
-        "service": "import",
-        "q": "¿Cuánto cuesta importar un vehículo desde Estados Unidos?",
-        "a": "Depende del valor del vehículo, su año y modelo, y de los gastos de transporte, impuestos y nacionalización. Analizamos cada vehículo y te damos una estimación personalizada antes de comprarlo: la grúa depende de dónde esté el vehículo, el barco cobra según sus medidas, el bodegaje según el tiempo en el almacén y los impuestos según las características del vehículo."
-      },
-      {
-        "service": "import",
-        "q": "¿Cuál es la comisión de JOOX por importar un vehículo?",
-        "a": "Nuestra comisión es de $1000. Incluye la selección del vehículo, la asesoría durante la compra, el acompañamiento y la gestión en Estados Unidos, el seguimiento del transporte y el acompañamiento hasta su llegada y entrega en Costa Rica."
-      },
-      {
-        "service": "parts",
-        "q": "¿No encontrás el repuesto que necesita tu vehículo?",
-        "a": "Nosotros lo buscamos por vos. Trabajamos con proveedores en Japón, China, Europa y Estados Unidos y buscamos cada repuesto según la marca, el modelo y el origen de tu vehículo, también para marcas como BMW, sobre todo los difíciles de encontrar o que ya no se consiguen en Costa Rica. Decinos la marca, el modelo, el año y el repuesto, y te confirmamos disponibilidad y precio por WhatsApp."
-      },
-      {
-        "service": "parts",
-        "q": "¿Cuánto cuesta importar un repuesto?",
-        "a": "El precio del repuesto en la plataforma más un 25%, y el envío a Costa Rica, que la empresa de transporte cobra según el peso."
-      },
-      {
-        "service": "sales",
-        "q": "¿Los vehículos en venta tienen garantía?",
-        "a": "Sí. Todos nuestros vehículos cuentan con la garantía que establece la legislación costarricense vigente, y las condiciones de cobertura, duración y procedimiento se detallan por escrito al formalizar la compra. Creemos que la transparencia y la confianza son fundamentales, por eso te damos información clara sobre cada vehículo para que decidas con tranquilidad."
-      }
-    ],
     "more": "¿No encontrás tu respuesta?",
     "ask": "Escribir por WhatsApp",
     "lead": "Lo que más nos preguntan sobre renta, importación, repuestos y venta.",
@@ -457,7 +312,6 @@
     "address": "Dirección",
     "addressValue": "Guápiles, Pococí, Limón",
     "hours": "Horario",
-    "hoursValue": "Lunes a sábado, 9:00 a. m. a 6:00 p. m.",
     "social": "Redes",
     "map": "Ubicación",
     "mapPlace": "Guápiles",
@@ -478,18 +332,6 @@
   },
   "photos": {
     "fleet-grass": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles",
-    "fleet-row": "Los tres carros de renta, de frente",
-    "fleet-doors": "Los tres carros de renta, con las puertas abiertas",
-    "outlander-sport-2020": "Mitsubishi Outlander Sport 2020 naranja",
-    "outlander-sport-2015": "Mitsubishi Outlander Sport 2015 negro",
-    "sportage-2020": "Kia Sportage 2020 negro",
-    "wrangler-front": "De frente",
-    "wrangler-rear": "Desde atrás",
-    "wrangler-back": "Revisando por dentro",
-    "wrangler-cabin": "La cabina",
-    "wrangler-key": "Con la llave en la mano",
-    "outlander-2016": "Mitsubishi Outlander 2016 blanco",
-    "outlander-2016-front": "De frente",
     "import-lot": "Ford Raptor y F-150",
     "import-rubicon": "Jeep Wrangler Rubicon",
     "import-tow": "En grúa, Houston (Texas)",

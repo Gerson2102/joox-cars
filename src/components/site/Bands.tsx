@@ -1,8 +1,9 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import type { Dictionary, Locale } from "@/app/[lang]/dictionaries";
-import { EMAIL, MAP_URL, PHONE, SOCIAL, mapEmbed } from "@/lib/contact";
-import { FLEET, FLEET_TOGETHER, IMPORTS, PHOTOS, type PhotoId } from "@/lib/fleet";
+import { MAP_URL, mapEmbed } from "@/lib/contact";
+import { getCars, getContact, getImport, type Car, type Kind } from "@/lib/content";
+import { CUTOUTS, FLEET_TOGETHER, IMPORTS, PHOTOS, type PhotoId } from "@/lib/fleet";
 import { pagePath } from "@/lib/sections";
 import { wa } from "@/lib/whatsapp";
 import { ExternalIcon } from "@/components/icons";
@@ -22,15 +23,35 @@ type Tone = "white" | "yellow" | "black";
 type ServiceBandProps = { t: Dictionary; lang: Locale; page?: boolean };
 
 /** A photo with its caption (also its alt text) in the page's language. */
-const photo = (t: Dictionary, id: PhotoId) => ({ ...PHOTOS[id], caption: t.photos[id] });
+const photo = (t: Dictionary, id: PhotoId & keyof Dictionary["photos"]) => ({ ...PHOTOS[id], caption: t.photos[id] });
 
-type CarCopy = { slug: string; brand: string; model: string; year: string; body: string; ref: string };
-
-/** A dictionary car joined with its images; a car without images is left out rather than breaking the page. */
-function slides<C extends CarCopy>(t: Dictionary, cars: C[], message: string, specs: (c: C) => CarSlide["specs"]): CarSlide[] {
+/** A car from the CMS joined with its showroom cutout, if one has been made; a car with neither a cutout nor
+ *  a photo is left out rather than breaking the page. Its WhatsApp message names it ("…the orange 2020
+ *  Mitsubishi Outlander Sport"), and a spec without a value is left out. */
+function slides(t: Dictionary, kind: Kind, cars: Car[], whatsapp: string, specs: (c: Car) => { label: string; value?: string }[]): CarSlide[] {
+  const message = kind === "rental" ? t.rental.whatsapp : t.sales.whatsapp;
   return cars.flatMap((c) => {
-    const f = FLEET[c.slug];
-    return f ? [{ ...c, specs: specs(c), message: message.replace("{car}", c.ref), cutout: f.cutout, photos: f.photos.map((id) => photo(t, id)) }] : [];
+    const cutout = CUTOUTS[kind][c.slug];
+    if (!cutout && !c.photos.length) return [];
+    const ref = t.carousel.ref
+      .replace("{brand}", c.brand)
+      .replace("{model}", c.model)
+      .replace("{year}", c.year)
+      .replace("{color}", c.color.toLowerCase());
+    return [
+      {
+        slug: c.slug,
+        brand: c.brand,
+        model: c.model,
+        year: c.year,
+        body: c.body,
+        status: c.status,
+        specs: specs(c).flatMap((s) => (s.value ? [{ label: s.label, value: s.value }] : [])),
+        whatsapp: wa(whatsapp, message.replace("{car}", ref)),
+        cutout,
+        photos: c.photos,
+      },
+    ];
   });
 }
 
@@ -83,25 +104,29 @@ export function Band({
 }
 
 /** Yellow: the rental showroom, then the whole fleet together at home. */
-export function RentalBand({ t, page }: ServiceBandProps) {
+export async function RentalBand({ t, lang, page }: ServiceBandProps) {
   const r = t.rental.specs;
+  const cars = slides(t, "rental", await getCars("rental", lang), getContact(lang).whatsapp, (c) => [
+    { label: r.year, value: c.year },
+    { label: r.engine, value: c.engine },
+    { label: r.gearbox, value: t.carousel.gearbox[c.gearbox] },
+    { label: r.seats, value: c.seats },
+    { label: r.color, value: c.color },
+  ]);
   return (
     <Band id="rental" tone="yellow" title={page ? t.pages.rental.h1 : t.rental.title} lead={t.rental.lead} page={page} className={b.showroomBand}>
       <div className={b.showroom}>
-        <CarCarousel
-          travel="left"
-          labels={{ ...t.carousel, list: t.rental.list }}
-          viewer={t.viewer}
-          rate={t.rental.rate}
-          action={{ label: t.rental.reserve, variant: "ink" }}
-          cars={slides(t, t.rental.cars, t.rental.whatsapp, (c) => [
-            { label: r.year, value: c.year },
-            { label: r.engine, value: c.engine },
-            { label: r.gearbox, value: c.gearbox },
-            { label: r.seats, value: c.seats },
-            { label: r.color, value: c.color },
-          ])}
-        />
+        {/* The client can hide or remove every car in the panel; an empty showroom simply isn't drawn. */}
+        {cars.length ? (
+          <CarCarousel
+            travel="left"
+            labels={{ ...t.carousel, list: t.rental.list }}
+            viewer={t.viewer}
+            rate={t.rental.rate}
+            action={{ label: t.rental.reserve, variant: "ink" }}
+            cars={cars}
+          />
+        ) : null}
         <figure className={b.together} data-reveal="rise">
           <div className={b.togetherFrame}>
             <Image
@@ -123,25 +148,28 @@ export function RentalBand({ t, page }: ServiceBandProps) {
 }
 
 /** White: the cars for sale, facing right; a car on its own simply stands. */
-export function SalesBand({ t, lang, page }: ServiceBandProps) {
+export async function SalesBand({ t, lang, page }: ServiceBandProps) {
   const s = t.sales.specs;
+  const cars = slides(t, "sales", await getCars("sales", lang), getContact(lang).whatsapp, (c) => [
+    { label: s.year, value: c.year },
+    { label: s.mileage, value: c.mileage ? `${new Intl.NumberFormat(lang).format(c.mileage)} ${t.sales.units[c.unit ?? "km"]}` : undefined },
+    { label: s.gearbox, value: t.carousel.gearbox[c.gearbox] },
+    { label: s.drive, value: c.drive },
+    { label: s.seats, value: c.seats },
+    { label: s.color, value: c.color },
+  ]);
   return (
     <Band id="sales" tone="white" title={page ? t.pages.sales.h1 : t.sales.title} lead={t.sales.lead} page={page} className={b.showroomBand}>
       <div className={b.showroom}>
-        <CarCarousel
-          travel="right"
-          labels={{ ...t.carousel, list: t.sales.list }}
-          viewer={t.viewer}
-          action={{ label: t.sales.ask, variant: "yellow" }}
-          cars={slides(t, t.sales.cars, t.sales.whatsapp, (c) => [
-            { label: s.year, value: c.year },
-            { label: s.mileage, value: `${new Intl.NumberFormat(lang).format(c.mileage)} ${t.sales.units[c.unit as keyof typeof t.sales.units]}` },
-            { label: s.gearbox, value: c.gearbox },
-            { label: s.drive, value: c.drive },
-            { label: s.seats, value: c.seats },
-            { label: s.color, value: c.color },
-          ])}
-        />
+        {cars.length ? (
+          <CarCarousel
+            travel="right"
+            labels={{ ...t.carousel, list: t.sales.list }}
+            viewer={t.viewer}
+            action={{ label: t.sales.ask, variant: "yellow" }}
+            cars={cars}
+          />
+        ) : null}
         <div className={b.salesMore} data-reveal="rise">
           <div className={b.salesMoreText}>
             <p className={b.salesMoreTitle}>{t.sales.more.title}</p>
@@ -159,6 +187,7 @@ export function SalesBand({ t, lang, page }: ServiceBandProps) {
 /** Black: how an import works (the road runs through the steps in a loop), then the client's own imports. The
  *  full process is on the import page; the homepage's journey leads there. */
 export function ImportBand({ t, lang, page }: ServiceBandProps) {
+  const facts = getImport(lang);
   return (
     <Band id="import" tone="black" title={page ? t.pages.import.h1 : t.import.title} lead={t.import.lead} mark page={page}>
       {page ? (
@@ -179,14 +208,14 @@ export function ImportBand({ t, lang, page }: ServiceBandProps) {
         <dl className={b.importFacts}>
           <div className={b.time}>
             <dt className="map-label">{t.import.time}</dt>
-            <dd className={b.timeValue}>{t.import.timeValue}</dd>
+            <dd className={b.timeValue}>{facts.time}</dd>
           </div>
           <div className={b.time}>
             <dt className="map-label">{t.import.fee}</dt>
-            <dd className={b.timeValue}>{t.import.feeValue}</dd>
+            <dd className={b.timeValue}>{facts.fee}</dd>
           </div>
         </dl>
-        <Btn variant="yellow" icon="whatsapp" href={wa(t.import.whatsapp)} external>
+        <Btn variant="yellow" icon="whatsapp" href={wa(getContact(lang).whatsapp, t.import.whatsapp)} external>
           {t.import.quote}
         </Btn>
       </div>
@@ -195,11 +224,11 @@ export function ImportBand({ t, lang, page }: ServiceBandProps) {
 }
 
 /** Yellow: ask for a spare part. Title left, the request right; on the homepage it folds on phones. */
-export function PartsBand({ t, page }: ServiceBandProps) {
+export function PartsBand({ t, lang, page }: ServiceBandProps) {
   const Title = page ? "h1" : "h2";
   const request = (
     <>
-      <PartsForm t={t.parts.form} />
+      <PartsForm t={t.parts.form} whatsapp={getContact(lang).whatsapp} />
       <p className={b.partsPricing}>{t.parts.pricing}</p>
     </>
   );
@@ -229,7 +258,19 @@ export function PartsBand({ t, page }: ServiceBandProps) {
 }
 
 /** White: the common questions, and a way out beside them. After another white band, a hairline parts them. */
-export function FaqBand({ t, items, lead, continues }: { t: Dictionary; items: Dictionary["faq"]["items"]; lead?: string; continues?: boolean }) {
+export function FaqBand({
+  t,
+  lang,
+  items,
+  lead,
+  continues,
+}: {
+  t: Dictionary;
+  lang: Locale;
+  items: { q: string; a: string }[];
+  lead?: string;
+  continues?: boolean;
+}) {
   return (
     <Band id="faq" tone="white" title={t.faq.title} lead={lead} className={`${continues ? b.continues : ""} ${b.faqBand}`}>
       <div className={b.faqGrid}>
@@ -237,7 +278,7 @@ export function FaqBand({ t, items, lead, continues }: { t: Dictionary; items: D
         <aside className={b.faqPanel} data-reveal="rise">
           <p className={b.faqPanelTitle}>{t.faq.more}</p>
           <p className={b.faqPanelBody}>{t.faq.moreBody}</p>
-          <Btn variant="yellow" icon="whatsapp" href={wa(t.whatsapp.general)} external>
+          <Btn variant="yellow" icon="whatsapp" href={wa(getContact(lang).whatsapp, t.whatsapp.general)} external>
             {t.faq.ask}
           </Btn>
         </aside>
@@ -248,6 +289,8 @@ export function FaqBand({ t, items, lead, continues }: { t: Dictionary; items: D
 
 /** Black: WhatsApp first, then phone, address, hours and the map. Every page ends on it. */
 export function ContactBand({ t, lang }: { t: Dictionary; lang: Locale }) {
+  const contact = getContact(lang);
+  const chat = wa(contact.whatsapp, t.whatsapp.general);
   return (
     <section id="contact" aria-labelledby="contact-title" className={`${b.band} ${b.black} ${b.curtain}`}>
       <div className={`${b.inner} ${b.contactGrid}`}>
@@ -258,22 +301,22 @@ export function ContactBand({ t, lang }: { t: Dictionary; lang: Locale }) {
           <p className={b.lead} data-reveal="rise">
             {t.contact.lead}
           </p>
-          <Btn variant="yellow" size="lg" icon="whatsapp" href={wa(t.whatsapp.general)} external>
+          <Btn variant="yellow" size="lg" icon="whatsapp" href={chat} external>
             {t.contact.whatsapp}
           </Btn>
           <dl className={b.contactList}>
             <div>
               <dt className="map-label">{t.contact.phone}</dt>
               <dd>
-                <a href={wa(t.whatsapp.general)} target="_blank" rel="noopener noreferrer">
-                  {PHONE.label}
+                <a href={chat} target="_blank" rel="noopener noreferrer">
+                  {contact.phone.label}
                 </a>
               </dd>
             </div>
             <div>
               <dt className="map-label">{t.contact.email}</dt>
               <dd>
-                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
               </dd>
             </div>
             <div>
@@ -282,12 +325,12 @@ export function ContactBand({ t, lang }: { t: Dictionary; lang: Locale }) {
             </div>
             <div>
               <dt className="map-label">{t.contact.hours}</dt>
-              <dd>{t.contact.hoursValue}</dd>
+              <dd>{contact.hours}</dd>
             </div>
             <div className={b.contactWide}>
               <dt className="map-label">{t.contact.social}</dt>
               <dd className={b.social}>
-                {SOCIAL.map((n) => (
+                {contact.social.map((n) => (
                   <a key={n.name} href={n.href} target="_blank" rel="noopener noreferrer">
                     {n.name}
                     <ExternalIcon className={b.socialIcon} />

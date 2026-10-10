@@ -6,6 +6,8 @@ The website of JOOX CARS, a Costa Rican business that rents cars from its own fl
 | --- | --- |
 | `/` | Redirects to `/en` when the browser's first language is English, to `/es` otherwise (`src/proxy.ts`) |
 | `/es`, `/en` | The homepage |
+| `/admin` | The content panel where JOOX edits its cars and business details (Sveltia CMS; see `docs/CMS.md`). A 404 until opened once with the secret link |
+| `/api/auth`, `/api/callback` | The panel's GitHub sign-in |
 | `/es/renta`, `/es/venta`, `/es/importacion`, `/es/repuestos` (`/en/rental`, `/en/sales`, `/en/import`, `/en/parts`) | Each service's page (`src/app/[lang]/[service]/page.tsx`) |
 | Any other URL | A 404 in Spanish and English with the way home in each (`src/app/global-not-found.tsx`) |
 
@@ -19,7 +21,7 @@ npm run build && npm start
 
 ### Test
 
-End-to-end checks in `e2e/` (Playwright, Chromium) build the site, serve it on port 3100 and walk it: the language redirect, both homepages, every service page in both languages (title, h1, alternates, its questions and structured data), every car and the full import process in the HTML crawlers get, the sitemap, the 404, the parts form's WhatsApp message, the showroom and its photos, the language switch, and the phone menu. They read their text from `messages/`, so copy edits don't break them.
+End-to-end checks in `e2e/` (Playwright, Chromium) build the site, serve it on port 3100 and walk it: the language redirect, both homepages, every service page in both languages (title, h1, alternates, its questions and structured data), every car and the full import process in the HTML crawlers get, the sitemap, the 404, the parts form's WhatsApp message, the showroom and its photos, the language switch, and the phone menu. They read their text from `messages/` and the cars, FAQ and WhatsApp number from `content/`, so copy and panel edits don't break them. Two more check that `/admin` gets its own security policy and that the sign-in callback refuses a forged state.
 
 ```bash
 npx playwright install chromium   # once per machine
@@ -28,7 +30,7 @@ npm test
 
 ### Deploy
 
-On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). No environment variables. Every page is prerendered; `src/proxy.ts` runs as a function for the `/` redirect. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).
+On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). The content panel needs three environment variables, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` and `CMS_ADMIN_KEY` (`.env.example`; setup in `docs/CMS.md`); the site itself builds without them. Every page is prerendered, so a save in the panel (a commit) redeploys the site; `src/proxy.ts` runs as a function for the `/` redirect and the `/admin` gate, and `/api/auth` and `/api/callback` for the panel's sign-in. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).
 
 Next.js 16 (App Router), React 19 and plain CSS modules. The homepage is set in Archivo (with its width axis, `font-stretch: 125%` for display type), loaded with `next/font`. No animation library: motion is CSS, plus a few small scripts.
 
@@ -61,6 +63,7 @@ The homepage keeps every band as before (the questions all together), and its me
 
 ### Where things live
 
+- What the client edits in the panel (`/admin`): `content/` (the rental and sales cars, contact details, import time and fee, FAQ, reviews), each file with both languages, read by `src/lib/content.ts`. The panel itself: `public/admin/` (`config.yml` holds its fields). See `docs/CMS.md`.
 - Copy: `messages/es.json` and `messages/en.json` (same shape; the `Dictionary` type comes from the Spanish file).
 - Routing and the pages: `src/app/[lang]/` (`layout.tsx` with the header and footer, `page.tsx` the homepage, `[service]/page.tsx` the service pages, `dictionaries.ts`, `metadata.ts` and `structured-data.ts` for search, `site.css` with the colour and type tokens) and `src/proxy.ts`. The services, their addresses in each language and the menu: `src/lib/sections.ts`.
 - Components: `src/components/site/`.
@@ -68,7 +71,7 @@ The homepage keeps every band as before (the questions all together), and its me
   - `Bands`: the bands the homepage and the service pages share (rental, sales, import, parts, questions, contact); a service page opens on its band with the title as the h1.
   - `SiteFooter`: every page's footer.
   - `HeroStage`: the full-bleed hero: film and poster, the scrims behind the header and the copy, and the copy. `useFilm` loads the film (poster first; AV1, or H.264 where AV1 cannot play).
-  - `CarCarousel`: the showroom carousel (rental and sales; a single car stands without arrows). The car copy is in the dictionaries; the side-view cutouts with their credits, and the client's photos, in `src/lib/fleet.ts`.
+  - `CarCarousel`: the showroom carousel (rental and sales; a single car stands without arrows). The cars and their photos are in `content/`; the side-view cutouts with their credits in `src/lib/fleet.ts` (`CUTOUTS`). A car added in the panel, with no cutout yet, stands its first photo in a frame.
   - `PhotoViewer`: the client's photos full screen on ink (a native modal dialog: arrows, swipe, keys, thumbnails).
   - `ProofStrip`: the import band's strip of the client's own import photos, carried sideways by the scroll.
   - `Journey`: the import steps, their road running through them in a loop while on screen.
@@ -79,7 +82,7 @@ The homepage keeps every band as before (the questions all together), and its me
   - `Loop`: the About band's infinity loop.
   - `PartsForm`: the spare-parts request.
   - `Fold`: on the homepage on phones, import and parts fold to their title and lead until opened (arriving by their link opens them).
-- WhatsApp links: `src/lib/whatsapp.ts`. Phone, email, social profiles and the map link: `src/lib/contact.ts`.
+- WhatsApp links: `src/lib/whatsapp.ts` (the number is in `content/contact.json`). The site URL, rental operator, hours for search engines and map link: `src/lib/contact.ts`.
 - Media and the source of every asset: `scripts/media/`, documented in `ASSETS.md`.
 
 ### Behaviour
@@ -95,12 +98,12 @@ The homepage keeps every band as before (the questions all together), and its me
 
 - **One sentence says what JOOX CARS is:** "JOOX CARS es una empresa de renta, venta e importación de vehículos en Guápiles, Costa Rica." ("JOOX CARS is a car rental, sales and import company in Guápiles, Costa Rica."). The same words open the homepage's description, the hero and About; use them for the Instagram, Facebook and TikTok bios and the Google Business Profile too, so search engines and AI assistants describe the business the same way everywhere.
 - **Every page** has its own title, description, canonical, alternates (es, en, x-default) and link preview (`public/brand/joox-cars-preview.jpg`), from `src/app/[lang]/metadata.ts`; the copy is under `meta` and `pages` in `messages/`.
-- **Structured data** (`structured-data.ts`), each fact marked up once: the homepage carries the business (AutoRental and AutoDealer: contact, hours, area, price range, profiles, its four services) and the website; each service page carries its Service (provider, area, price, the cars), its place in the site and its own questions (FAQPage). The numbers it needs that the copy states in words (the rental's starting rate, the import fee, the hours) are in `src/lib/contact.ts`: change them with the copy.
+- **Structured data** (`structured-data.ts`), each fact marked up once: the homepage carries the business (AutoRental and AutoDealer: contact, hours, area, price range, profiles, its four services) and the website; each service page carries its Service (provider, area, price, the cars), its place in the site and its own questions (FAQPage). The import fee is read from the panel (`content/import.json`); the rental's starting rate and the hours, which it needs as numbers, are in `src/lib/contact.ts`. The hours there (`HOURS`) must match the hours text the client writes in the panel (and the Google Business Profile): change them together.
 - **`/sitemap.xml`** lists all ten pages with their languages; **`/robots.txt`** lets every crawler in, AI ones included.
 
 ### Stand-ins and sources
 
-- **WhatsApp number:** +506 8716 3308, confirmed by the client as the business WhatsApp (the phone in the contact band opens it too).
+- **WhatsApp number:** +506 8716 3308, confirmed by the client as the business WhatsApp (the phone in the contact band opens it too); the client can change it in the panel.
 - **Content:** no bracketed placeholders are left; every time, hours, review and FAQ answer on the page is the client's. The showrooms deliberately show no prices (rates change with the season; the cars for sale are asked about on WhatsApp); the questions give the rental's starting rate (₡40,000 a day) and the import fee ($1000).
 - **Photos:** the showroom cars are Wikimedia Commons side views of the same models, recoloured to the client's paint where needed, labelled "Model photo" and credited; the client's own photos (plates softened) are in each car's viewer, the fleet photo and the import strip. The hero film is AI-generated, the version the client chose.
 - **Logo and map:** the logo is cut from the logo raster (plus a reversed version for the header over the film); no vector logo is coming, so these and the favicon are final. The map shows central Guápiles, with no exact address or pin; that is final too.

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import { pageMetadata } from "../metadata";
 import { ld, serviceJsonLd } from "../structured-data";
+import { getCars, getFaq, getImport } from "@/lib/content";
 import { serviceOf, slugs } from "@/lib/sections";
 import { ContactBand, FaqBand, ImportBand, PartsBand, RentalBand, SalesBand } from "@/components/site/Bands";
 
@@ -31,13 +32,15 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/[service]"
 export default async function ServicePage({ params }: PageProps<"/[lang]/[service]">) {
   const { lang, service, t } = await resolve(params);
   const Main = BANDS[service];
+  const faq = getFaq(lang).filter((f) => f.service === service);
+  const cars = service === "rental" || service === "sales" ? await getCars(service, lang) : [];
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={ld(serviceJsonLd(t, lang, service))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(serviceJsonLd(t, lang, service, { cars, faq, fee: getImport(lang).fee }))} />
       <main>
         <Main t={t} lang={lang} page />
         {/* Sales is a white band: the questions continue it below a hairline. */}
-        <FaqBand t={t} items={t.faq.items.filter((f) => f.service === service)} continues={service === "sales"} />
+        {faq.length ? <FaqBand t={t} lang={lang} items={faq} continues={service === "sales"} /> : null}
         <ContactBand t={t} lang={lang} />
       </main>
     </>

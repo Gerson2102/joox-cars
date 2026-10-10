@@ -5,6 +5,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { getDictionary, hasLocale } from "./dictionaries";
 import { pageMetadata } from "./metadata";
 import { homeJsonLd, ld } from "./structured-data";
+import { getContact, getFaq, getReviews } from "@/lib/content";
 import { PHOTOS, SERVICE_PHOTOS } from "@/lib/fleet";
 import { SERVICES, pagePath } from "@/lib/sections";
 import { ArrowIcon } from "@/components/icons";
@@ -39,7 +40,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={ld(homeJsonLd(t, lang))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(homeJsonLd(t, lang, getContact(lang)))} />
       <main>
         <HeroStage t={t.hero} />
 
@@ -128,21 +129,21 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* White: what customers say. */}
         <Band id="reviews" tone="white" title={t.reviews.title} lead={t.reviews.lead}>
           <ul className={b.reviews} data-reveal="stagger">
-            {t.reviews.items.map((rv, n) => (
-              <li key={rv.who} style={i(n)}>
+            {getReviews(lang).map((rv, n) => (
+              <li key={rv.name} style={i(n)}>
                 <figure className={b.review}>
                   <span className={b.quoteMark} aria-hidden="true">
                     “
                   </span>
                   <blockquote>{rv.quote}</blockquote>
-                  <figcaption className="map-label">{rv.who}</figcaption>
+                  <figcaption className="map-label">{`${rv.name} · ${t.nav.links[rv.service]}`}</figcaption>
                 </figure>
               </li>
             ))}
           </ul>
         </Band>
 
-        <FaqBand t={t} items={t.faq.items} lead={t.faq.lead} continues />
+        <FaqBand t={t} lang={lang} items={getFaq(lang)} lead={t.faq.lead} continues />
         <ContactBand t={t} lang={lang} />
       </main>
     </>

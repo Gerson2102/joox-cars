@@ -115,6 +115,24 @@
   pointer-events: none;
 }
 
+/* A car added in the CMS before its cutout is made: its first photo stands on the
+   floor in a 4:3 frame as tall as a car, like a print in the showroom. */
+.print {
+  position: relative;
+  display: block;
+  width: calc(var(--car-h) * 4 / 3);
+  aspect-ratio: 4 / 3;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgb(19 19 19 / 0.12);
+  pointer-events: none;
+}
+
+.printImg {
+  object-fit: cover;
+}
+
 /* First arrival: the cars wait behind the edge they come from, then drive in.
    Under reduced motion they are simply there. */
 @media (prefers-reduced-motion: no-preference) {
@@ -406,6 +424,11 @@
   .slide[data-pos="side"],
   .slide[data-pos="away"] {
     --focus: 4px;
+  }
+
+  /* A car-high print is small on a phone: here it grows into the room above the car (48vw tall). */
+  .print {
+    width: 64vw;
   }
 
   .arrow {

@@ -1,7 +1,4 @@
-// The business number, digits only with country code: 8716-3308 in Costa Rica, confirmed by
-// the client as its WhatsApp.
-const WHATSAPP_NUMBER = "50687163308";
-
-export function wa(text: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+/** A WhatsApp chat with the business number (digits only, with country code, from the CMS), with the text typed in. */
+export function wa(number: string, text: string): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }

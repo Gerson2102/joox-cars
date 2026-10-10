@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { Fragment } from "react";
 import { otherLocale, type Dictionary, type Locale } from "@/app/[lang]/dictionaries";
-import { EMAIL, RENTAL_OPERATOR, SOCIAL } from "@/lib/contact";
-import { FLEET } from "@/lib/fleet";
+import { RENTAL_OPERATOR } from "@/lib/contact";
+import { getCars, getContact } from "@/lib/content";
+import { CUTOUTS } from "@/lib/fleet";
 import { NAV, navHref } from "@/lib/sections";
 import { HeartIcon } from "@/components/icons";
 import { LangLink } from "./LangLink";
@@ -12,9 +13,13 @@ import b from "./bands.module.css";
 const MAKER = { handle: "@websites_by_ger", href: "https://www.instagram.com/websites_by_ger" };
 
 /** Every page's footer: the lockup, the menu, the profiles, the rental operator and the model-photo credits. */
-export function SiteFooter({ t, lang }: { t: Dictionary; lang: Locale }) {
+export async function SiteFooter({ t, lang }: { t: Dictionary; lang: Locale }) {
+  const contact = getContact(lang);
+  const [rental, sales] = await Promise.all([getCars("rental", lang), getCars("sales", lang)]);
   // One credit per photo: a car for rent and for sale shows the same model photo in both showrooms.
-  const credits = [...new Set([...t.rental.cars, ...t.sales.cars].flatMap((c) => FLEET[c.slug]?.cutout.credit ?? []))];
+  const credits = [
+    ...new Set([...rental.map((c) => CUTOUTS.rental[c.slug]), ...sales.map((c) => CUTOUTS.sales[c.slug])].flatMap((c) => c?.credit ?? [])),
+  ];
 
   return (
     <footer className={b.footer}>
@@ -34,7 +39,7 @@ export function SiteFooter({ t, lang }: { t: Dictionary; lang: Locale }) {
         </ul>
       </nav>
       <ul className={b.footerSocial}>
-        {SOCIAL.map((n) => (
+        {contact.social.map((n) => (
           <li key={n.name}>
             <a href={n.href} target="_blank" rel="noopener noreferrer">
               {n.name}
@@ -42,7 +47,7 @@ export function SiteFooter({ t, lang }: { t: Dictionary; lang: Locale }) {
           </li>
         ))}
         <li>
-          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </li>
       </ul>
       <p className={b.footerNote}>{t.footer.operator.replace("{name}", RENTAL_OPERATOR.name).replace("{id}", RENTAL_OPERATOR.id)}</p>
