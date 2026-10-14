@@ -1,0 +1,62 @@
+{
+  "es": {
+    "brand": "Kia",
+    "model": "Sportage",
+    "year": "2020",
+    "body": "SUV",
+    "color": "Negro",
+    "engine": "2400 cc",
+    "gearbox": "automatic",
+    "seats": 5,
+    "photos": [
+      {
+        "image": "/media/photos/sportage-2020.webp",
+        "caption": "Kia Sportage 2020 negro"
+      },
+      {
+        "image": "/media/photos/fleet-grass.webp",
+        "caption": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles"
+      },
+      {
+        "image": "/media/photos/fleet-row.webp",
+        "caption": "Los tres carros de renta, de frente"
+      },
+      {
+        "image": "/media/photos/fleet-doors.webp",
+        "caption": "Los tres carros de renta, con las puertas abiertas"
+      }
+    ],
+    "visible": true,
+    "order": 2
+  },
+  "en": {
+    "brand": "Kia",
+    "model": "Sportage",
+    "year": "2020",
+    "body": "SUV",
+    "color": "Black",
+    "engine": "2400 cc",
+    "gearbox": "automatic",
+    "seats": 5,
+    "photos": [
+      {
+        "image": "/media/photos/sportage-2020.webp",
+        "caption": "Black 2020 Kia Sportage"
+      },
+      {
+        "image": "/media/photos/fleet-grass.webp",
+        "caption": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles"
+      },
+      {
+        "image": "/media/photos/fleet-row.webp",
+        "caption": "The three rental cars, from the front"
+      },
+      {
+        "image": "/media/photos/fleet-doors.webp",
+        "caption": "The three rental cars with their doors open"
+      }
+    ],
+    "visible": true,
+    "order": 2
+  }
+}

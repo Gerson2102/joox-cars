@@ -1,0 +1,62 @@
+{
+  "es": {
+    "brand": "Mitsubishi",
+    "model": "Outlander Sport",
+    "year": "2020",
+    "body": "SUV",
+    "color": "Naranja",
+    "engine": "2000 cc",
+    "gearbox": "automatic",
+    "seats": 5,
+    "photos": [
+      {
+        "image": "/media/photos/outlander-sport-2020.webp",
+        "caption": "Mitsubishi Outlander Sport 2020 naranja"
+      },
+      {
+        "image": "/media/photos/fleet-grass.webp",
+        "caption": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles"
+      },
+      {
+        "image": "/media/photos/fleet-row.webp",
+        "caption": "Los tres carros de renta, de frente"
+      },
+      {
+        "image": "/media/photos/fleet-doors.webp",
+        "caption": "Los tres carros de renta, con las puertas abiertas"
+      }
+    ],
+    "visible": true,
+    "order": 1
+  },
+  "en": {
+    "brand": "Mitsubishi",
+    "model": "Outlander Sport",
+    "year": "2020",
+    "body": "SUV",
+    "color": "Orange",
+    "engine": "2000 cc",
+    "gearbox": "automatic",
+    "seats": 5,
+    "photos": [
+      {
+        "image": "/media/photos/outlander-sport-2020.webp",
+        "caption": "Orange 2020 Mitsubishi Outlander Sport"
+      },
+      {
+        "image": "/media/photos/fleet-grass.webp",
+        "caption": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles"
+      },
+      {
+        "image": "/media/photos/fleet-row.webp",
+        "caption": "The three rental cars, from the front"
+      },
+      {
+        "image": "/media/photos/fleet-doors.webp",
+        "caption": "The three rental cars with their doors open"
+      }
+    ],
+    "visible": true,
+    "order": 1
+  }
+}

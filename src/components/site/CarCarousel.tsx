@@ -3,8 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
-import type { Credit, Img } from "@/lib/fleet";
-import { wa } from "@/lib/whatsapp";
+import type { Cutout } from "@/lib/fleet";
 import { Btn, type BtnVariant } from "./Btn";
 import { PhotoViewer, type Photo, type ViewerLabels } from "./PhotoViewer";
 import styles from "./carousel.module.css";
@@ -18,9 +17,10 @@ export type CarSlide = {
   /** A car not on the road yet: being prepared, and whether it is also for rent or sale. */
   status?: string;
   specs: { label: string; value: string }[];
-  /** The WhatsApp message that names this car. */
-  message: string;
-  cutout: Img & { credit?: Credit };
+  /** The WhatsApp chat, its message naming this car. */
+  whatsapp: string;
+  /** The side-profile model photo; a car added in the CMS has none until one is made, and stands its first photo instead. */
+  cutout?: Cutout;
   /** The client's own photos of the car, for the viewer. */
   photos: Photo[];
 };
@@ -141,16 +141,30 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
                 aria-hidden={r !== 0}
                 onClick={Math.abs(r) === 1 ? () => step(r) : undefined}
               >
-                <Image
-                  src={c.cutout.src}
-                  alt={nameOf(c)}
-                  width={c.cutout.width}
-                  height={c.cutout.height}
-                  sizes="(max-width: 700px) 88vw, 880px"
-                  quality={85}
-                  className={styles.car}
-                  draggable={false}
-                />
+                {c.cutout ? (
+                  <Image
+                    src={c.cutout.src}
+                    alt={nameOf(c)}
+                    width={c.cutout.width}
+                    height={c.cutout.height}
+                    sizes="(max-width: 700px) 88vw, 880px"
+                    quality={85}
+                    className={styles.car}
+                    draggable={false}
+                  />
+                ) : (
+                  <span className={styles.print}>
+                    <Image
+                      src={c.photos[0].src}
+                      alt={nameOf(c)}
+                      fill
+                      sizes="(max-width: 700px) 60vw, 520px"
+                      quality={85}
+                      className={styles.printImg}
+                      draggable={false}
+                    />
+                  </span>
+                )}
               </li>
             );
           })}
@@ -183,7 +197,7 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
             </div>
             <div className={styles.buy}>
               {rate ? <p className={styles.rate}>{rate}</p> : null}
-              <Btn variant={action.variant} icon="whatsapp" href={wa(c.message)} external>
+              <Btn variant={action.variant} icon="whatsapp" href={c.whatsapp} external>
                 {action.label}
               </Btn>
             </div>
@@ -199,7 +213,7 @@ export function CarCarousel({ cars, travel, labels, viewer, rate, action }: Prop
           </dl>
 
           {/* A model photo says so; its credit is in the footer. */}
-          {c.cutout.credit ? <p className={styles.note}>{labels.modelNote}</p> : null}
+          {c.cutout?.credit ? <p className={styles.note}>{labels.modelNote}</p> : null}
         </div>
       ))}
 

@@ -8,8 +8,8 @@ import styles from "./bands.module.css";
 
 const CAR = ["make", "model", "year"] as const;
 
-/** No backend: the request is written into a WhatsApp message. */
-export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
+/** No backend: the request is written into a WhatsApp message to `whatsapp` (the business number, digits only). */
+export function PartsForm({ t, whatsapp }: { t: Dictionary["parts"]["form"]; whatsapp: string }) {
   const id = useId();
   const [error, setError] = useState(false);
 
@@ -32,7 +32,7 @@ export function PartsForm({ t }: { t: Dictionary["parts"]["form"] }) {
     ];
     // Anchor click instead of window.open: phones and in-app browsers block scripted pop-ups.
     const link = document.createElement("a");
-    link.href = wa(lines.join("\n"));
+    link.href = wa(whatsapp, lines.join("\n"));
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     document.body.appendChild(link);

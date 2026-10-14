@@ -1,0 +1,40 @@
+{
+  "es": {
+    "items": [
+      {
+        "name": "Kevin Solano",
+        "service": "rental",
+        "quote": "Alquilé un carro para pasear una semana con la familia y todo salió de lo mejor. Me lo entregaron en Guápiles sin costo extra, limpio y en excelente estado. El proceso fue rapidísimo y todo muy claro. Súper recomendado, pura vida."
+      },
+      {
+        "name": "Marco Arias",
+        "service": "import",
+        "quote": "Diay, yo andaba con la duda de importar mi pickup por mi cuenta y ellos se encargaron de todo: trámites, aduana e inscripción. Me fueron avisando en cada paso y el carro llegó tal cual me lo mostraron. Gente seria y honesta, mae, buena nota."
+      },
+      {
+        "name": "Andrea Villalobos",
+        "service": "parts",
+        "quote": "Necesitaba unas pastillas y un alternador para mi Hilux y me los consiguieron al toque, a buen precio. Se nota que saben del tema y me aconsejaron bien. Ya es la tercera vez que les compro, tuanis el servicio."
+      }
+    ]
+  },
+  "en": {
+    "items": [
+      {
+        "name": "Kevin Solano",
+        "service": "rental",
+        "quote": "I rented a car to get around for a week with my family and everything went perfectly. They delivered it in Guápiles at no extra cost, clean and in excellent condition. The process was really quick and everything was very clear. Highly recommended, pura vida."
+      },
+      {
+        "name": "Marco Arias",
+        "service": "import",
+        "quote": "I wasn't sure about importing my pickup on my own, and they took care of everything: paperwork, customs and registration. They kept me posted at every step and the truck arrived exactly as they showed it to me. Serious, honest people, great job."
+      },
+      {
+        "name": "Andrea Villalobos",
+        "service": "parts",
+        "quote": "I needed brake pads and an alternator for my Hilux and they found them for me in no time, at a good price. You can tell they know their stuff, and they gave me good advice. It's the third time I've bought from them, great service."
+      }
+    ]
+  }
+}

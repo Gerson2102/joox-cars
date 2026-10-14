@@ -1,0 +1,74 @@
+{
+  "es": {
+    "brand": "Jeep",
+    "model": "Wrangler Unlimited",
+    "year": "2012",
+    "body": "SUV de 4 puertas",
+    "color": "Negro",
+    "mileage": 175000,
+    "unit": "km",
+    "gearbox": "automatic",
+    "drive": "4x4",
+    "seats": 5,
+    "photos": [
+      {
+        "image": "/media/photos/wrangler-front.webp",
+        "caption": "De frente"
+      },
+      {
+        "image": "/media/photos/wrangler-rear.webp",
+        "caption": "Desde atrás"
+      },
+      {
+        "image": "/media/photos/wrangler-back.webp",
+        "caption": "Revisando por dentro"
+      },
+      {
+        "image": "/media/photos/wrangler-cabin.webp",
+        "caption": "La cabina"
+      },
+      {
+        "image": "/media/photos/wrangler-key.webp",
+        "caption": "Con la llave en la mano"
+      }
+    ],
+    "visible": true,
+    "order": 1
+  },
+  "en": {
+    "brand": "Jeep",
+    "model": "Wrangler Unlimited",
+    "year": "2012",
+    "body": "4-door SUV",
+    "color": "Black",
+    "mileage": 175000,
+    "unit": "km",
+    "gearbox": "automatic",
+    "drive": "4x4",
+    "seats": 5,
+    "photos": [
+      {
+        "image": "/media/photos/wrangler-front.webp",
+        "caption": "Front"
+      },
+      {
+        "image": "/media/photos/wrangler-rear.webp",
+        "caption": "From behind"
+      },
+      {
+        "image": "/media/photos/wrangler-back.webp",
+        "caption": "Looking inside"
+      },
+      {
+        "image": "/media/photos/wrangler-cabin.webp",
+        "caption": "The cabin"
+      },
+      {
+        "image": "/media/photos/wrangler-key.webp",
+        "caption": "Keys in hand"
+      }
+    ],
+    "visible": true,
+    "order": 1
+  }
+}

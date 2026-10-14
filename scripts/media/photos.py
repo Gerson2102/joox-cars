@@ -10,7 +10,9 @@ a WebP without metadata (phone photos can carry the GPS position of the
 client's home). Nothing is upscaled.
 
 Output: public/media/photos/<id>.webp; the ids are the keys in
-src/lib/fleet.ts (PHOTOS) and the captions in messages/*.json (photos).
+src/lib/fleet.ts (PHOTOS) and the captions in messages/*.json (photos). The
+design's own photos (DESIGN) are also written to public/media/site/, outside
+the panel's photo library, so nothing deleted there can break the design.
 Run from this folder: python photos.py [id ...] (only those photos)
 """
 
@@ -24,6 +26,8 @@ from PIL import Image, ImageOps
 from common import ROOT
 
 OUT = os.path.join(ROOT, "public", "media", "photos")
+SITE = os.path.join(ROOT, "public", "media", "site")
+DESIGN = {"fleet-grass", "fleet-row", "wrangler-front", "import-container"}
 RENT = "cars-to-rent/photo_2026-09-25_"
 IMPORTS = "cars-to-export/photo_2026-09-25_"
 SALE = "cars-ready-to-sell/photo_2026-09-25_"
@@ -99,6 +103,7 @@ def load(path: str) -> np.ndarray:
 
 def main(only: list[str]) -> None:
     os.makedirs(OUT, exist_ok=True)
+    os.makedirs(SITE, exist_ok=True)
     for pid, (src, plates, people, amount) in PHOTOS.items():
         if only and pid not in only:
             continue
@@ -108,6 +113,8 @@ def main(only: list[str]) -> None:
         img = Image.fromarray(rgb.round().astype(np.uint8))
         path = os.path.join(OUT, f"{pid}.webp")
         img.save(path, "WEBP", quality=82, method=6)  # no exif, no gps
+        if pid in DESIGN:
+            img.save(os.path.join(SITE, f"{pid}.webp"), "WEBP", quality=82, method=6)
         print(f"{pid}: {img.width}x{img.height}, {os.path.getsize(path) // 1024} KB")
 
 

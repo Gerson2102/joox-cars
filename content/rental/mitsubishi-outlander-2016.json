@@ -1,0 +1,48 @@
+{
+  "es": {
+    "brand": "Mitsubishi",
+    "model": "Outlander",
+    "year": "2016",
+    "body": "SUV",
+    "color": "Blanco",
+    "engine": "2400 cc",
+    "gearbox": "automatic",
+    "seats": 7,
+    "photos": [
+      {
+        "image": "/media/photos/outlander-2016.webp",
+        "caption": "Mitsubishi Outlander 2016 blanco"
+      },
+      {
+        "image": "/media/photos/outlander-2016-front.webp",
+        "caption": "De frente"
+      }
+    ],
+    "status": "En preparación: disponible pronto. También está en venta.",
+    "visible": true,
+    "order": 4
+  },
+  "en": {
+    "brand": "Mitsubishi",
+    "model": "Outlander",
+    "year": "2016",
+    "body": "SUV",
+    "color": "White",
+    "engine": "2400 cc",
+    "gearbox": "automatic",
+    "seats": 7,
+    "photos": [
+      {
+        "image": "/media/photos/outlander-2016.webp",
+        "caption": "White 2016 Mitsubishi Outlander"
+      },
+      {
+        "image": "/media/photos/outlander-2016-front.webp",
+        "caption": "From the front"
+      }
+    ],
+    "status": "Being prepared: available soon. Also for sale.",
+    "visible": true,
+    "order": 4
+  }
+}

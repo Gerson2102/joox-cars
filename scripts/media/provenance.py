@@ -17,13 +17,21 @@ import subprocess
 
 from common import OUT, sources
 from fleet import CARS
-from photos import PHOTOS
+from photos import DESIGN, PHOTOS
 from v2_bake import POSTER_SRC_T, SOURCE
 
 
 def origin(key: str) -> str:
     s = sources()[key]
     return f"{s['made']} ({s['license']})"
+
+
+def photo_origin(src: str, plates: list, people: list, amount: float) -> str:
+    return (
+        f"The client's own photo ({src}), as sent through a chat app at 1280 px"
+        f"{', plates softened' if plates else ''}{', a bystander blurred' if people else ''}{', shadows lifted' if amount else ''}, metadata removed. "
+        "Made by scripts/media/photos.py."
+    )
 
 
 def poster(stem: str) -> str:
@@ -45,12 +53,8 @@ ORIGINS = {
         "Made by scripts/media/fleet.py."
         for slug, car in CARS.items()
     },
-    **{
-        f"photos/{pid}.webp": f"The client's own photo ({src}), as sent through a chat app at 1280 px"
-        f"{', plates softened' if plates else ''}{', a bystander blurred' if people else ''}{', shadows lifted' if amount else ''}, metadata removed. "
-        "Made by scripts/media/photos.py."
-        for pid, (src, plates, people, amount) in PHOTOS.items()
-    },
+    **{f"photos/{pid}.webp": photo_origin(*photo) for pid, photo in PHOTOS.items()},
+    **{f"site/{pid}.webp": photo_origin(*PHOTOS[pid]) for pid in sorted(DESIGN)},
     "../brand/joox-cars-mark.webp": "JOOX CARS mark (JOOX and CARS, no tagline) cut from the client's logo raster (references/brand/joox-cars-logo.png): "
     "white background unmixed to transparency (alpha = 1 - darkest channel), trimmed, 240 px tall.",
     "../brand/joox-cars-mark-reversed.webp": "Reversed JOOX CARS mark for the header over the hero film: the mark cutout (public/brand/joox-cars-mark.webp, from the client's logo raster) with its near-black ink swapped for white and the yellow kept, each pixel read as a yellow/black mix from its red channel. Made by scripts/media/brand_reversed.py.",

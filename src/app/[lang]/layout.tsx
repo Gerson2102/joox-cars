@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { SITE_URL } from "@/lib/contact";
+import { getContact } from "@/lib/content";
 import { archivo } from "@/lib/font";
+import { wa } from "@/lib/whatsapp";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { ScrollFX } from "@/components/site/ScrollFX";
@@ -29,13 +31,14 @@ export default async function SiteLayout({ children, params }: LayoutProps<"/[la
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const t = await getDictionary(lang);
+  const contact = getContact(lang);
   return (
     <html lang={lang} className={archivo.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
       </head>
       <body>
-        <SiteHeader t={t.nav} lang={lang} whatsappText={t.whatsapp.general} tagline={t.about.tagline} />
+        <SiteHeader t={t.nav} lang={lang} whatsappHref={wa(contact.whatsapp, t.whatsapp.general)} tagline={t.about.tagline} />
         <ScrollFX />
         {children}
         <SiteFooter t={t} lang={lang} />

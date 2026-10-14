@@ -29,6 +29,7 @@ __pycache__/
 
 # the client's documents (contract, feedback): personal and company data
 /*.docx
+docs/
 
 # Impeccable: config.json, design.json, surfaces/ and decision/ are shared; the rest is local run state
 /.impeccable/review/
