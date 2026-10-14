@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import type { Dictionary, Locale } from "@/app/[lang]/dictionaries";
 import { MAP_URL, mapEmbed } from "@/lib/contact";
 import { getCars, getContact, getImport, type Car, type Kind } from "@/lib/content";
-import { CUTOUTS, FLEET_TOGETHER, IMPORTS, PHOTOS, type PhotoId } from "@/lib/fleet";
+import { CUTOUTS, FLEET_TOGETHER, PHOTOS } from "@/lib/fleet";
 import { pagePath } from "@/lib/sections";
 import { wa } from "@/lib/whatsapp";
 import { ExternalIcon } from "@/components/icons";
@@ -21,9 +21,6 @@ type Tone = "white" | "yellow" | "black";
 
 /** A service's band: on the homepage, or (`page`) opening the service's own page. */
 type ServiceBandProps = { t: Dictionary; lang: Locale; page?: boolean };
-
-/** A photo with its caption (also its alt text) in the page's language. */
-const photo = (t: Dictionary, id: PhotoId & keyof Dictionary["photos"]) => ({ ...PHOTOS[id], caption: t.photos[id] });
 
 /** A car from the CMS joined with its showroom cutout, if one has been made; a car with neither a cutout nor
  *  a photo is left out rather than breaking the page. Its WhatsApp message names it ("…the orange 2020
@@ -186,8 +183,8 @@ export async function SalesBand({ t, lang, page }: ServiceBandProps) {
 
 /** Black: how an import works (the road runs through the steps in a loop), then the client's own imports. The
  *  full process is on the import page; the homepage's journey leads there. */
-export function ImportBand({ t, lang, page }: ServiceBandProps) {
-  const facts = getImport(lang);
+export async function ImportBand({ t, lang, page }: ServiceBandProps) {
+  const { photos, count, ...facts } = await getImport(lang);
   return (
     <Band id="import" tone="black" title={page ? t.pages.import.h1 : t.import.title} lead={t.import.lead} mark page={page}>
       {page ? (
@@ -203,7 +200,10 @@ export function ImportBand({ t, lang, page }: ServiceBandProps) {
           </Btn>
         </Fold>
       )}
-      <ProofStrip t={t.import.proof} photos={IMPORTS.map((id) => photo(t, id))} viewer={t.viewer} />
+      {/* The client can remove every import photo in the panel; an empty strip isn't drawn. */}
+      {photos.length ? (
+        <ProofStrip t={{ ...t.import.proof, title: t.import.proof.title.replace("{count}", String(count)) }} photos={photos} viewer={t.viewer} />
+      ) : null}
       <div className={b.importFoot}>
         <dl className={b.importFacts}>
           <div className={b.time}>

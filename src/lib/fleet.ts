@@ -1,7 +1,10 @@
-// Images the client doesn't edit: the showroom cutouts, the fleet photo, the service
-// photos and the import strip. The cars themselves (copy and the client's own photos)
-// are edited in the CMS and live in content/rental/ and content/sales/; see
-// src/lib/content.ts. The captions below are in messages/*.json under `photos`.
+// Images the client doesn't edit: the showroom cutouts, the fleet photo and the service
+// photos. The cars themselves (copy and the client's own photos) and the import strip
+// are edited in the CMS and live in content/; see src/lib/content.ts. The fleet photo's
+// caption is in messages/*.json under `photos`.
+//
+// The design's own photos are copies kept in public/media/site/, outside the panel's
+// photo library (public/media/photos/), so nothing deleted there can break the design.
 //
 // The showroom shows each car in side profile, like a configurator: a Wikimedia
 // Commons photo of the same model and generation, cut out by
@@ -20,19 +23,10 @@ export type Cutout = Img & { credit?: Credit };
 const commons = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;
 
 export const PHOTOS = {
-  "fleet-grass": { src: "/media/photos/fleet-grass.webp", width: 1280, height: 960 },
-  "fleet-row": { src: "/media/photos/fleet-row.webp", width: 1280, height: 960 },
-  "wrangler-front": { src: "/media/photos/wrangler-front.webp", width: 960, height: 1280 },
-  "import-lot": { src: "/media/photos/import-lot.webp", width: 960, height: 1280 },
-  "import-rubicon": { src: "/media/photos/import-rubicon.webp", width: 960, height: 1280 },
-  "import-tow": { src: "/media/photos/import-tow.webp", width: 1280, height: 960 },
-  "import-container": { src: "/media/photos/import-container.webp", width: 960, height: 1280 },
-  "import-x6": { src: "/media/photos/import-x6.webp", width: 960, height: 1280 },
-  "import-papers": { src: "/media/photos/import-papers.webp", width: 960, height: 1280 },
-  "import-4runner": { src: "/media/photos/import-4runner.webp", width: 960, height: 1280 },
-  "import-containers": { src: "/media/photos/import-containers.webp", width: 1280, height: 960 },
-  "import-rebel": { src: "/media/photos/import-rebel.webp", width: 960, height: 1280 },
-  "import-keys": { src: "/media/photos/import-keys.webp", width: 1280, height: 960 },
+  "fleet-grass": { src: "/media/site/fleet-grass.webp", width: 1280, height: 960 },
+  "fleet-row": { src: "/media/site/fleet-row.webp", width: 1280, height: 960 },
+  "wrangler-front": { src: "/media/site/wrangler-front.webp", width: 960, height: 1280 },
+  "import-container": { src: "/media/site/import-container.webp", width: 960, height: 1280 },
 } satisfies Record<string, Img>;
 
 export type PhotoId = keyof typeof PHOTOS;
@@ -80,17 +74,3 @@ export const SERVICE_PHOTOS: Partial<Record<"rental" | "sales" | "import" | "par
   sales: "wrangler-front",
   import: "import-container",
 };
-
-/** The import strip, in order. */
-export const IMPORTS = [
-  "import-lot",
-  "import-rubicon",
-  "import-tow",
-  "import-container",
-  "import-x6",
-  "import-papers",
-  "import-4runner",
-  "import-containers",
-  "import-rebel",
-  "import-keys",
-] as const satisfies readonly PhotoId[];

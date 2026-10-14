@@ -36,7 +36,7 @@ export default async function ServicePage({ params }: PageProps<"/[lang]/[servic
   const cars = service === "rental" || service === "sales" ? await getCars(service, lang) : [];
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={ld(serviceJsonLd(t, lang, service, { cars, faq, fee: getImport(lang).fee }))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(serviceJsonLd(t, lang, service, { cars, faq, fee: (await getImport(lang)).fee }))} />
       <main>
         <Main t={t} lang={lang} page />
         {/* Sales is a white band: the questions continue it below a hairline. */}

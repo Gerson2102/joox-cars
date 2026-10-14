@@ -151,7 +151,7 @@
     "whatsapp": "Hi, I'd like a quote to import a vehicle.",
     "open": "See the 8 steps",
     "proof": {
-      "title": "20 cars imported so far.",
+      "title": "{count} cars imported so far.",
       "body": "Photos from our own imports.",
       "list": "Photos from our imports",
       "prev": "Previous photos",
@@ -331,17 +331,7 @@
     "madeBy": "by"
   },
   "photos": {
-    "fleet-grass": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles",
-    "import-lot": "Ford Raptor and F-150",
-    "import-rubicon": "Jeep Wrangler Rubicon",
-    "import-tow": "On the tow truck, Houston, Texas",
-    "import-container": "In the container",
-    "import-x6": "BMW X6",
-    "import-papers": "The paperwork",
-    "import-4runner": "Toyota 4Runner",
-    "import-containers": "Containers",
-    "import-rebel": "RAM pickup",
-    "import-keys": "The keys"
+    "fleet-grass": "Kia Sportage, 2020 Outlander Sport and 2015 Outlander Sport on the grass in Guápiles"
   },
   "whatsapp": {
     "general": "Hi, I have a question."

@@ -136,6 +136,14 @@ test("the rental showroom moves to the next car and opens its photos", async ({ 
   await expect(viewer).toBeHidden();
 });
 
+test("the import strip shows the photos and the count the client set", async ({ page }) => {
+  const { count, photos } = content("import.json") as { count: number; photos: unknown[] };
+  await page.goto("/es");
+  const proof = page.locator("#import");
+  await expect(proof.getByRole("heading", { name: es.import.proof.title.replace("{count}", String(count)) })).toBeVisible();
+  await expect(proof.getByRole("list", { name: es.import.proof.list }).getByRole("listitem")).toHaveCount(photos.length);
+});
+
 test("switching language keeps the section being read", async ({ page }) => {
   await page.goto("/es");
   await expect(page.locator("html")).toHaveAttribute("data-fx", "on"); // hydrated

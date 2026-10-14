@@ -1,5 +1,5 @@
 // The content the client edits in the CMS (/admin, Sveltia CMS): the cars, contact
-// details, import time and fee, the FAQ and the reviews. Each file under content/
+// details, import time, fee and photos, the FAQ and the reviews. Each file under content/
 // holds both languages, { es: {...}, en: {...} }, the way the CMS saves them. Spanish
 // is the default: fields that are the same in both languages are read from it, and
 // an English text left empty falls back to the Spanish one.
@@ -42,6 +42,20 @@ const image = cache(async (src: string): Promise<Img | null> => {
   return orientation >= 5 ? { src, width: height, height: width } : { src, width, height };
 });
 
+type PhotoEntry = { image: string; caption?: string };
+
+/** A CMS photo list with its sizes and captions in the page's language (`translated` is the English list, which
+ *  mirrors the Spanish one); a missing file is left out, an empty caption falls back to the Spanish one, then `fallback`. */
+const photoList = async (photos: PhotoEntry[] = [], translated: PhotoEntry[] | undefined, fallback: string) => {
+  const list = await Promise.all(
+    photos.map(async (p, n) => {
+      const img = await image(p.image);
+      return img ? { ...img, caption: translated?.[n]?.caption || p.caption || fallback } : null;
+    }),
+  );
+  return list.filter((p) => p !== null);
+};
+
 /* ---------- Cars ---------- */
 
 export type Kind = "rental" | "sales";
@@ -58,7 +72,7 @@ type CarFile = {
   gearbox: "automatic" | "manual";
   drive?: string;
   seats: number;
-  photos: { image: string; caption?: string }[];
+  photos: PhotoEntry[];
   status?: string;
   visible?: boolean;
   order?: number;
@@ -80,13 +94,6 @@ export const getCars = cache(async (kind: Kind, lang: Locale): Promise<Car[]> =>
       const es = data.es;
       if (es.visible === false) return null;
       const name = `${es.brand} ${es.model} ${es.year}`;
-      const captions = lang === "en" ? data.en?.photos : undefined;
-      const photos = await Promise.all(
-        (es.photos ?? []).map(async (p, n) => {
-          const img = await image(p.image);
-          return img ? { ...img, caption: captions?.[n]?.caption || p.caption || name } : null;
-        }),
-      );
       const car: Car = {
         slug: file.replace(/\.json$/, ""),
         brand: es.brand,
@@ -101,7 +108,7 @@ export const getCars = cache(async (kind: Kind, lang: Locale): Promise<Car[]> =>
         drive: es.drive || undefined,
         seats: String(es.seats),
         status: pick(data, lang, "status") || undefined,
-        photos: photos.filter((p) => p !== null),
+        photos: await photoList(es.photos, lang === "en" ? data.en?.photos : undefined, name),
       };
       return { car, order: es.order ?? 999 };
     }),
@@ -157,9 +164,14 @@ export const getContact = cache((lang: Locale): Contact => {
 
 /* ---------- Import ---------- */
 
-export const getImport = cache((lang: Locale) => {
-  const data = read<{ time: string; fee: string }>("import.json");
-  return { time: pick(data, lang, "time"), fee: data.es.fee };
+export const getImport = cache(async (lang: Locale) => {
+  const data = read<{ time: string; fee: string; count: number; photos: PhotoEntry[] }>("import.json");
+  return {
+    time: pick(data, lang, "time"),
+    fee: data.es.fee,
+    count: data.es.count,
+    photos: await photoList(data.es.photos, lang === "en" ? data.en?.photos : undefined, ""),
+  };
 });
 
 /* ---------- FAQ and reviews ---------- */

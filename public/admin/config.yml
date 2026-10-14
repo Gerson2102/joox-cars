@@ -218,12 +218,33 @@ collections:
             pattern: ['^https://', "El enlace empieza con https://"]
 
       - name: import
-        label: Importación (tiempo y comisión)
+        label: Importación (tiempo, comisión y fotos)
         file: content/import.json
         i18n: true
         fields:
           - { name: time, label: Tiempo aproximado, widget: string, i18n: true, required: [es], hint: "Ej.: Mes y medio" }
           - { name: fee, label: Comisión JOOX, widget: string, i18n: duplicate, hint: "Ej.: $1000" }
+          - { name: count, label: Carros importados, widget: number, value_type: int, min: 1, i18n: duplicate, hint: "El número de «Van 20 carros importados.»" }
+          - name: photos
+            label: Fotos de importaciones
+            label_singular: foto
+            widget: list
+            i18n: duplicate
+            required: false
+            summary: "{{fields.caption}}"
+            hint: >-
+              Salen en la franja de fotos de la importación, en este orden.
+              Antes de subir una foto, tapá o difuminá la placa.
+            fields:
+              - name: image
+                label: Foto
+                widget: image
+                choose_url: false
+                media_libraries:
+                  default:
+                    config:
+                      filename_template: "importacion-{{uuid_short}}"
+              - { name: caption, label: Descripción, widget: string, i18n: true, required: false, hint: "Corta. Ej.: BMW X6, En grúa, Houston (Texas)" }
 
       - name: faq
         label: Preguntas frecuentes

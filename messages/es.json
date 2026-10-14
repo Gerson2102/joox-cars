@@ -151,7 +151,7 @@
     "whatsapp": "Hola, quiero cotizar la importación de un vehículo.",
     "open": "Ver los 8 pasos",
     "proof": {
-      "title": "Van 20 carros importados.",
+      "title": "Van {count} carros importados.",
       "body": "Fotos de nuestras propias importaciones.",
       "list": "Fotos de nuestras importaciones",
       "prev": "Fotos anteriores",
@@ -331,17 +331,7 @@
     "madeBy": "por"
   },
   "photos": {
-    "fleet-grass": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles",
-    "import-lot": "Ford Raptor y F-150",
-    "import-rubicon": "Jeep Wrangler Rubicon",
-    "import-tow": "En grúa, Houston (Texas)",
-    "import-container": "En el contenedor",
-    "import-x6": "BMW X6",
-    "import-papers": "Los trámites",
-    "import-4runner": "Toyota 4Runner",
-    "import-containers": "Contenedores",
-    "import-rebel": "Pickup RAM",
-    "import-keys": "Las llaves"
+    "fleet-grass": "Kia Sportage, Outlander Sport 2020 y Outlander Sport 2015 en el zacate, en Guápiles"
   },
   "whatsapp": {
     "general": "Hola, tengo una consulta."
