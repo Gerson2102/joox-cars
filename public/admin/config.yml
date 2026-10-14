@@ -1,6 +1,6 @@
 # Sveltia CMS: the panel at jooxcars.com/admin where JOOX edits its cars and business
 # details. Free and open source. Every save is a commit to this GitHub repo, and Vercel
-# redeploys the site with it (about a minute). How it's set up: docs/CMS.md.
+# redeploys the site with it (about a minute).
 # Docs: https://sveltiacms.app/en/docs
 
 backend:

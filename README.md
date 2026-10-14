@@ -6,7 +6,7 @@ The website of JOOX CARS, a Costa Rican business that rents cars from its own fl
 | --- | --- |
 | `/` | Redirects to `/en` when the browser's first language is English, to `/es` otherwise (`src/proxy.ts`) |
 | `/es`, `/en` | The homepage |
-| `/admin` | The content panel where JOOX edits its cars and business details (Sveltia CMS; see `docs/CMS.md`). A 404 until opened once with the secret link |
+| `/admin` | The content panel where JOOX edits its cars and business details (Sveltia CMS). A 404 until opened once with the secret link |
 | `/api/auth`, `/api/callback` | The panel's GitHub sign-in |
 | `/es/renta`, `/es/venta`, `/es/importacion`, `/es/repuestos` (`/en/rental`, `/en/sales`, `/en/import`, `/en/parts`) | Each service's page (`src/app/[lang]/[service]/page.tsx`) |
 | Any other URL | A 404 in Spanish and English with the way home in each (`src/app/global-not-found.tsx`) |
@@ -30,7 +30,7 @@ npm test
 
 ### Deploy
 
-On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). The content panel needs three environment variables, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` and `CMS_ADMIN_KEY` (`.env.example`; setup in `docs/CMS.md`); the site itself builds without them. Every page is prerendered, so a save in the panel (a commit) redeploys the site; `src/proxy.ts` runs as a function for the `/` redirect and the `/admin` gate, and `/api/auth` and `/api/callback` for the panel's sign-in. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).
+On Vercel, from the GitHub repo, with the defaults (framework Next.js, `npm run build`). The content panel needs three environment variables, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` and `CMS_ADMIN_KEY` (`.env.example`; the setup guide is kept privately, outside the repo); the site itself builds without them. Every page is prerendered, so a save in the panel (a commit) redeploys the site; `src/proxy.ts` runs as a function for the `/` redirect and the `/admin` gate, and `/api/auth` and `/api/callback` for the panel's sign-in. The media in `public/` is built ahead of time by `scripts/media/` and committed, so the build needs no Python or ffmpeg. The sources stay local and are gitignored: `.media-src/`, `work/`, the client's raw photos (`cars-*/`) and `references/` (except the logo).
 
 Next.js 16 (App Router), React 19 and plain CSS modules. The homepage is set in Archivo (with its width axis, `font-stretch: 125%` for display type), loaded with `next/font`. No animation library: motion is CSS, plus a few small scripts.
 
@@ -63,7 +63,7 @@ The homepage keeps every band as before (the questions all together), and its me
 
 ### Where things live
 
-- What the client edits in the panel (`/admin`): `content/` (the rental and sales cars, contact details, import time and fee, FAQ, reviews), each file with both languages, read by `src/lib/content.ts`. The panel itself: `public/admin/` (`config.yml` holds its fields). See `docs/CMS.md`.
+- What the client edits in the panel (`/admin`): `content/` (the rental and sales cars, contact details, import time and fee, FAQ, reviews), each file with both languages, read by `src/lib/content.ts`. The panel itself: `public/admin/` (`config.yml` holds its fields).
 - Copy: `messages/es.json` and `messages/en.json` (same shape; the `Dictionary` type comes from the Spanish file).
 - Routing and the pages: `src/app/[lang]/` (`layout.tsx` with the header and footer, `page.tsx` the homepage, `[service]/page.tsx` the service pages, `dictionaries.ts`, `metadata.ts` and `structured-data.ts` for search, `site.css` with the colour and type tokens) and `src/proxy.ts`. The services, their addresses in each language and the menu: `src/lib/sections.ts`.
 - Components: `src/components/site/`.

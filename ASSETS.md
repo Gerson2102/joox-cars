@@ -36,7 +36,7 @@ The client sent its photos through a chat app, already reduced to 1280 px on the
 | `outlander-2016`, `outlander-2016-front` (the white Outlander at the lot, sent 2 October, in `cars-to-rent/`) | Its photo viewer, in both showrooms (it is for rent and for sale) |
 | `import-*` (10) | The import strip, in the order `IMPORTS` lists them |
 
-**Photos added in the panel** (`/admin`, `docs/CMS.md`) land in the same folder, named after the car (`<make>-<model>-<year>-<id>.webp`). The panel converts them to WebP at 1600 px at most, quality 82, and strips their metadata (GPS included), all in the browser. It can't soften plates or blur people, so those are the client's to do before uploading. These photos have no `.webp.json` sidecar: their record is the commit that added them.
+**Photos added in the panel** (`/admin`) land in the same folder, named after the car (`<make>-<model>-<year>-<id>.webp`). The panel converts them to WebP at 1600 px at most, quality 82, and strips their metadata (GPS included), all in the browser. It can't soften plates or blur people, so those are the client's to do before uploading. These photos have no `.webp.json` sidecar: their record is the commit that added them.
 
 Not used yet: the other 18 import photos (more cars on the lots, a white Corolla with a young man beside it, an office). Captions stay neutral (the car, or what is happening) because who is in each photo and where it was taken has not been confirmed; the one place named, Houston, is lettered on the tow truck itself.
 
